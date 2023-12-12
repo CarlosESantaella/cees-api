@@ -17,6 +17,11 @@ return new class extends Migration
             $table->json('permissions');
             $table->timestamps();
         });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->unsignedBigInteger('profile');
+            $table->foreign('profile')->references('id')->on('profiles');
+        });
     }
 
     /**

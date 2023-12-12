@@ -12,11 +12,27 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        // CREATE PROFILE ADMIN
+        \App\Models\Profile::factory()->create([
+            'name' => 'Admin',
+            'permissions' => json_encode([
+                'MANAGE USERS' => "All",
+                'MANAGE PROFILES' => "All",
+                'MANAGE REQUEST' => "All",
+                "MANAGE SERVICES" => "All",
+                "MANAGE DIAGNOSES AND QUOTES" => "All",
+                "MANAGE INVENTORY" => "All",
+                "MANAGE ORDERS" => "All",
+                "MANAGE CONFIGURATION" => "All",
+            ])
+        ]);
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        // CREATE USER ADMIN
+        \App\Models\User::factory()->create([
+            'name' => 'John Doe',
+            'email' => 'john.doe@gmail.com',
+            'password' => '123123',
+            'profile' => 1
+        ]);
     }
 }
