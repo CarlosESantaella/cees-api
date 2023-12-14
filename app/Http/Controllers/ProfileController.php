@@ -9,6 +9,18 @@ use Illuminate\Support\Str;
 
 class ProfileController extends Controller
 {
+
+    public $all_permissions = [
+        'MANAGE USERS' => "None",
+        'MANAGE PROFILES' => "None",
+        'MANAGE REQUEST' => "None",
+        "MANAGE SERVICES" => "None",
+        "MANAGE DIAGNOSES AND QUOTES" => "None",
+        "MANAGE INVENTORY" => "None",
+        "MANAGE ORDERS" => "None",
+        "MANAGE CONFIGURATION" => "None",
+    ];
+
     /**
      * Display a listing of the resource.
      */
@@ -72,5 +84,13 @@ class ProfileController extends Controller
         }
         $profile->delete();
         return response()->json(null, 204);
+    }
+
+    /**
+     * Get permissions.
+     */
+    public function getPermissions()
+    {
+        return $this->all_permissions;
     }
 }
