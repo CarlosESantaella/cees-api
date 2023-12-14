@@ -28,6 +28,11 @@ class UserController extends Controller
         try {
             $data = $request->all();
             $data['owner'] = Auth::user()->id;
+            $perm = ProfileController::getPermissionByName("MANAGE USERS");
+            // If profile is Super Admin or Admin
+            if (in_array($data['profile'], [1, 2]) && $perm == "Own") {
+                return response()->json(["errors" => ['profile' => 'No tiene permisos para asignar este perfil']], 403);
+            }
             $user = User::create($data);
             return response()->json(["id" => $user->id], 201);
         } catch (\Throwable $th) {
@@ -59,9 +64,14 @@ class UserController extends Controller
         }else if ($perm == "All") {
             $user = User::findOrFail($id);
         }
+        $data = $request->all();
+        $data['owner'] = Auth::user()->id;
+
+        // If profile is Super Admin or Admin
+        if (in_array($data['profile'], [1, 2]) && $perm == "Own") {
+            return response()->json(["errors" => ['profile' => 'No tiene permisos para asignar este perfil']], 403);
+        }
         try {
-            $data = $request->all();
-            $data['owner'] = Auth::user()->id;
             $user->update($data);
             return response()->json(null, 204);
         } catch (\Throwable $th) {

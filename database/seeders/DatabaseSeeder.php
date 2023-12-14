@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // CREATE PROFILE ADMIN
+        // CREATE PROFILE SUPER ADMIN
         \App\Models\Profile::factory()->create([
             'name' => 'Super Admin',
             'permissions' => [
@@ -24,6 +24,21 @@ class DatabaseSeeder extends Seeder
                 "MANAGE INVENTORY" => "All",
                 "MANAGE ORDERS" => "All",
                 "MANAGE CONFIGURATION" => "All",
+            ]
+        ]);
+
+        // CREATE PROFILE ADMIN
+        \App\Models\Profile::factory()->create([
+            'name' => 'Admin',
+            'permissions' => [
+                'MANAGE USERS' => "Own",
+                'MANAGE PROFILES' => "None",
+                'MANAGE REQUEST' => "Own",
+                "MANAGE SERVICES" => "Own",
+                "MANAGE DIAGNOSES AND QUOTES" => "Own",
+                "MANAGE INVENTORY" => "Own",
+                "MANAGE ORDERS" => "Own",
+                "MANAGE CONFIGURATION" => "Own",
             ]
         ]);
 

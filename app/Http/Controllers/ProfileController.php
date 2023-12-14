@@ -22,6 +22,15 @@ class ProfileController extends Controller
         "MANAGE CONFIGURATION" => "None",
     ];
 
+    public $restricted_permissions = [
+        'MANAGE REQUEST' => "None",
+        "MANAGE SERVICES" => "None",
+        "MANAGE DIAGNOSES AND QUOTES" => "None",
+        "MANAGE INVENTORY" => "None",
+        "MANAGE ORDERS" => "None",
+        "MANAGE CONFIGURATION" => "None",
+    ];
+
     /**
      * Display a listing of the resource.
      */
@@ -92,7 +101,10 @@ class ProfileController extends Controller
      */
     public function getPermissions()
     {
-        return $this->all_permissions;
+        $user = Auth::user();
+        $profile = Profile::findOrFail($user->profile);
+        if ($profile->name == "Super Admin") return $this->all_permissions;
+        return $this->restricted_permissions;
     }
 
     /**

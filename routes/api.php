@@ -34,8 +34,6 @@ Route::middleware('jwt.verify')->group(function () {
     });
 
     // Permissions
-    Route::middleware('permission:MANAGE PROFILES')->group(function () {
-        Route::get('permissions', [ProfileController::class, 'getPermissions']);
-    });
+    Route::get('permissions', [ProfileController::class, 'getPermissions']);
 
 });
