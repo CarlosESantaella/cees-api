@@ -14,8 +14,8 @@ class DatabaseSeeder extends Seeder
     {
         // CREATE PROFILE ADMIN
         \App\Models\Profile::factory()->create([
-            'name' => 'Admin',
-            'permissions' => json_encode([
+            'name' => 'Super Admin',
+            'permissions' => [
                 'MANAGE USERS' => "All",
                 'MANAGE PROFILES' => "All",
                 'MANAGE REQUEST' => "All",
@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
                 "MANAGE INVENTORY" => "All",
                 "MANAGE ORDERS" => "All",
                 "MANAGE CONFIGURATION" => "All",
-            ])
+            ]
         ]);
 
         // CREATE USER ADMIN

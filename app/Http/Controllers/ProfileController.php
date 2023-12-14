@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProfileStorePostRequest;
 use App\Models\Profile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class ProfileController extends Controller
@@ -92,5 +93,20 @@ class ProfileController extends Controller
     public function getPermissions()
     {
         return $this->all_permissions;
+    }
+
+    /**
+     * Get permission by name.
+     */
+    public static function getPermissionByName(string $name)
+    {
+        // TODO: Ver porque no trae todo bien con ->with
+        $user = Auth::user();
+        $profile = Profile::findOrFail($user->profile);
+        try {
+            return $profile->permissions[$name];
+        } catch (\Throwable $th) {
+            "None";
+        }
     }
 }

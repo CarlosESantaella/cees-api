@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserStorePostRequest;
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class UserController extends Controller
@@ -14,7 +14,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        return User::all();
+        $perm = ProfileController::getPermissionByName("MANAGE USERS");
+        if ($perm == "All") return User::all();
+        if ($perm == "Own") return User::where('owner', Auth::user()->id)->get();
     }
 
 
@@ -24,7 +26,9 @@ class UserController extends Controller
     public function store(UserStorePostRequest $request)
     {
         try {
-            $user = User::create($request->all());
+            $data = $request->all();
+            $data['owner'] = Auth::user()->id;
+            $user = User::create($data);
             return response()->json(["id" => $user->id], 201);
         } catch (\Throwable $th) {
             if (Str::contains($th->getMessage(), 'Duplicate entry')) {
@@ -39,7 +43,9 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        return User::findOrFail($id);
+        $perm = ProfileController::getPermissionByName("MANAGE USERS");
+        if ($perm == "All") return User::findOrFail($id);
+        if ($perm == "Own") return User::where('owner', Auth::user()->id)->where('id', $id)->firstOrFail();
     }
 
     /**
@@ -47,9 +53,16 @@ class UserController extends Controller
      */
     public function update(UserStorePostRequest $request, string $id)
     {
-        try {
+        $perm = ProfileController::getPermissionByName("MANAGE USERS");
+        if ($perm == "Own") {
+            $user = User::where('owner', Auth::user()->id)->where('id', $id)->firstOrFail();
+        }else if ($perm == "All") {
             $user = User::findOrFail($id);
-            $user->update($request->all());
+        }
+        try {
+            $data = $request->all();
+            $data['owner'] = Auth::user()->id;
+            $user->update($data);
             return response()->json(null, 204);
         } catch (\Throwable $th) {
             if (Str::contains($th->getMessage(), 'Duplicate entry')) {
@@ -64,9 +77,11 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        $user = User::find($id);
-        if (!$user) {
-            return response()->json(["errors" => ['id' => "Usuario con el id $id no existe"]], 400);
+        $perm = ProfileController::getPermissionByName("MANAGE USERS");
+        if ($perm == "Own") {
+            $user = User::where('owner', Auth::user()->id)->where('id', $id)->firstOrFail();
+        }else if ($perm == "All") {
+            $user = User::findOrFail($id);
         }
         $user->delete();
         return response()->json(null, 204);

@@ -21,7 +21,8 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
-        'profile'
+        'profile',
+        'owner'
     ];
 
     /**
@@ -67,5 +68,10 @@ class User extends Authenticatable implements JWTSubject
     public function profile()
     {
         return $this->hasOne(Profile::class, 'id');
+    }
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner');
     }
 }

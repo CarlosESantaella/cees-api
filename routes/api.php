@@ -24,17 +24,17 @@ Route::post('auth', [AuthController::class, 'login']);
 Route::middleware('jwt.verify')->group(function () {
 
     // Users
-    Route::middleware('permission:MANAGE USERS:All')->group(function () {
+    Route::middleware('permission:MANAGE USERS')->group(function () {
         Route::apiResource('users', UserController::class);
     });
 
     // Profiles
-    Route::middleware('permission:MANAGE PROFILES:All')->group(function () {
+    Route::middleware('permission:MANAGE PROFILES')->group(function () {
         Route::apiResource('profiles', ProfileController::class);
     });
 
     // Permissions
-    Route::middleware('permission:MANAGE PROFILES:All')->group(function () {
+    Route::middleware('permission:MANAGE PROFILES')->group(function () {
         Route::get('permissions', [ProfileController::class, 'getPermissions']);
     });
 
