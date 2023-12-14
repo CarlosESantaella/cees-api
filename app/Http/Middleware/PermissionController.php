@@ -27,6 +27,6 @@ class PermissionController
             return $next($request);
         }
 
-        return response()->json(['message' => 'Acceso no permitido'], 401);
+        return response()->json(['message' => 'Acceso denegado'], 401);
     }
 }

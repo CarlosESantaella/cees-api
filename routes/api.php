@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,11 @@ Route::middleware('jwt.verify')->group(function () {
     // Users
     Route::middleware('permission:MANAGE USERS:All')->group(function () {
         Route::apiResource('users', UserController::class);
+    });
+
+    // Profiles
+    Route::middleware('permission:MANAGE PROFILES:All')->group(function () {
+        Route::apiResource('profiles', ProfileController::class);
     });
 
 });

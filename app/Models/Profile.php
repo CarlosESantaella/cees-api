@@ -9,6 +9,11 @@ class Profile extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'permissions'
+    ];
+
     protected $casts = [
         'permissions' => 'json',
     ];
