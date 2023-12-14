@@ -16,8 +16,15 @@ use App\Http\Controllers\AuthController;
 |
 */
 
+// Routers public
 Route::post('auth', [AuthController::class, 'login']);
 
+// Routers private
 Route::middleware('jwt.verify')->group(function () {
-    Route::apiResource('users', UserController::class);
+
+    // Users
+    Route::middleware('permission:MANAGE USERS:All')->group(function () {
+        Route::apiResource('users', UserController::class);
+    });
+
 });
