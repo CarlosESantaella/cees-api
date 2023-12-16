@@ -19,7 +19,8 @@ class AuthController extends Controller
 
         $user = User::where('email', $request->email)->with('profile_data')->first();
         return response()->json([
-            'access_token' => $this->createToken($user)
+            'access_token' => $this->createToken($user),
+            'user' => $user
         ]);
     }
 

@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Super Admin',
             'permissions' => [
                 'MANAGE USERS' => "All",
+                'MANAGE CLIENTS' => "All",
                 'MANAGE PROFILES' => "All",
                 'MANAGE REQUEST' => "All",
                 "MANAGE SERVICES" => "All",
@@ -32,6 +33,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'permissions' => [
                 'MANAGE USERS' => "Own",
+                'MANAGE CLIENTS' => "Own",
                 'MANAGE PROFILES' => "None",
                 'MANAGE REQUEST' => "Own",
                 "MANAGE SERVICES" => "Own",
@@ -40,7 +42,7 @@ class DatabaseSeeder extends Seeder
                 "MANAGE ORDERS" => "Own",
                 "MANAGE CONFIGURATION" => "Own",
             ]
-        ]);
+        ]); 
 
         // CREATE USER ADMIN
         \App\Models\User::factory()->create([

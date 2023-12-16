@@ -17,7 +17,7 @@ class PermissionController
     public function handle(Request $request, Closure $next, $permission): Response
     {
         $perm = ProfileController::getPermissionByName($permission);
-        if ($perm != "None") {
+        if ($perm != "None" && !is_null($perm)) {
             return $next($request);
         }
         return response()->json(['message' => 'Acceso denegado'], 401);

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('nit')->nullable();
             $table->string('contact')->nullable();
             $table->foreignId('user_id')
+                    ->nullable()
                     ->constrained()
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
