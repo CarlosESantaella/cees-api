@@ -17,7 +17,7 @@ class AuthController extends Controller
             return response()->json(['error' => 'Email o contraseña inválido'], 401);
         }
 
-        $user = User::where('email', $request->email)->with('profile')->first();
+        $user = User::where('email', $request->email)->with('profile_data')->first();
         return response()->json([
             'access_token' => $this->createToken($user)
         ]);

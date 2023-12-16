@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileStorePostRequest;
 use App\Models\Profile;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -102,8 +103,8 @@ class ProfileController extends Controller
     public function getPermissions()
     {
         $user = Auth::user();
-        $profile = Profile::findOrFail($user->profile);
-        if ($profile->name == "Super Admin") return $this->all_permissions;
+        $user_data = User::findOrfail($user->id)->with('profile_data')->first();
+        if ($user_data->profile_data->name == "Super Admin") return $this->all_permissions;
         return $this->restricted_permissions;
     }
 
@@ -112,11 +113,10 @@ class ProfileController extends Controller
      */
     public static function getPermissionByName(string $name)
     {
-        // TODO: Ver porque no trae todo bien con ->with
         $user = Auth::user();
-        $profile = Profile::findOrFail($user->profile);
+        $user_data = User::where('id', $user->id)->with('profile_data')->first();
         try {
-            return $profile->permissions[$name];
+            return $user_data->profile_data->permissions[$name];
         } catch (\Throwable $th) {
             "None";
         }
