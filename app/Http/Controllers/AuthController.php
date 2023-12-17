@@ -24,8 +24,14 @@ class AuthController extends Controller
         ]);
     }
 
+    public function me()
+    {
+        $user = User::where('id', Auth::user()->id)->with('profile_data')->first();
+        return response()->json($user);
+    }
+
     protected function createToken($user)
     {
         return JWTAuth::fromUser($user);
-    }
+    }   
 }

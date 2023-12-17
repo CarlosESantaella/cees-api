@@ -25,14 +25,18 @@ Route::post('auth', [AuthController::class, 'login']);
 // Routers private
 Route::middleware('jwt.verify')->group(function () {
 
+    // Auth me
+    Route::get('auth/me', [AuthController::class, 'me']);
+
     // Users
     Route::middleware('permission:MANAGE USERS')->group(function () {
         Route::apiResource('users', UserController::class);
     });
 
     // Profiles
+    Route::get('profiles', [ProfileController::class, 'index']);
     Route::middleware('permission:MANAGE PROFILES')->group(function () {
-        Route::apiResource('profiles', ProfileController::class);
+        Route::apiResource('profiles', ProfileController::class)->except(['index']);
     });
 
     // Clients
