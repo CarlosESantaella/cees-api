@@ -27,7 +27,7 @@ class UserController extends Controller
     public function store(UserStorePostRequest $request)
     {
         try {
-            $data = $request->all();
+            $data = $request->only(['name', 'email', 'password', 'profile']);
             $user_data = User::where('id', Auth::user()->id)->with('profile_data')->first();
             $is_super_admin = $user_data->profile_data->name == "Super Admin";
             $data['owner'] = ($is_super_admin) ? null : $user_data->id;
@@ -68,7 +68,7 @@ class UserController extends Controller
         }else if ($perm == "All") {
             $user = User::findOrFail($id);
         }
-        $data = $request->all();
+        $data = $request->only(['name', 'email', 'password', 'profile']);
         $user_data = User::where('id', Auth::user()->id)->with('profile_data')->first();
         $is_super_admin = $user_data->profile_data->name == "Super Admin";
         $data['owner'] = ($is_super_admin) ? null : $user_data->id;

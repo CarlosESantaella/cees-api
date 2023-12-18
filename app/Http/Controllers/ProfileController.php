@@ -47,7 +47,7 @@ class ProfileController extends Controller
     public function store(ProfileStorePostRequest $request)
     {
         try {
-            $data = $request->all();
+            $data = $request->only(['name', 'permissions']);
             $data['permissions'] = json_decode($data['permissions']);
             $profile = Profile::create($data);
             return response()->json($profile, 201);
@@ -74,7 +74,8 @@ class ProfileController extends Controller
     {
         try {
             $profile = Profile::findOrFail($id);
-            $profile->update($request->all());
+            $data = $request->only(['name', 'permissions']);
+            $profile->update($data);
             return response()->json(null, 204);
         } catch (\Throwable $th) {
             if (Str::contains($th->getMessage(), 'Duplicate entry')) {

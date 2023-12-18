@@ -27,7 +27,8 @@ class ClientPostRequest extends FormRequest
             'full_name' => 'string|min:6|max:120',
             'address' => 'string|min:6|max:120',
             'nit' => 'string|min:6|max:120',
-            'contact' => 'string|min:6|max:120'
+            'contact' => 'string|min:6|max:120',
+            'cellphone' => 'string|min:6|max:120'
         ];
     }
 
