@@ -50,7 +50,7 @@ class ProfileController extends Controller
             $data = $request->all();
             $data['permissions'] = json_decode($data['permissions']);
             $profile = Profile::create($data);
-            return response()->json(["id" => $profile->id], 201);
+            return response()->json($profile, 201);
         } catch (\Throwable $th) {
             if (Str::contains($th->getMessage(), 'Duplicate entry')) {
                 return response()->json(["errors" => ['email' => 'Nombre duplicado']], 409);

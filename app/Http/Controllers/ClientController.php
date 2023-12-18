@@ -30,7 +30,7 @@ class ClientController extends Controller
             $data = $request->all();
             $data['user_id'] = (Auth::user()->profile != 1) ? Auth::user()->owner ?? Auth::user()->id : null;
             $client = Client::create($data);
-            return response()->json(["id" => $client->id], 201);
+            return response()->json($client, 201);
         } catch (\Throwable $th) {
             return response()->json(["errors" => ['database' => 'Error en la base de datos']], 500);
         }
