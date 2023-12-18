@@ -15,7 +15,8 @@ class UserController extends Controller
     public function index()
     {
         $perm = ProfileController::getPermissionByName("MANAGE USERS");
-        if ($perm == "All") return User::all();
+        
+        if ($perm == "All") return User::where('profile', env('ID_PROFILE_ADMIN', 2))->get();
         if ($perm == "Own") return User::where('owner', Auth::user()->id)->get();
     }
 
@@ -28,10 +29,12 @@ class UserController extends Controller
         try {
             $data = $request->all();
             $user_data = User::where('id', Auth::user()->id)->with('profile_data')->first();
-            $data['owner'] = ($user_data->profile_data->name == "Super Admin") ? null : $user_data->id;
+            $is_super_admin = $user_data->profile_data->name == "Super Admin";
+            $data['owner'] = ($is_super_admin) ? null : $user_data->id;
+            $data['profile'] = ($is_super_admin) ? env('ID_PROFILE_ADMIN', 2) : $data['profile'];
             $perm = ProfileController::getPermissionByName("MANAGE USERS");
             // If profile is Super Admin or Admin
-            if (in_array($data['profile'], [1, 2]) && $perm == "Own") {
+            if (in_array($data['profile'], [env('ID_PROFILE_SUPER_ADMIN', 1), env('ID_PROFILE_ADMIN', 2)]) && $perm == "Own") {
                 return response()->json(["errors" => ['profile' => 'No tiene permisos para asignar este perfil']], 403);
             }
             $user = User::create($data);
@@ -67,10 +70,12 @@ class UserController extends Controller
         }
         $data = $request->all();
         $user_data = User::where('id', Auth::user()->id)->with('profile_data')->first();
-        $data['owner'] = ($user_data->profile_data->name == "Super Admin") ? null : $user_data->id;
+        $is_super_admin = $user_data->profile_data->name == "Super Admin";
+        $data['owner'] = ($is_super_admin) ? null : $user_data->id;
+        $data['profile'] = ($is_super_admin) ? env('ID_PROFILE_ADMIN', 2) : $data['profile'];
 
         // If profile is Super Admin or Admin
-        if (in_array($data['profile'], [1, 2]) && $perm == "Own") {
+        if (in_array($data['profile'], [env('ID_PROFILE_SUPER_ADMIN', 1), env('ID_PROFILE_ADMIN', 2)]) && $perm == "Own") {
             return response()->json(["errors" => ['profile' => 'No tiene permisos para asignar este perfil']], 403);
         }
         try {

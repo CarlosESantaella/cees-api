@@ -27,7 +27,7 @@ class UserStorePostRequest extends FormRequest
             'name' => 'required|string|min:6|max:255',
             'email' => 'required|email|min:8|max:255',
             'password' => 'required|string|min:6|max:255',
-            'profile' => 'required|integer|max:255'
+            'profile' => 'integer|max:255'
         ];
     }
 
@@ -51,7 +51,6 @@ class UserStorePostRequest extends FormRequest
             'password.string' => 'El campo password debe ser una cadena de caracteres.',
             'password.min' => 'El campo password debe tener al menos :min caracteres.',
             'password.max' => 'El campo password no debe ser mayor a :max caracteres.',
-            'profile.required' => 'El campo profile es obligatorio.',
             'profile.integer' => 'El campo profile debe ser un número entero.',
             'profile.max' => 'El campo profile no debe ser mayor a :max caracteres.',
         ];
