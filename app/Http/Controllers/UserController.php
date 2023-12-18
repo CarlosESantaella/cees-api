@@ -38,7 +38,7 @@ class UserController extends Controller
                 return response()->json(["errors" => ['profile' => 'No tiene permisos para asignar este perfil']], 403);
             }
             $user = User::create($data);
-            return response()->json(["id" => $user->id], 201);
+            return response()->json($user, 201);
         } catch (\Throwable $th) {
             if (Str::contains($th->getMessage(), 'Duplicate entry')) {
                 return response()->json(["errors" => ['email' => 'Correo electrónico duplicado']], 409);
