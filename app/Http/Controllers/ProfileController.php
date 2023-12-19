@@ -22,8 +22,9 @@ class ProfileController extends Controller
         "MANAGE ORDERS" => "None",
         "MANAGE CONFIGURATION" => "None",
     ];
-
+    
     public $restricted_permissions = [
+        'MANAGE PROFILES' => "None",
         'MANAGE REQUEST' => "None",
         "MANAGE SERVICES" => "None",
         "MANAGE DIAGNOSES AND QUOTES" => "None",
@@ -37,7 +38,8 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        return Profile::all();
+        $user_auth = Auth::user();
+        return Profile::where('user_id', $user_auth->owner ?? $user_auth->id)->get();
     }
 
 
@@ -49,6 +51,7 @@ class ProfileController extends Controller
         try {
             $data = $request->only(['name', 'permissions']);
             $data['permissions'] = json_decode($data['permissions']);
+            $data['user_id'] = Auth::user()->owner ?? Auth::user()->id;
             $profile = Profile::create($data);
             return response()->json($profile, 201);
         } catch (\Throwable $th) {
@@ -64,7 +67,7 @@ class ProfileController extends Controller
      */
     public function show(string $id)
     {
-        return Profile::findOrFail($id);
+        return Profile::where('user_id', Auth::user()->owner ?? Auth::user()->id)->findOrFail($id);
     }
 
     /**
@@ -75,6 +78,7 @@ class ProfileController extends Controller
         try {
             $profile = Profile::findOrFail($id);
             $data = $request->only(['name', 'permissions']);
+            $data['user_id'] = Auth::user()->owner ?? Auth::user()->id;
             $profile->update($data);
             return response()->json(null, 204);
         } catch (\Throwable $th) {
@@ -90,7 +94,7 @@ class ProfileController extends Controller
      */
     public function destroy(string $id)
     {
-        $profile = Profile::find($id);
+        $profile = Profile::where('user_id', Auth::user()->owner ?? Auth::user()->id)->findOrFail($id);
         if (!$profile) {
             return response()->json(["errors" => ['id' => "Perfil con el id $id no existe"]], 400);
         }

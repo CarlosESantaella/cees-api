@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Profile;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,7 +15,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // CREATE PROFILE SUPER ADMIN
-        \App\Models\Profile::factory()->create([
+        $super_admin = \App\Models\Profile::factory()->create([
             'name' => 'Super Admin',
             'permissions' => [
                 'MANAGE USERS' => "All",
@@ -29,7 +31,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // CREATE PROFILE ADMIN
-        \App\Models\Profile::factory()->create([
+        $admin = \App\Models\Profile::factory()->create([
             'name' => 'Admin',
             'permissions' => [
                 'MANAGE USERS' => "Own",
@@ -42,14 +44,23 @@ class DatabaseSeeder extends Seeder
                 "MANAGE ORDERS" => "Own",
                 "MANAGE CONFIGURATION" => "Own",
             ]
-        ]); 
+        ]);
 
         // CREATE USER ADMIN
-        \App\Models\User::factory()->create([
+        $user = \App\Models\User::factory()->create([
             'name' => 'John Doe',
             'email' => 'john.doe@gmail.com',
             'password' => '123123',
             'profile' => 1
         ]);
+
+        // UPDATE PROFILE SUPER ADMIN AND ADMIN
+        Profile::find($super_admin->id)->update([
+            'user_id' => $user->id
+        ]);
+        Profile::find($admin->id)->update([
+            'user_id' => $user->id
+        ]);
+
     }
 }

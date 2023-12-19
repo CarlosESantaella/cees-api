@@ -11,7 +11,8 @@ class Profile extends Model
 
     protected $fillable = [
         'name',
-        'permissions'
+        'permissions',
+        'user_id'
     ];
 
     protected $casts = [
