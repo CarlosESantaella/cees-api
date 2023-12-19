@@ -17,8 +17,7 @@ return new class extends Migration
             $table->json('permissions');
             $table->foreignId('user_id')
                     ->nullable()
-                    ->constrained()
-                    ->onDelete('cascade');
+                    ->constrained();
             $table->timestamps();
         });
 
