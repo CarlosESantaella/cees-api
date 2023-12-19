@@ -19,14 +19,14 @@ class DatabaseSeeder extends Seeder
             'name' => 'Super Admin',
             'permissions' => [
                 'MANAGE USERS' => "All",
-                'MANAGE CLIENTS' => "All",
+                'MANAGE CLIENTS' => "None",
                 'MANAGE PROFILES' => "All",
-                'MANAGE REQUEST' => "All",
-                "MANAGE SERVICES" => "All",
-                "MANAGE DIAGNOSES AND QUOTES" => "All",
-                "MANAGE INVENTORY" => "All",
-                "MANAGE ORDERS" => "All",
-                "MANAGE CONFIGURATION" => "All",
+                'MANAGE REQUEST' => "None",
+                "MANAGE SERVICES" => "None",
+                "MANAGE DIAGNOSES AND QUOTES" => "None",
+                "MANAGE INVENTORY" => "None",
+                "MANAGE ORDERS" => "None",
+                "MANAGE CONFIGURATION" => "None",
             ]
         ]);
 
@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
             'permissions' => [
                 'MANAGE USERS' => "Own",
                 'MANAGE CLIENTS' => "Own",
-                'MANAGE PROFILES' => "None",
+                'MANAGE PROFILES' => "Own",
                 'MANAGE REQUEST' => "Own",
                 "MANAGE SERVICES" => "Own",
                 "MANAGE DIAGNOSES AND QUOTES" => "Own",

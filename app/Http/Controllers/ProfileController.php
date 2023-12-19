@@ -55,9 +55,6 @@ class ProfileController extends Controller
             $profile = Profile::create($data);
             return response()->json($profile, 201);
         } catch (\Throwable $th) {
-            if (Str::contains($th->getMessage(), 'Duplicate entry')) {
-                return response()->json(["errors" => ['email' => 'Nombre duplicado']], 409);
-            }
             return response()->json(["errors" => ['database' => $th->getMessage()]], 500);
         }
     }
@@ -76,15 +73,13 @@ class ProfileController extends Controller
     public function update(ProfileStorePostRequest $request, string $id)
     {
         try {
-            $profile = Profile::findOrFail($id);
+            $profile = Profile::where('user_id', Auth::user()->owner ?? Auth::user()->id)->findOrFail($id);
             $data = $request->only(['name', 'permissions']);
+            $data['permissions'] = json_decode($data['permissions']);
             $data['user_id'] = Auth::user()->owner ?? Auth::user()->id;
             $profile->update($data);
             return response()->json(null, 204);
         } catch (\Throwable $th) {
-            if (Str::contains($th->getMessage(), 'Duplicate entry')) {
-                return response()->json(["errors" => ['email' => 'Correo electrónico duplicado']], 409);
-            }
             return response()->json(["errors" => ['database' => 'Error en la base de datos']], 500);
         }
     }
