@@ -17,7 +17,7 @@ class UserController extends Controller
         $perm = ProfileController::getPermissionByName("MANAGE USERS");
         
         if ($perm == "All") return User::where('profile', env('ID_PROFILE_ADMIN', 2))->get();
-        if ($perm == "Own") return User::where('owner', Auth::user()->id)->get();
+        if ($perm == "Own") return User::where('owner', Auth::user()->owner ?? Auth::user()->id)->get();
     }
 
 
@@ -54,7 +54,7 @@ class UserController extends Controller
     {
         $perm = ProfileController::getPermissionByName("MANAGE USERS");
         if ($perm == "All") return User::findOrFail($id);
-        if ($perm == "Own") return User::where('owner', Auth::user()->id)->where('id', $id)->firstOrFail();
+        if ($perm == "Own") return User::where('owner', Auth::user()->owner ?? Auth::user()->id)->where('id', $id)->firstOrFail();
     }
 
     /**
@@ -64,7 +64,7 @@ class UserController extends Controller
     {
         $perm = ProfileController::getPermissionByName("MANAGE USERS");
         if ($perm == "Own") {
-            $user = User::where('owner', Auth::user()->id)->where('id', $id)->firstOrFail();
+            $user = User::where('owner', Auth::user()->owner ?? Auth::user()->id)->where('id', $id)->firstOrFail();
         }else if ($perm == "All") {
             $user = User::findOrFail($id);
         }
@@ -96,7 +96,7 @@ class UserController extends Controller
     {
         $perm = ProfileController::getPermissionByName("MANAGE USERS");
         if ($perm == "Own") {
-            $user = User::where('owner', Auth::user()->id)->where('id', $id)->firstOrFail();
+            $user = User::where('owner', Auth::user()->owner ?? Auth::user()->id)->where('id', $id)->firstOrFail();
         }else if ($perm == "All") {
             $user = User::findOrFail($id);
         }
