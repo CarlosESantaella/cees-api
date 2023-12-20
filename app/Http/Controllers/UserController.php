@@ -30,7 +30,7 @@ class UserController extends Controller
             $data = $request->only(['name', 'email', 'password', 'profile']);
             $user_data = User::where('id', Auth::user()->id)->with('profile_data')->first();
             $is_super_admin = $user_data->profile_data->name == "Super Admin";
-            $data['owner'] = ($is_super_admin) ? null : $user_data->id;
+            $data['owner'] = ($is_super_admin) ? null : Auth::user()->owner ?? Auth::user()->id;
             $data['profile'] = ($is_super_admin) ? env('ID_PROFILE_ADMIN', 2) : $data['profile'];
             $perm = ProfileController::getPermissionByName("MANAGE USERS");
             // If profile is Super Admin or Admin
@@ -71,7 +71,7 @@ class UserController extends Controller
         $data = $request->only(['name', 'email', 'password', 'profile']);
         $user_data = User::where('id', Auth::user()->id)->with('profile_data')->first();
         $is_super_admin = $user_data->profile_data->name == "Super Admin";
-        $data['owner'] = ($is_super_admin) ? null : $user_data->id;
+        $data['owner'] = ($is_super_admin) ? null : Auth::user()->owner ?? Auth::user()->id;
         $data['profile'] = ($is_super_admin) ? env('ID_PROFILE_ADMIN', 2) : $data['profile'];
 
         // If profile is Super Admin or Admin
