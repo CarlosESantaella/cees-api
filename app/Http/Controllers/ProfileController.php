@@ -118,7 +118,7 @@ class ProfileController extends Controller
         $user = Auth::user();
         $user_data = User::where('id', $user->id)->with('profile_data')->first();
         try {
-            return $user_data->profile_data->permissions[$name];
+            return ucfirst($user_data->profile_data->permissions[$name]);
         } catch (\Throwable $th) {
             "None";
         }
