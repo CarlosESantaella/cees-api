@@ -43,6 +43,7 @@ class DatabaseSeeder extends Seeder
                 "MANAGE INVENTORY" => "Own",
                 "MANAGE ORDERS" => "Own",
                 "MANAGE CONFIGURATION" => "Own",
+                "MANAGE RECEPTIONS" => "Own",
             ]
         ]);
 

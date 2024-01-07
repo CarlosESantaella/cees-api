@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReceptionsController;
 use GuzzleHttp\Client;
 
 /*
@@ -42,6 +43,11 @@ Route::middleware('jwt.verify')->group(function () {
     // Clients
     Route::middleware('permission:MANAGE CLIENTS')->group(function () {
         Route::apiResource('clients', ClientController::class);
+    });
+
+    // Receptions
+    Route::middleware('permission:MANAGE RECEPTIONS')->group(function () {
+        Route::apiResource('receptions', ReceptionsController::class);
     });
 
     // Permissions
