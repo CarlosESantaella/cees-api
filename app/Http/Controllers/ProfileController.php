@@ -21,9 +21,11 @@ class ProfileController extends Controller
         "MANAGE INVENTORY" => "None",
         "MANAGE ORDERS" => "None",
         "MANAGE CONFIGURATION" => "None",
-        "MANAGE CLIENTS" => "None"
+        "MANAGE CLIENTS" => "None",
+        "MANAGE CONFIGURATION" => "None",
+        "MANAGE RECEPTIONS" => "None"
     ];
-    
+
     public $restricted_permissions = [
         'MANAGE PROFILES' => "None",
         'MANAGE REQUEST' => "None",
@@ -33,6 +35,7 @@ class ProfileController extends Controller
         "MANAGE ORDERS" => "None",
         "MANAGE CONFIGURATION" => "None",
         "MANAGE CLIENTS" => "None",
+        "MANAGE RECEPTIONS" => "None"
     ];
 
     /**
