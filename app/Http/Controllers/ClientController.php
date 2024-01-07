@@ -27,7 +27,7 @@ class ClientController extends Controller
     public function store(ClientPostRequest $request)
     {
         try {
-            $data = $request->only(['full_name', 'address', 'nit', 'contact', 'cellphone']);
+            $data = $request->only(['full_name', 'address', 'nit', 'contact', 'cellphone', 'identification', 'cell', 'email', 'comments']);
             $data['user_id'] = (Auth::user()->profile != 1) ? Auth::user()->owner ?? Auth::user()->id : null;
             $client = Client::create($data);
             return response()->json($client, 201);
@@ -63,7 +63,7 @@ class ClientController extends Controller
         }else if ($perm == "All") {
             $client = Client::findOrFail($id);
         }
-        $data = $request->only(['full_name', 'address', 'nit', 'contact', 'cellphone']);
+        $data = $request->only(['full_name', 'address', 'nit', 'contact', 'cellphone', 'identification', 'cell', 'email', 'comments']);
         $data['user_id'] = (Auth::user()->profile != 1) ? Auth::user()->owner ?? Auth::user()->id : null;
         try {
             $client->update($data);
