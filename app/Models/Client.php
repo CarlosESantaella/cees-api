@@ -15,7 +15,12 @@ class Client extends Model
         'address',
         'nit',
         'contact',
-        'user_id'
+        'user_id',
+        'identification',
+        'cell',
+        'city',
+        'email',
+        'comments'
     ];
 
 }

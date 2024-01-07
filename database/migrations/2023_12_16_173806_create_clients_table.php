@@ -18,6 +18,11 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->string('nit')->nullable();
             $table->string('contact')->nullable();
+            $table->string('identification')->nullable();
+            $table->string('cell')->nullable();
+            $table->string('city')->nullable();
+            $table->string('email')->nullable();
+            $table->string('comments')->nullable();
             $table->foreignId('user_id')
                     ->nullable()
                     ->constrained()
