@@ -31,6 +31,7 @@ class ClientPostRequest extends FormRequest
             'cellphone' => 'string|min:6|max:120',
             'identification' => 'string|min:6|max:120',
             'cell' => 'string|min:6|max:120',
+            'city' => 'string|min:3|max:120',
             'email' => 'string|min:6|max:120',
             'comments' => 'string|min:6|max:120'
         ];
@@ -68,6 +69,10 @@ class ClientPostRequest extends FormRequest
             'cell.string' => 'El campo celular debe ser una cadena de caracteres.',
             'cell.min' => 'El campo celular debe tener al menos :min caracteres.',
             'cell.max' => 'El campo celular no debe ser mayor a :max caracteres.',
+            'city.required' => 'El campo ciudad es obligatorio.',
+            'city.string' => 'El campo ciudad debe ser una cadena de caracteres.',
+            'city.min' => 'El campo ciudad debe tener al menos :min caracteres.',
+            'city.max' => 'El campo ciudad no debe ser mayor a :max caracteres.',
             'email.required' => 'El campo email es obligatorio.',
             'email.string' => 'El campo email debe ser una cadena de caracteres.',
             'email.min' => 'El campo email debe tener al menos :min caracteres.',
