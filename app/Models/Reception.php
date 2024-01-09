@@ -17,6 +17,8 @@ class Reception extends Model
         'capability',
         'client_id',
         'user_id',
+        'comments',
+        'state',
         'photos'
     ];
 

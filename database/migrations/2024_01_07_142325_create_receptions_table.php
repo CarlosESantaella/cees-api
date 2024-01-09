@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('model')->nullable();
             $table->string('serie')->nullable();
             $table->string('capability')->nullable();
+            $table->string('state')->nullable();
+            $table->string('comments')->nullable();
             $table->string('photos')->nullable();
             $table->foreignId('client_id')
                     ->nullable()

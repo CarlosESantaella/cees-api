@@ -41,7 +41,7 @@ class ReceptionsController extends Controller
     public function store(ReceptionsPostRequest $request)
     {
         try {
-            $data = $request->only(['equipment_type', 'brand', 'model', 'serie', 'capability', 'client_id']);
+            $data = $request->only(['equipment_type', 'brand', 'model', 'serie', 'capability', 'client_id', 'comments']);
             $data['user_id'] = (Auth::user()->profile != 1) ? Auth::user()->owner ?? Auth::user()->id : null;
             Client::where('id', $data['client_id'])->where('user_id', $data['user_id'])->firstOrFail();
 
@@ -56,6 +56,7 @@ class ReceptionsController extends Controller
                 }
             }
             $data['photos'] = implode(', ', $data['photos']);
+            $data['state'] = 'Recibido';
 
             $reception = Reception::create($data);
             return response()->json($reception, 201);
@@ -85,7 +86,7 @@ class ReceptionsController extends Controller
         $perm = ProfileController::getPermissionByName("MANAGE RECEPTIONS");
         $user_auth = Auth::user();
         $reception = $this->get_reception_by_id_and_perms($id, $perm, $user_auth);
-        $data = $request->only(['equipment_type', 'brand', 'model', 'serie', 'capability', 'client_id']);
+        $data = $request->only(['equipment_type', 'brand', 'model', 'serie', 'capability', 'client_id', 'comments', 'state']);
         $data['user_id'] = (Auth::user()->profile != 1) ? Auth::user()->owner ?? Auth::user()->id : null;
         Client::where('id', $data['client_id'])->where('user_id', $data['user_id'])->firstOrFail();
         try {

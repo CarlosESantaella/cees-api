@@ -24,12 +24,14 @@ class ReceptionsPostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'equipment_type' => 'string|min:6|max:120',
-            'brand' => 'string|min:2|max:120',
-            'model' => 'string|min:2|max:120',
-            'serie' => 'string|min:6|max:120',
-            'capability' => 'string|min:6|max:120',
-            'client_id' => 'exists:clients,id'
+            'equipment_type' => 'string|min:6|max:120|required',
+            'brand' => 'string|min:2|max:120|required',
+            'model' => 'string|min:2|max:120|required',
+            'serie' => 'string|min:6|max:120|required',
+            'capability' => 'string|min:6|max:120|required',
+            'comments' => 'string|min:3|max:120',
+            'state' => 'string|min:3|max:120',
+            'client_id' => 'exists:clients,id|required'
         ];
     }
 
@@ -61,6 +63,9 @@ class ReceptionsPostRequest extends FormRequest
             'capability.string' => 'El campo capacidad debe ser una cadena de caracteres.',
             'capability.min' => 'El campo capacidad debe tener al menos :min caracteres.',
             'capability.max' => 'El campo capacidad no debe ser mayor a :max caracteres.',
+            'comments.string' => 'El campo comentario debe ser una cadena de caracteres.',
+            'comments.min' => 'El campo comentario debe tener al menos :min caracteres.',
+            'comments.max' => 'El campo comentario no debe ser mayor a :max caracteres.',
             'client_id.integer' => 'El campo cliente debe ser un número entero.',
             'client_id.exists' => 'El cliente no existe.',
         ];
