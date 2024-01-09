@@ -7,7 +7,7 @@ use App\Models\Client;
 use App\Models\Reception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Storage;
 class ReceptionsController extends Controller
 {
     /**
@@ -44,6 +44,17 @@ class ReceptionsController extends Controller
             $data = $request->only(['equipment_type', 'brand', 'model', 'serie', 'capability', 'client_id']);
             $data['user_id'] = (Auth::user()->profile != 1) ? Auth::user()->owner ?? Auth::user()->id : null;
             Client::where('id', $data['client_id'])->where('user_id', $data['user_id'])->firstOrFail();
+
+            // Files
+            $data['photos'] = [];
+            $photos = $request->file('photos');
+            foreach ($photos as $index => $photo) {
+                if ($photo->isValid()) {
+                    $path_file = Storage::putFile('receptions/photos', $photo);
+                    $data['photos'][] = $path_file;
+                }
+            }
+
             $reception = Reception::create($data);
             return response()->json($reception, 201);
         } catch (\Throwable $th) {
