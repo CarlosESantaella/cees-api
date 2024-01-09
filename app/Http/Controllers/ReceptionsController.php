@@ -50,7 +50,7 @@ class ReceptionsController extends Controller
             $photos = $request->file('photos');
             foreach ($photos as $index => $photo) {
                 if ($photo->isValid()) {
-                    $path_file = Storage::putFile('receptions/photos', $photo);
+                    $path_file = Storage::putFile('public/receptions/photos', $photo);
                     $data['photos'][] = $path_file;
                 }
             }
