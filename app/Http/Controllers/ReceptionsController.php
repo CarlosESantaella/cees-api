@@ -55,7 +55,7 @@ class ReceptionsController extends Controller
                     $data['photos'][] = $path_file;
                 }
             }
-            $data['photos'] = json_encode($data['photos']);
+            $data['photos'] = implode(', ', $data['photos']);
 
             $reception = Reception::create($data);
             return response()->json($reception, 201);
