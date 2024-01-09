@@ -51,6 +51,7 @@ class ReceptionsController extends Controller
             foreach ($photos as $index => $photo) {
                 if ($photo->isValid()) {
                     $path_file = Storage::putFile('public/receptions/photos', $photo);
+                    $path_file = str_replace('public/', env('SITE_URL') . '/public/storage/', $path_file);
                     $data['photos'][] = $path_file;
                 }
             }
