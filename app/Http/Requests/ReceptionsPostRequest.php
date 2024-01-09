@@ -29,7 +29,7 @@ class ReceptionsPostRequest extends FormRequest
             'model' => 'string|min:2|max:120',
             'serie' => 'string|min:6|max:120',
             'capability' => 'string|min:6|max:120',
-            'client_id' => 'integer|exists:clients,id'
+            'client_id' => 'exists:clients,id'
         ];
     }
 
