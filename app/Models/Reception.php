@@ -16,7 +16,8 @@ class Reception extends Model
         'serie',
         'capability',
         'client_id',
-        'user_id'
+        'user_id',
+        'photos'
     ];
 
 }
