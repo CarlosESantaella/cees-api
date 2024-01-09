@@ -8,6 +8,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReceptionsController;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,14 @@ use GuzzleHttp\Client;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+// Public
+Route::get('artisan-storage', function () {
+    Artisan::call('storage:link');
+    $output = Artisan::output();
+    echo "Comando ejecutado:<br><pre>$output</pre>";
+    Artisan::call('config:clear');
+});
 
 // Routers public
 Route::post('auth', [AuthController::class, 'login']);
