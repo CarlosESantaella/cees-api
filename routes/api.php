@@ -21,14 +21,6 @@ use Illuminate\Support\Facades\Artisan;
 |
 */
 
-// Public
-Route::get('artisan-storage', function () {
-    Artisan::call('storage:link');
-    $output = Artisan::output();
-    echo "Comando ejecutado:<br><pre>$output</pre>";
-    Artisan::call('config:clear');
-});
-
 // Routers public
 Route::post('auth', [AuthController::class, 'login']);
 
