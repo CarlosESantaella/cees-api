@@ -81,14 +81,57 @@ class ReceptionsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ReceptionsPostRequest $request, string $id)
     {
         $perm = ProfileController::getPermissionByName("MANAGE RECEPTIONS");
         $user_auth = Auth::user();
         $reception = $this->get_reception_by_id_and_perms($id, $perm, $user_auth);
-        $data = $request->only(['equipment_type', 'brand', 'model', 'serie', 'capability', 'client_id', 'comments', 'state']);
+
+        $data = $request->only(['equipment_type', 'brand', 'model', 'serie', 'capability', 'client_id', 'comments', 'state', 'photos']);
         $data['user_id'] = (Auth::user()->profile != 1) ? Auth::user()->owner ?? Auth::user()->id : null;
-        Client::where('id', $data['client_id'])->where('user_id', $data['user_id'])->firstOrFail();
+
+        // Input Photos
+        $photos = $request->file('photos');
+
+        return response()->json($photos, 200);
+
+        $data['photos'] = [];
+
+        // Old photos
+        $old_photos = array_filter($photos, function ($photo) {
+            if (gettype($photo) == 'string') {
+                return $photo;
+            }
+        });
+
+        // New photos
+        $new_photos = array_filter($photos, function ($photo) {
+            if ($photo->isValid()) {
+                return $photo;
+            }
+        });
+
+        // DB Photos
+        $db_photos = explode(', ', $reception['photos']);
+
+        // Verify which photos was deleted
+        foreach ($db_photos as $index => $db_photo) {
+            if (!in_array($db_photo, $old_photos)) {
+                Storage::delete(str_replace(env('SITE_URL') . '/public/storage/', 'public/', $db_photo));
+            }else {
+                $data['photos'][] = $db_photo;
+            }
+        }
+
+        // Add new photos
+        foreach ($new_photos as $index => $photo) {
+            if ($photo->isValid()) {
+                $path_file = Storage::putFile('public/receptions/photos', $photo);
+                $path_file = str_replace('public/', env('SITE_URL') . '/public/storage/', $path_file);
+                $data['photos'][] = $path_file;
+            }
+        }
+
         try {
             $reception->update($data);
             return response()->json(null, 204);
