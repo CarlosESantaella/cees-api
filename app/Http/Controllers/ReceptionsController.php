@@ -81,42 +81,37 @@ class ReceptionsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ReceptionsPostRequest $request, string $id)
+    public function update(Request $request, string $id)
     {
         $perm = ProfileController::getPermissionByName("MANAGE RECEPTIONS");
         $user_auth = Auth::user();
         $reception = $this->get_reception_by_id_and_perms($id, $perm, $user_auth);
 
-        $data = $request->only(['equipment_type', 'brand', 'model', 'serie', 'capability', 'client_id', 'comments', 'state', 'photos']);
+        $data = $request->only(['equipment_type', 'brand', 'model', 'serie', 'capability', 'client_id', 'comments', 'state']);
+
         $data['user_id'] = (Auth::user()->profile != 1) ? Auth::user()->owner ?? Auth::user()->id : null;
 
         // Input Photos
-        $photos = $request->file('photos');
-
-        return response()->json($photos, 200);
+        $photos_string = [];
+        $photos_file = [];
+        for ($i=0; $i <= 20; $i++) {
+            if (isset($request['photos_'.$i])) {
+                if (gettype($request['photos_'.$i]) == 'string') {
+                    $photos_string[] = $request['photos_'.$i];
+                }else {
+                    $photos_file[] = $request->file('photos_'.$i);
+                }
+            }
+        }
 
         $data['photos'] = [];
-
-        // Old photos
-        $old_photos = array_filter($photos, function ($photo) {
-            if (gettype($photo) == 'string') {
-                return $photo;
-            }
-        });
-
-        // New photos
-        $new_photos = array_filter($photos, function ($photo) {
-            if ($photo->isValid()) {
-                return $photo;
-            }
-        });
 
         // DB Photos
         $db_photos = explode(', ', $reception['photos']);
 
         // Verify which photos was deleted
         foreach ($db_photos as $index => $db_photo) {
-            if (!in_array($db_photo, $old_photos)) {
+            if (!in_array($db_photo, $photos_string)) {
                 Storage::delete(str_replace(env('SITE_URL') . '/public/storage/', 'public/', $db_photo));
             }else {
                 $data['photos'][] = $db_photo;
@@ -124,7 +119,7 @@ class ReceptionsController extends Controller
         }
 
         // Add new photos
-        foreach ($new_photos as $index => $photo) {
+        foreach ($photos_file as $index => $photo) {
             if ($photo->isValid()) {
                 $path_file = Storage::putFile('public/receptions/photos', $photo);
                 $path_file = str_replace('public/', env('SITE_URL') . '/public/storage/', $path_file);
@@ -133,10 +128,12 @@ class ReceptionsController extends Controller
         }
 
         try {
+            $data['photos'] = implode(', ', $data['photos']);
             $reception->update($data);
-            return response()->json(null, 204);
+            $reception = $this->get_reception_by_id_and_perms($id, $perm, $user_auth);
+            return response()->json($reception, 200);
         } catch (\Throwable $th) {
-            return response()->json(["errors" => ['database' => 'Error en la base de datos']], 500);
+            return response()->json(["errors" => ['database' => $th]], 500);
         }
     }
 

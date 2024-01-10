@@ -48,6 +48,7 @@ Route::middleware('jwt.verify')->group(function () {
 
     // Receptions
     Route::middleware('permission:MANAGE RECEPTIONS')->group(function () {
+        Route::post('receptions/update/{id}', [ReceptionsController::class, 'update']);
         Route::apiResource('receptions', ReceptionsController::class);
     });
 

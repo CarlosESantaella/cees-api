@@ -24,11 +24,11 @@ class ReceptionsPostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'equipment_type' => 'string|min:6|max:120|required',
+            'equipment_type' => 'string|min:3|max:120|required',
             'brand' => 'string|min:2|max:120|required',
             'model' => 'string|min:2|max:120|required',
             'serie' => 'string|min:6|max:120|required',
-            'capability' => 'string|min:6|max:120|required',
+            'capability' => 'string|min:3|max:120|required',
             'comments' => 'string|min:3|max:120',
             'state' => 'string|min:3|max:120',
             'client_id' => 'exists:clients,id|required'
