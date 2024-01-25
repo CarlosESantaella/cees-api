@@ -82,6 +82,21 @@ class ReceptionsController extends Controller
     }
 
     /**
+     * Get by serial.
+     */
+    public function getBySerial(string $serial)
+    {
+        $perm = ProfileController::getPermissionByName("MANAGE RECEPTIONS");
+        $user_auth = Auth::user();
+        $reception = false;
+        if ($perm == "All") $reception = Reception::where('serie', $serial)->first();
+        if ($perm == "Own") $reception = Reception::where('serie', $serial)
+                                            ->where('user_id', $user_auth->owner ?? $user_auth->id)->first();
+        $reception['exists'] = $reception ? true: false;
+        return response()->json($reception, 200);
+    }
+
+    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
