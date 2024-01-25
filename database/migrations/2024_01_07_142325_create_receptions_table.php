@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('photos')->nullable();
             $table->string('location')->nullable();
             $table->string('specific_location')->nullable();
+            $table->string('type_of_job')->nullable();
+            $table->string('equipment_owner')->nullable();
             $table->foreignId('client_id')
                     ->nullable()
                     ->constrained()

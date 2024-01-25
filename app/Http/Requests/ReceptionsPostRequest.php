@@ -31,7 +31,11 @@ class ReceptionsPostRequest extends FormRequest
             'capability' => 'string|min:3|max:120|required',
             'comments' => 'string|min:3|max:120',
             'state' => 'string|min:3|max:120',
-            'client_id' => 'exists:clients,id|required'
+            'client_id' => 'exists:clients,id|required',
+            'location' => 'string|min:3|max:120',
+            'specific_location' => 'string|min:3|max:120',
+            'type_of_job' => 'string|min:3|max:120|in:Garantia,Nuevo',
+            'equipment_owner' => 'string|min:3|max:120',
         ];
     }
 
@@ -68,6 +72,19 @@ class ReceptionsPostRequest extends FormRequest
             'comments.max' => 'El campo comentario no debe ser mayor a :max caracteres.',
             'client_id.integer' => 'El campo cliente debe ser un número entero.',
             'client_id.exists' => 'El cliente no existe.',
+            'location.string' => 'El campo ubicación debe ser una cadena de caracteres.',
+            'location.min' => 'El campo ubicación debe tener al menos :min caracteres.',
+            'location.max' => 'El campo ubicación no debe ser mayor a :max caracteres.',
+            'specific_location.string' => 'El campo ubicación específica debe ser una cadena de caracteres.',
+            'specific_location.min' => 'El campo ubicación específica debe tener al menos :min caracteres.',
+            'specific_location.max' => 'El campo ubicación específica no debe ser mayor a :max caracteres.',
+            'type_of_job.string' => 'El campo tipo de trabajo debe ser una cadena de caracteres.',
+            'type_of_job.min' => 'El campo tipo de trabajo debe tener al menos :min caracteres.',
+            'type_of_job.max' => 'El campo tipo de trabajo no debe ser mayor a :max caracteres.',
+            'type_of_job.in' => 'El campo tipo de trabajo debe ser uno de los siguientes valores: :values.',
+            'equipment_owner.string' => 'El campo propietario del equipo debe ser una cadena de caracteres.',
+            'equipment_owner.min' => 'El campo propietario del equipo debe tener al menos :min caracteres.',
+            'equipment_owner.max' => 'El campo propietario del equipo no debe ser mayor a :max caracteres.',
         ];
     }
 }

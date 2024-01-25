@@ -45,7 +45,7 @@ class ReceptionsController extends Controller
         try {
             $data = $request->only([
                 'equipment_type', 'brand', 'model', 'serie', 'capability', 'client_id',
-                'comments', 'location', 'specific_location'
+                'comments', 'location', 'specific_location', 'type_of_job', 'equipment_owner'
             ]);
             $data['user_id'] = (Auth::user()->profile != 1) ? Auth::user()->owner ?? Auth::user()->id : null;
             Client::where('id', $data['client_id'])->where('user_id', $data['user_id'])->firstOrFail();
@@ -127,7 +127,7 @@ class ReceptionsController extends Controller
 
         $data = $request->only([
             'equipment_type', 'brand', 'model', 'serie', 'capability', 'client_id',
-            'comments', 'location', 'specific_location', 'state'
+            'comments', 'location', 'specific_location', 'state', 'type_of_job', 'equipment_owner'
         ]);
 
         $data['user_id'] = (Auth::user()->profile != 1) ? Auth::user()->owner ?? Auth::user()->id : null;
