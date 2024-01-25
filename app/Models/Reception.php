@@ -10,6 +10,7 @@ class Reception extends Model
     use HasFactory;
 
     protected $fillable = [
+        'custom_id',
         'equipment_type',
         'brand',
         'model',

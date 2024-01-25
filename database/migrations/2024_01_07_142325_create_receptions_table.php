@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('receptions', function (Blueprint $table) {
             $table->id();
+            $table->integer('custom_id')->nullable();
             $table->string('equipment_type')->nullable();
             $table->string('brand')->nullable();
             $table->string('model')->nullable();

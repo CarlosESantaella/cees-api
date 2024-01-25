@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ReceptionsPostRequest;
 use App\Models\Client;
+use App\Models\Configuration;
 use App\Models\Reception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -62,6 +63,12 @@ class ReceptionsController extends Controller
             }
             $data['photos'] = implode(', ', $data['photos']);
             $data['state'] = 'Recibido';
+
+            // Custom ID
+            $user_auth = Auth::user();
+            $configuration = Configuration::where('user_id', $user_auth->owner ?? $user_auth->id)->first();
+            $data['custom_id'] = $configuration['index_reception_reference'];
+            $configuration->update(['index_reception_reference' =>$configuration['index_reception_reference']  + 1]);
 
             $reception = Reception::create($data);
             return response()->json($reception, 201);
