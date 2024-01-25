@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
                 "MANAGE DIAGNOSES AND QUOTES" => "None",
                 "MANAGE INVENTORY" => "None",
                 "MANAGE ORDERS" => "None",
-                "MANAGE CONFIGURATION" => "None",
+                "MANAGE CONFIGURATIONS" => "None",
             ]
         ]);
 
@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
                 "MANAGE DIAGNOSES AND QUOTES" => "Own",
                 "MANAGE INVENTORY" => "Own",
                 "MANAGE ORDERS" => "Own",
-                "MANAGE CONFIGURATION" => "Own",
+                "MANAGE CONFIGURATIONS" => "Own",
                 "MANAGE RECEPTIONS" => "Own",
             ]
         ]);

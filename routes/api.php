@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ConfigurationsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReceptionsController;
 use GuzzleHttp\Client;
@@ -39,6 +40,12 @@ Route::middleware('jwt.verify')->group(function () {
     Route::get('profiles', [ProfileController::class, 'index']);
     Route::middleware('permission:MANAGE PROFILES')->group(function () {
         Route::apiResource('profiles', ProfileController::class)->except(['index']);
+    });
+
+    // Configurations
+    Route::middleware('permission:MANAGE CONFIGURATIONS')->group(function () {
+        Route::get('configurations', [ConfigurationsController::class, 'index']);
+        Route::patch('configurations', [ConfigurationsController::class, 'update']);
     });
 
     // Clients

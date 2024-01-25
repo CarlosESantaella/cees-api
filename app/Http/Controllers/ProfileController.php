@@ -20,9 +20,8 @@ class ProfileController extends Controller
         "MANAGE DIAGNOSES AND QUOTES" => "None",
         "MANAGE INVENTORY" => "None",
         "MANAGE ORDERS" => "None",
-        "MANAGE CONFIGURATION" => "None",
+        "MANAGE CONFIGURATIONS" => "None",
         "MANAGE CLIENTS" => "None",
-        "MANAGE CONFIGURATION" => "None",
         "MANAGE RECEPTIONS" => "None"
     ];
 
@@ -33,7 +32,7 @@ class ProfileController extends Controller
         "MANAGE DIAGNOSES AND QUOTES" => "None",
         "MANAGE INVENTORY" => "None",
         "MANAGE ORDERS" => "None",
-        "MANAGE CONFIGURATION" => "None",
+        "MANAGE CONFIGURATIONS" => "None",
         "MANAGE CLIENTS" => "None",
         "MANAGE RECEPTIONS" => "None"
     ];
