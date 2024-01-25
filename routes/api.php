@@ -49,7 +49,7 @@ Route::middleware('jwt.verify')->group(function () {
     // Receptions
     Route::middleware('permission:MANAGE RECEPTIONS')->group(function () {
         Route::post('receptions/update/{id}', [ReceptionsController::class, 'update']);
-        Route::get('receptions/serial/{serial}', [ReceptionsController::class, 'getBySerial']);
+        Route::get('receptions/find', [ReceptionsController::class, 'find']);
         Route::apiResource('receptions', ReceptionsController::class);
     });
 

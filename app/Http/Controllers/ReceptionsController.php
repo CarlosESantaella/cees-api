@@ -8,6 +8,8 @@ use App\Models\Reception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Builder;
+
 class ReceptionsController extends Controller
 {
     /**
@@ -82,16 +84,34 @@ class ReceptionsController extends Controller
     }
 
     /**
-     * Get by serial.
+     * Get by serial or location.
      */
-    public function getBySerial(string $serial)
+    public function find(Request $request)
     {
+        $serial = $request->serial;
+        $location = $request->location;
+        $specific_location = $request->specific_location;
+
         $perm = ProfileController::getPermissionByName("MANAGE RECEPTIONS");
         $user_auth = Auth::user();
         $reception = false;
-        if ($perm == "All") $reception = Reception::where('serie', $serial)->first();
-        if ($perm == "Own") $reception = Reception::where('serie', $serial)
-                                            ->where('user_id', $user_auth->owner ?? $user_auth->id)->first();
+        if ($perm == "All") {
+            $reception = Reception::where('serie', $serial)
+                        ->orWhere(function (Builder $query) use ($location, $specific_location) {
+                            $query->where('location', $location)
+                                  ->where('specific_location', $specific_location);
+                        })
+                        ->first();
+        }
+        if ($perm == "Own") {
+            $reception = Reception::where('serie', $serial)
+                                            ->where('user_id', $user_auth->owner ?? $user_auth->id)
+                                            ->orWhere(function (Builder $query) use ($location, $specific_location) {
+                                                $query->where('location', $location)
+                                                      ->where('specific_location', $specific_location);
+                                            })
+                                            ->first();
+        }
         $reception['exists'] = $reception ? true: false;
         return response()->json($reception, 200);
     }
