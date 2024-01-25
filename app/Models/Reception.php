@@ -19,7 +19,9 @@ class Reception extends Model
         'user_id',
         'comments',
         'state',
-        'photos'
+        'photos',
+        'location',
+        'specific_location'
     ];
 
 }

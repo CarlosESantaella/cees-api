@@ -41,7 +41,10 @@ class ReceptionsController extends Controller
     public function store(ReceptionsPostRequest $request)
     {
         try {
-            $data = $request->only(['equipment_type', 'brand', 'model', 'serie', 'capability', 'client_id', 'comments']);
+            $data = $request->only([
+                'equipment_type', 'brand', 'model', 'serie', 'capability', 'client_id',
+                'comments', 'location', 'specific_location'
+            ]);
             $data['user_id'] = (Auth::user()->profile != 1) ? Auth::user()->owner ?? Auth::user()->id : null;
             Client::where('id', $data['client_id'])->where('user_id', $data['user_id'])->firstOrFail();
 
@@ -87,7 +90,10 @@ class ReceptionsController extends Controller
         $user_auth = Auth::user();
         $reception = $this->get_reception_by_id_and_perms($id, $perm, $user_auth);
 
-        $data = $request->only(['equipment_type', 'brand', 'model', 'serie', 'capability', 'client_id', 'comments', 'state']);
+        $data = $request->only([
+            'equipment_type', 'brand', 'model', 'serie', 'capability', 'client_id',
+            'comments', 'location', 'specific_location', 'state'
+        ]);
 
         $data['user_id'] = (Auth::user()->profile != 1) ? Auth::user()->owner ?? Auth::user()->id : null;
 
