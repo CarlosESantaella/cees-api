@@ -36,6 +36,7 @@ class ReceptionsPostRequest extends FormRequest
             'specific_location' => 'string|min:3|max:120',
             'type_of_job' => 'string|min:3|max:120|in:Garantia,Nuevo',
             'equipment_owner' => 'string|min:3|max:120',
+            'customer_inventory' => 'string',
         ];
     }
 
@@ -85,6 +86,7 @@ class ReceptionsPostRequest extends FormRequest
             'equipment_owner.string' => 'El campo propietario del equipo debe ser una cadena de caracteres.',
             'equipment_owner.min' => 'El campo propietario del equipo debe tener al menos :min caracteres.',
             'equipment_owner.max' => 'El campo propietario del equipo no debe ser mayor a :max caracteres.',
+            'customer_inventory.string' => 'El campo inventario del cliente debe ser una cadena de caracteres.',
         ];
     }
 }

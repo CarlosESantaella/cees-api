@@ -22,7 +22,10 @@ class Reception extends Model
         'state',
         'photos',
         'location',
-        'specific_location'
+        'specific_location',
+        'type_of_job',
+        'equipment_owner',
+        'customer_inventory'
     ];
 
 }

@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('specific_location')->nullable();
             $table->string('type_of_job')->nullable();
             $table->string('equipment_owner')->nullable();
+            $table->string('customer_inventory')->nullable();
             $table->foreignId('client_id')
                     ->nullable()
                     ->constrained()
