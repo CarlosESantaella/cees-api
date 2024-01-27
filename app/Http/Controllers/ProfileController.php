@@ -118,8 +118,8 @@ class ProfileController extends Controller
     public static function getPermissionByName(string $name)
     {
         $user = Auth::user();
-        $user_data = User::where('id', $user->id)->with('profile_data')->first();
         try {
+            $user_data = User::where('id', $user->id)->with('profile_data')->first();
             return ucfirst(strtolower($user_data->profile_data->permissions[$name]));
         } catch (\Throwable $th) {
             "None";
