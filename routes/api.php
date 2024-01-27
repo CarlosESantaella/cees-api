@@ -45,7 +45,7 @@ Route::middleware('jwt.verify')->group(function () {
     // Configurations
     Route::middleware('permission:MANAGE CONFIGURATIONS')->group(function () {
         Route::get('configurations', [ConfigurationsController::class, 'index']);
-        Route::patch('configurations', [ConfigurationsController::class, 'update']);
+        Route::put('configurations', [ConfigurationsController::class, 'update']);
     });
 
     // Clients
