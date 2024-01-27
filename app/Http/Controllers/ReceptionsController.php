@@ -136,7 +136,7 @@ class ReceptionsController extends Controller
         $data = $request->only([
             'equipment_type', 'brand', 'model', 'serie', 'capability', 'client_id',
             'comments', 'location', 'specific_location', 'state', 'type_of_job', 'equipment_owner',
-            'customer_inventory'
+            'customer_inventory', 'created_at'
         ]);
 
         $data['user_id'] = (Auth::user()->profile != 1) ? Auth::user()->owner ?? Auth::user()->id : null;
