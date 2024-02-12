@@ -27,7 +27,7 @@ class UserController extends Controller
     public function store(UserStorePostRequest $request)
     {
         try {
-            $data = $request->only(['name', 'email', 'password', 'profile']);
+            $data = $request->only(['name', 'username', 'email', 'password', 'profile']);
             $user_data = User::where('id', Auth::user()->id)->with('profile_data')->first();
             $is_super_admin = $user_data->profile_data->name == "Super Admin";
             $data['owner'] = ($is_super_admin) ? null : Auth::user()->owner ?? Auth::user()->id;
@@ -40,7 +40,10 @@ class UserController extends Controller
             $user = User::create($data);
             return response()->json($user, 201);
         } catch (\Throwable $th) {
-            if (Str::contains($th->getMessage(), 'Duplicate entry')) {
+            if (Str::contains($th->getMessage(), 'Duplicate entry') && Str::contains($th->getMessage(), 'users_username_unique')) {
+                return response()->json(["errors" => ['email' => 'Usuario duplicado']], 409);
+            }
+            if (Str::contains($th->getMessage(), 'Duplicate entry') && Str::contains($th->getMessage(), 'users_email_unique')) {
                 return response()->json(["errors" => ['email' => 'Correo electrónico duplicado']], 409);
             }
             return response()->json(["errors" => ['database' => 'Error en la base de datos']], 500);
@@ -68,7 +71,7 @@ class UserController extends Controller
         }else if ($perm == "All") {
             $user = User::findOrFail($id);
         }
-        $data = $request->only(['name', 'email', 'password', 'profile']);
+        $data = $request->only(['name', 'username', 'email', 'password', 'profile']);
         $user_data = User::where('id', Auth::user()->id)->with('profile_data')->first();
         $is_super_admin = $user_data->profile_data->name == "Super Admin";
         $data['owner'] = ($is_super_admin) ? null : Auth::user()->owner ?? Auth::user()->id;
