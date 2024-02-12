@@ -23,7 +23,8 @@ class ProfileController extends Controller
         "MANAGE CONFIGURATIONS" => "None",
         "MANAGE CLIENTS" => "None",
         "MANAGE RECEPTIONS" => "None",
-        "MANAGE RATES" => "None"
+        "MANAGE RATES" => "None",
+        "MANAGE ITEMS" => "None",
     ];
 
     public $restricted_permissions = [
@@ -36,7 +37,8 @@ class ProfileController extends Controller
         "MANAGE CONFIGURATIONS" => "None",
         "MANAGE CLIENTS" => "None",
         "MANAGE RECEPTIONS" => "None",
-        "MANAGE RATES" => "None"
+        "MANAGE RATES" => "None",
+        "MANAGE ITEMS" => "None",
     ];
 
     /**

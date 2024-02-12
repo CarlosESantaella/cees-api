@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
                 "MANAGE INVENTORY" => "None",
                 "MANAGE ORDERS" => "None",
                 "MANAGE CONFIGURATIONS" => "None",
+                "MANAGE ITEMS" => "None",
             ]
         ]);
 
@@ -44,7 +45,8 @@ class DatabaseSeeder extends Seeder
                 "MANAGE ORDERS" => "Own",
                 "MANAGE CONFIGURATIONS" => "Own",
                 "MANAGE RECEPTIONS" => "Own",
-                "MANAGE RATES" => "Own"
+                "MANAGE RATES" => "Own",
+                "MANAGE ITEMS" => "Own",
             ]
         ]);
 

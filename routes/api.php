@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ConfigurationsController;
+use App\Http\Controllers\ItemsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RatesController;
 use App\Http\Controllers\ReceptionsController;
@@ -67,6 +68,11 @@ Route::middleware('jwt.verify')->group(function () {
     // Rates
     Route::middleware('permission:MANAGE RATES')->group(function () {
         Route::apiResource('rates', RatesController::class);
+    });
+
+    // Items
+    Route::middleware('permission:MANAGE ITEMS')->group(function () {
+        Route::apiResource('items', ItemsController::class);
     });
 
 });
