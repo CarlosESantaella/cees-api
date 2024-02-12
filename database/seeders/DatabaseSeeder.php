@@ -44,6 +44,7 @@ class DatabaseSeeder extends Seeder
                 "MANAGE ORDERS" => "Own",
                 "MANAGE CONFIGURATIONS" => "Own",
                 "MANAGE RECEPTIONS" => "Own",
+                "MANAGE RATES" => "Own"
             ]
         ]);
 
