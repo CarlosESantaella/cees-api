@@ -24,9 +24,9 @@ class UserStorePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|min:6|max:255',
-            'email' => 'required|email|min:8|max:255',
-            'password' => 'required|string|min:6|max:255',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'password' => 'required|string|max:255',
             'profile' => 'integer|max:255'
         ];
     }
@@ -41,15 +41,12 @@ class UserStorePostRequest extends FormRequest
         return [
             'name.required' => 'El campo nombre es obligatorio.',
             'name.string' => 'El campo nombre debe ser una cadena de caracteres.',
-            'name.min' => 'El campo nombre debe tener al menos :min caracteres.',
             'name.max' => 'El campo nombre no debe ser mayor a :max caracteres.',
             'email.required' => 'El campo email es obligatorio.',
             'email.email' => 'El campo email debe ser una dirección de correo válida.',
-            'email.min' => 'El campo email debe tener al menos :min caracteres.',
             'email.max' => 'El campo email no debe ser mayor a :max caracteres.',
             'password.required' => 'El campo password es obligatorio.',
             'password.string' => 'El campo password debe ser una cadena de caracteres.',
-            'password.min' => 'El campo password debe tener al menos :min caracteres.',
             'password.max' => 'El campo password no debe ser mayor a :max caracteres.',
             'profile.integer' => 'El campo profile debe ser un número entero.',
             'profile.max' => 'El campo profile no debe ser mayor a :max caracteres.',

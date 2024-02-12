@@ -24,7 +24,7 @@ class ProfileStorePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'string|min:3|max:60|required',
+            'name' => 'string|max:60|required',
             'permissions' => 'json|required'
         ];
     }
@@ -39,7 +39,6 @@ class ProfileStorePostRequest extends FormRequest
         return [
             'name.required' => 'El campo nombre es obligatorio.',
             'name.string' => 'El campo nombre debe ser una cadena de caracteres.',
-            'name.min' => 'El campo nombre debe tener al menos :min caracteres.',
             'name.max' => 'El campo nombre no debe ser mayor a :max caracteres.',
             'permissions.required' => 'El campo permissions es obligatorio.',
             'permissions.json' => 'El campo permissions debe ser un JSON.',
