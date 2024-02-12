@@ -50,6 +50,7 @@ class DatabaseSeeder extends Seeder
         // CREATE USER ADMIN
         $user = \App\Models\User::factory()->create([
             'name' => 'John Doe',
+            'username' => 'superadmin',
             'email' => 'john.doe@gmail.com',
             'password' => '123123',
             'profile' => 1

@@ -11,13 +11,20 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('username', 'password');
 
+        $user = User::where('username', $request->username)->with('profile_data')->first();
+        if (!$user) {
+            return response()->json(['error' => 'Usuario o contraseña inválido'], 401);
+        }
+        $credentials = [
+            "email" => $user->email,
+            "password" => $request->password
+        ];
         if (!Auth::attempt($credentials)) {
-            return response()->json(['error' => 'Email o contraseña inválido'], 401);
+            return response()->json(['error' => 'Usuario o contraseña inválido'], 401);
         }
 
-        $user = User::where('email', $request->email)->with('profile_data')->first();
         return response()->json([
             'access_token' => $this->createToken($user),
             'user' => $user
