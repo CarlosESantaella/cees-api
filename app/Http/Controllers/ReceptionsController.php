@@ -104,6 +104,7 @@ class ReceptionsController extends Controller
         $serial = $request->serial;
         $location = $request->location;
         $specific_location = $request->specific_location;
+        $customer_inventory = $request->customer_inventory;
 
         $perm = ProfileController::getPermissionByName("MANAGE RECEPTIONS");
         $user_auth = Auth::user();
@@ -123,6 +124,7 @@ class ReceptionsController extends Controller
                                                 $query->where('location', $location)
                                                       ->where('specific_location', $specific_location);
                                             })
+                                            ->orWhere('customer_inventory', $customer_inventory)
                                             ->first();
         }
         $reception['exists'] = $reception ? true: false;
