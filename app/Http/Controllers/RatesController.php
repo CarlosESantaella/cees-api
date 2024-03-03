@@ -46,9 +46,29 @@ class RatesController extends Controller
         try {
             $data = $request->only(['clients']);
             $data['user_id'] = (Auth::user()->profile != 1) ? Auth::user()->owner ?? Auth::user()->id : null;
+
+            $clients_to_search = json_decode($data['clients'], true);
+            $user_auth = Auth::user();
+
+            $rate = Rates::where('user_id', $user_auth->owner ?? $user_auth->id)->where(function ($query) use ($clients_to_search) {
+                foreach ($clients_to_search as $client) {
+                    $query->orWhereRaw("JSON_CONTAINS(clients, ?)", [strval($client)]);
+                }
+            })->get()->first();
+            if ($rate) {
+                $rate['clients'] = json_decode($rate['clients']);
+                foreach ($rate['clients'] as $client) {
+                    if (in_array($client, $clients_to_search)) {
+                        $client = Client::find($client);
+                        return response()->json(["errors" => ['clients' => 'Ya existe una tarifa para el ' . $client["full_name"]]], 400);
+                    }
+                }
+            }
+
             $reception = Rates::create($data);
             return response()->json($reception, 201);
         } catch (\Throwable $th) {
+            dd($th);
             return response()->json(["errors" => ['database' => 'Error en la base de datos']], 500);
         }
     }
@@ -78,6 +98,25 @@ class RatesController extends Controller
         $data = $request->only(['clients']);
 
         $data['user_id'] = (Auth::user()->profile != 1) ? Auth::user()->owner ?? Auth::user()->id : null;
+
+        $clients_to_search = json_decode($data['clients']);
+        $user_auth = Auth::user();
+
+        $rate_search = Rates::where('user_id', $user_auth->owner ?? $user_auth->id)->where("id", "!=", $id)->where(function ($query) use ($clients_to_search) {
+            foreach ($clients_to_search as $client) {
+                $query->orWhereRaw("JSON_CONTAINS(clients, ?)", [strval($client)]);
+            }
+        })->get()->first();
+
+        if ($rate_search) {
+            $rate_search['clients'] = json_decode($rate_search['clients']);
+            foreach ($rate_search['clients'] as $client) {
+                if (in_array($client, $clients_to_search)) {
+                    $client = Client::find($client);
+                    return response()->json(["errors" => ['clients' => 'Ya existe una tarifa para el ' . $client["full_name"]]], 400);
+                }
+            }
+        }
 
         try {
             $rate->update($data);
