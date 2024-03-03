@@ -55,11 +55,13 @@ class ReceptionsController extends Controller
             // Files
             $data['photos'] = [];
             $photos = $request->file('photos');
-            foreach ($photos as $index => $photo) {
-                if ($photo->isValid()) {
-                    $path_file = Storage::putFile('public/receptions/photos', $photo);
-                    $path_file = str_replace('public/', env('SITE_URL') . '/public/storage/', $path_file);
-                    $data['photos'][] = $path_file;
+            if ($photos) {
+                foreach ($photos as $index => $photo) {
+                    if ($photo->isValid()) {
+                        $path_file = Storage::putFile('public/receptions/photos', $photo);
+                        $path_file = str_replace('public/', env('SITE_URL') . '/public/storage/', $path_file);
+                        $data['photos'][] = $path_file;
+                    }
                 }
             }
             $data['photos'] = implode(', ', $data['photos']);
@@ -68,6 +70,9 @@ class ReceptionsController extends Controller
             // Custom ID
             $user_auth = Auth::user();
             $configuration = Configuration::where('user_id', $user_auth->owner ?? $user_auth->id)->first();
+            if (!$configuration) {
+                return response()->json(["errors" => ['configuration' => 'Antes debes agregar un indice para los id de recepciones']], 500);
+            }
             $data['custom_id'] = $configuration['index_reception_reference'];
             $configuration->update(['index_reception_reference' =>$configuration['index_reception_reference']  + 1]);
 
