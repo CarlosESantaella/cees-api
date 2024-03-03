@@ -36,9 +36,16 @@ class ConfigurationsController extends Controller
         $configuration = $this->get_configuration_by_owner($user_auth);
 
         $data = $request->only([
-            'index_reception'
+            'index_reception', 'currency'
         ]);
-        $data['index_reception_reference'] = $data['index_reception'];
+        $index_reception = 0;
+        $currency = "";
+        if ($configuration) {
+            $index_reception = $configuration->index_reception;
+            $currency = $configuration->currency;
+        }
+        $data['index_reception_reference'] = $data['index_reception'] ?? $index_reception;
+        $data['currency'] = $data['currency'] ?? $currency;
         $data['user_id'] = Auth::user()->owner ?? Auth::user()->id;
 
         try {

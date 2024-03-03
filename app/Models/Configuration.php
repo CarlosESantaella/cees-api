@@ -12,6 +12,7 @@ class Configuration extends Model
     protected $fillable = [
         'index_reception',
         'index_reception_reference',
+        'currency',
         'user_id'
     ];
 

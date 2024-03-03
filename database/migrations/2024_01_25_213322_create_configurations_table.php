@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('index_reception')->nullable();
             $table->integer('index_reception_reference')->nullable();
+            $table->string('currency')->nullable();
             $table->foreignId('user_id')
                     ->nullable()
                     ->constrained()
