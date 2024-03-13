@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
+use Carbon\Carbon;
 
 class ReceptionsController extends Controller
 {
@@ -30,12 +31,25 @@ class ReceptionsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $perm = ProfileController::getPermissionByName("MANAGE RECEPTIONS");
         $user_auth = Auth::user();
-        if ($perm == "All") return Reception::all();
-        if ($perm == "Own") return Reception::where('user_id', $user_auth->owner ?? $user_auth->id)->get();
+
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $startDate = Carbon::parse($request->start_date);
+            $endDate = Carbon::parse($request->end_date)->endOfDay(); // Asegúrate de incluir la hora final del día
+            $query = Reception::query()->whereBetween('created_at', [$startDate, $endDate]);
+        } else {
+            $query = Reception::query();
+        }
+
+        if ($perm == "Own") {
+            $query->where('user_id', $user_auth->owner ?? $user_auth->id);
+        }
+
+        $results = $query->get();
+        return $results;
     }
 
     /**
