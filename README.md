@@ -30,6 +30,8 @@ Ejecutar:
 
 Esto creara los roles: Super Admin y Admin, en la base de datos junto con el usuario Super Admin.
 
+> superadmin
+
 > john.doe@gmail.com
 
 > 123123
