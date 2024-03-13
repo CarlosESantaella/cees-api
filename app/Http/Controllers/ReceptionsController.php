@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ReceptionsController extends Controller
 {
@@ -220,5 +221,21 @@ class ReceptionsController extends Controller
         Client::where('id', $reception['client_id'])->where('user_id', $user_id)->firstOrFail();
         $reception->delete();
         return response()->json(null, 204);
+    }
+
+    /**
+     * Generate report
+     */
+    public function generateReport(Request $request, string $id) {
+        $perm = ProfileController::getPermissionByName("MANAGE RECEPTIONS");
+        $user_auth = Auth::user();
+        $reception = false;
+        if ($perm == "All") $reception = Reception::findOrFail($id);
+        if ($perm == "Own") $reception = Reception::where('id', $id)
+                                            ->where('user_id', $user_auth->owner ?? $user_auth->id)
+                                            ->firstOrFail();
+        $pdf = Pdf::loadView('pdf.reception', ["reception" => $reception, "pdf" => true]);
+        $name_file = 'reception_' . $id . '.pdf';
+        return $pdf->download($name_file);
     }
 }
