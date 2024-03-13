@@ -27,12 +27,6 @@ use Illuminate\Support\Facades\Artisan;
 // Routers public
 Route::post('auth', [AuthController::class, 'login']);
 
-// Test
-Route::get('/receptions/{id}/pdftest', function () {
-    return view('pdf.reception', ['pdf' => false]);
-});
-
-
 // Routers private
 Route::middleware('jwt.verify')->group(function () {
 
