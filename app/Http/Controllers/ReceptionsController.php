@@ -94,7 +94,7 @@ class ReceptionsController extends Controller
             $reception = Reception::create($data);
             return response()->json($reception, 201);
         } catch (\Throwable $th) {
-            return response()->json(["errors" => ['database' => 'Error en la base de datos']], 500);
+            return response()->json(["errors" => ['database' => $th->getMessage()]], 500);
         }
     }
 
@@ -234,7 +234,8 @@ class ReceptionsController extends Controller
         if ($perm == "Own") $reception = Reception::where('id', $id)
                                             ->where('user_id', $user_auth->owner ?? $user_auth->id)
                                             ->firstOrFail();
-        $pdf = Pdf::loadView('pdf.reception', ["reception" => $reception, "pdf" => true]);
+        $client = Client::where('id', $reception['client_id'])->firstOrFail();
+        $pdf = Pdf::loadView('pdf.reception', ["reception" => $reception, "client" => $client, "pdf" => true]);
         $name_file = 'reception_' . $id . '.pdf';
         return $pdf->download($name_file);
     }

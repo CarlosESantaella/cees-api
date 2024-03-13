@@ -80,7 +80,7 @@
                     @else
                     <img src="data:image/svg+xml;base64,<?php echo base64_encode(file_get_contents(base_path('public/vero-internet.png'))); ?>" width="150">
                     @endif
-                    <h1 style="font-size: 1.2rem; margin-bottom: 5px">Vero Internet Corporation LTDA</h1>
+                    <h1 style="font-size: 1rem; margin-bottom: 5px">Vero Internet Corporation LTDA</h1>
                     <p style="font-size: 0.9rem">São Sebastião do Caí – RS <br>Rua Coronel Paulino Teixeira, 915, sala 02 – Centro</p>
                 </td>
             </tr>
@@ -91,7 +91,7 @@
         <thead>
             <tr>
                 <td>
-                    <h2 style="font-size: 1.4rem">RECEPCIÓN DE EQUIPOS</h2>
+                    <h2 style="font-size: 1.2rem">RECEPCIÓN DE EQUIPOS</h2>
                 </td>
             </tr>
         </thead>
@@ -101,28 +101,28 @@
         <tbody>
             <tr>
                 <td>
-                    <p><b>FECHA DE RECIBO:</b> <span class="data_table">24/05/2023</span></p>
+                    <p><b>FECHA DE RECIBO:</b> <span class="data_table">{{$reception->created_at}}</span></p>
                 </td>
                 <td>
-                    <p><b>RECEPCIÓN #:</b> <span class="data_table">123456</span></p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p><b>CLIENTE:</b> <span class="data_table">HILDEGAR MEDINA</span></p>
-                </td>
-                <td>
-                    <p><b>TIPO DE RECEPCIÓN:</b> <span class="data_table">NUEVA</span></p>
+                    <p><b>RECEPCIÓN #:</b> <span class="data_table">{{$reception->custom_id}}</span></p>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <p><b>CONTACTO:</b> <span class="data_table">(12) 3456789123</span></p>
+                    <p><b>CLIENTE:</b> <span class="data_table">{{$client->full_name}}</span></p>
+                </td>
+                <td>
+                    <p><b>TIPO DE RECEPCIÓN:</b> <span class="data_table">{{$reception->type_of_job}}</span></p>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <p><b>TELEFONO / CELULAR:</b> <span class="data_table">(12) 3456789123</span></p>
+                    <p><b>CONTACTO:</b> <span class="data_table">{{$client->cell}}</span></p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p><b>TELEFONO / CELULAR:</b> <span class="data_table">{{$client->cellphone}}</span></p>
                 </td>
             </tr>
         </tbody>
@@ -132,7 +132,7 @@
         <thead>
             <tr>
                 <td>
-                    <h3  style="font-size: 1.1rem;">DATOS DEL EQUIPO</h3>
+                    <h3  style="font-size: 1rem;">DATOS DEL EQUIPO</h3>
                 </td>
             </tr>
         </thead>
@@ -142,42 +142,39 @@
         <tbody>
             <tr>
                 <td>
-                    <p><b>TIPO EQUIPO:</b> <span class="data_table">24/05/2023</span></p>
+                    <p><b>TIPO EQUIPO:</b> <span class="data_table">{{$reception->equipment_type}}</span></p>
                 </td>
                 <td>
-                    <p><b>INV. CLIENTE #:</b> <span class="data_table">123456</span></p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p><b>MARCA:</b> <span class="data_table">HILDEGAR MEDINA</span></p>
-                </td>
-                <td>
-                    <p><b>UBICACION:</b> <span class="data_table">NUEVA</span></p>
+                    <p><b>INV. CLIENTE #:</b> <span class="data_table">{{$reception->customer_inventory}}</span></p>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <p><b>MODELO:</b> <span class="data_table">(12) 3456789123</span></p>
+                    <p><b>MARCA:</b> <span class="data_table">{{$reception->brand}}</span></p>
                 </td>
                 <td>
-                    <p><b>UBICACION ESPECIFICA:</b> <span class="data_table">NUEVA</span></p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p><b>SERIE No:</b> <span class="data_table">(12) 3456789123</span></p>
-                </td>
-                <td>
-                    <p><b>RESTO DE DATOS:</b> <span class="data_table">(12) 3456789123</span></p>
+                    <p><b>UBICACION:</b> <span class="data_table">{{$reception->location}}</span></p>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <p><b>CAPACIDAD:</b> <span class="data_table">(12) 3456789123</span></p>
+                    <p><b>MODELO:</b> <span class="data_table">{{$reception->model}}</span></p>
                 </td>
                 <td>
-                    <p><b>RESTO DE DATOS:</b> <span class="data_table">(12) 3456789123</span></p>
+                    <p><b>UBICACION ESPECIFICA:</b> <span class="data_table">{{$reception->specific_location}}</span></p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p><b>SERIE No:</b> <span class="data_table">{{$reception->serie}}</span></p>
+                </td>
+                <td>
+                    <p><b>ESTADO:</b> <span class="data_table">{{$reception->state}}</span></p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p><b>CAPACIDAD:</b> <span class="data_table">{{$reception->capability}}</span></p>
                 </td>
             </tr>
         </tbody>
@@ -187,7 +184,7 @@
         <thead>
             <tr>
                 <td>
-                    <h3  style="font-size: 1.1rem;">REGISTRO FOTOGRAFICO DEL EQUIPO RECIBIDO</h3>
+                    <h3  style="font-size: 1rem;">REGISTRO FOTOGRAFICO DEL EQUIPO RECIBIDO</h3>
                 </td>
             </tr>
         </thead>
@@ -195,52 +192,32 @@
 
     <table class="general_data images">
         <tbody>
-            <tr>
-                <td>
-                    @if(!$pdf) 
-                    <img src="{{asset('vero-internet.png')}}" width="150">
-                    @else
-                    <img src="data:image/svg+xml;base64,<?php echo base64_encode(file_get_contents(base_path('public/vero-internet.png'))); ?>" width="150">
-                    @endif
-                </td>
-                <td>
-                    @if(!$pdf) 
-                    <img src="{{asset('vero-internet.png')}}" width="150">
-                    @else
-                    <img src="data:image/svg+xml;base64,<?php echo base64_encode(file_get_contents(base_path('public/vero-internet.png'))); ?>" width="150">
-                    @endif
-                </td>
-                <td>
-                    @if(!$pdf) 
-                    <img src="{{asset('vero-internet.png')}}" width="150">
-                    @else
-                    <img src="data:image/svg+xml;base64,<?php echo base64_encode(file_get_contents(base_path('public/vero-internet.png'))); ?>" width="150">
-                    @endif
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    @if(!$pdf) 
-                    <img src="{{asset('vero-internet.png')}}" width="150">
-                    @else
-                    <img src="data:image/svg+xml;base64,<?php echo base64_encode(file_get_contents(base_path('public/vero-internet.png'))); ?>" width="150">
-                    @endif
-                </td>
-                <td>
-                    @if(!$pdf) 
-                    <img src="{{asset('vero-internet.png')}}" width="150">
-                    @else
-                    <img src="data:image/svg+xml;base64,<?php echo base64_encode(file_get_contents(base_path('public/vero-internet.png'))); ?>" width="150">
-                    @endif
-                </td>
-                <td>
-                    @if(!$pdf) 
-                    <img src="{{asset('vero-internet.png')}}" width="150">
-                    @else
-                    <img src="data:image/svg+xml;base64,<?php echo base64_encode(file_get_contents(base_path('public/vero-internet.png'))); ?>" width="150">
-                    @endif
-                </td>
-            </tr>
+            <?php 
+                $urlsArray = explode(",", $reception->photos);
+
+                $cleanUrlsArray = array_map(function($url) {
+                    return str_replace("https://ceesapi.devsprinters.com/", "/", str_replace(['\\', ' '], '', trim($url)));
+                }, $urlsArray);
+
+                // Foreach, 3 td to tr line
+                $i = 0;
+                $result = "";
+                foreach($cleanUrlsArray as $url) {
+                    $i++;
+                    if ($i == 1) {
+                        $result .= "<tr>";
+                    }
+                    if ($i % 4 == 0 ) {
+                        $result .= "</tr>";
+                        if ($i < count($cleanUrlsArray)) {
+                            $result .= "<tr>";
+                        }
+                    }
+                    $result .= "<td><img src='data:image/svg+xml;base64," . base64_encode(file_get_contents(base_path($url))) . " width='150'></td>";
+                }
+                echo $result;
+            ?>
+
         </tbody>
     </table>
 
@@ -248,7 +225,7 @@
         <thead>
             <tr>
                 <td>
-                    <p style="font-size: 0.9rem; text-align: left;"><b>OBSERVACIONES:</b> Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta velit praesentium quos, nostrum, fuga tempore ullam assumenda facere magnam quisquam dignissimos totam ad iure similique veritatis adipisci, quo aliquam optio voluptates ex molestiae dolores. Culpa excepturi fugiat nihil doloremque pariatur.</p>
+                    <p style="font-size: 0.9rem; text-align: left;"><b>OBSERVACIONES:</b> {{$reception->comments}}</p>
                 </td>
             </tr>
         </thead>
@@ -259,14 +236,14 @@
             <tr>
                 <td>
                     <span class="data_table_sign">
-                        HILDEGAR MEDINA
+                        
                     </span>
                     <br>
                     <p><b>RECIBIDO POR:</b></p>
                 </td>
                 <td>
                     <span class="data_table_sign">
-                        HILDEGAR MEDINA
+                        
                     </span>
                     <br>
                     <p><b>ENTREGADO POR:</b></p>
