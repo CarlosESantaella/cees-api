@@ -253,7 +253,7 @@ class ReceptionsController extends Controller
     public function exportExcel(Request $request)
     {
 
-
+        $perm = ProfileController::getPermissionByName("MANAGE RECEPTIONS");
         $user_auth = Auth::user();
         $reception = false;
 

@@ -55,10 +55,10 @@ class ReceptionsExport implements FromQuery, ShouldAutoSize, WithHeadings
                 'receptions.custom_id',
                 'receptions.equipment_type',
                 'receptions.brand',
-                'receptions.model',
+                'receptions.model', 
                 'receptions.serie', 
                 'receptions.capability',
-            ], 'LIKE', '%' . $this->search . '%'); 
+            ], 'LIKE', '%' . $this->search . '%');  
         }
         $query->join('clients', 'receptions.client_id', '=', 'clients.id');
         $query->select(
