@@ -1,8 +1,9 @@
 <?php
 
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ReceptionsController;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------

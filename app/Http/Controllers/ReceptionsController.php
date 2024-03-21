@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\ReceptionsExport;
 use Carbon\Carbon;
 use App\Models\Client;
 use App\Models\Reception;
 use Illuminate\Http\Request;
 use App\Models\Configuration;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Exports\ReceptionsExport;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
@@ -20,12 +21,13 @@ class ReceptionsController extends Controller
     /**
      * Get reception by id and permission
      */
-    function get_reception_by_id_and_perms($id, $perm, $user_auth) {
+    function get_reception_by_id_and_perms($id, $perm, $user_auth)
+    {
         if ($perm == "Own") {
             $reception = Reception::where('id', $id)
-                            ->where('user_id', $user_auth->owner ?? $user_auth->id)
-                            ->firstOrFail();
-        }else if ($perm == "All") {
+                ->where('user_id', $user_auth->owner ?? $user_auth->id)
+                ->firstOrFail();
+        } else if ($perm == "All") {
             $reception = Reception::findOrFail($id);
         }
         return $reception;
@@ -41,7 +43,7 @@ class ReceptionsController extends Controller
         $query = Reception::query();
 
 
-        if($request->has('client_id')){
+        if ($request->has('client_id')) {
             $query->where('client_id', $request->client_id);
         }
 
@@ -95,7 +97,7 @@ class ReceptionsController extends Controller
                 return response()->json(["errors" => ['configuration' => 'Antes debes agregar un indice para los id de recepciones']], 500);
             }
             $data['custom_id'] = $configuration['index_reception_reference'];
-            $configuration->update(['index_reception_reference' =>$configuration['index_reception_reference']  + 1]);
+            $configuration->update(['index_reception_reference' => $configuration['index_reception_reference']  + 1]);
 
             $reception = Reception::create($data);
             return response()->json($reception, 201);
@@ -113,8 +115,8 @@ class ReceptionsController extends Controller
         $user_auth = Auth::user();
         if ($perm == "All") return Reception::findOrFail($id);
         if ($perm == "Own") return Reception::where('id', $id)
-                                            ->where('user_id', $user_auth->owner ?? $user_auth->id)
-                                            ->firstOrFail();
+            ->where('user_id', $user_auth->owner ?? $user_auth->id)
+            ->firstOrFail();
     }
 
     /**
@@ -132,23 +134,23 @@ class ReceptionsController extends Controller
         $reception = false;
         if ($perm == "All") {
             $reception = Reception::where('serie', $serial)
-                        ->orWhere(function (Builder $query) use ($location, $specific_location) {
-                            $query->where('location', $location)
-                                  ->where('specific_location', $specific_location);
-                        })
-                        ->first();
+                ->orWhere(function (Builder $query) use ($location, $specific_location) {
+                    $query->where('location', $location)
+                        ->where('specific_location', $specific_location);
+                })
+                ->first();
         }
         if ($perm == "Own") {
             $reception = Reception::where('serie', $serial)
-                                            ->where('user_id', $user_auth->owner ?? $user_auth->id)
-                                            ->orWhere(function (Builder $query) use ($location, $specific_location) {
-                                                $query->where('location', $location)
-                                                      ->where('specific_location', $specific_location);
-                                            })
-                                            ->orWhere('customer_inventory', $customer_inventory)
-                                            ->first();
+                ->where('user_id', $user_auth->owner ?? $user_auth->id)
+                ->orWhere(function (Builder $query) use ($location, $specific_location) {
+                    $query->where('location', $location)
+                        ->where('specific_location', $specific_location);
+                })
+                ->orWhere('customer_inventory', $customer_inventory)
+                ->first();
         }
-        $reception['exists'] = $reception ? true: false;
+        $reception['exists'] = $reception ? true : false;
         return response()->json($reception, 200);
     }
 
@@ -172,12 +174,12 @@ class ReceptionsController extends Controller
         // Input Photos
         $photos_string = [];
         $photos_file = [];
-        for ($i=0; $i <= 20; $i++) {
-            if (isset($request['photos_'.$i])) {
-                if (gettype($request['photos_'.$i]) == 'string') {
-                    $photos_string[] = $request['photos_'.$i];
-                }else {
-                    $photos_file[] = $request->file('photos_'.$i);
+        for ($i = 0; $i <= 20; $i++) {
+            if (isset($request['photos_' . $i])) {
+                if (gettype($request['photos_' . $i]) == 'string') {
+                    $photos_string[] = $request['photos_' . $i];
+                } else {
+                    $photos_file[] = $request->file('photos_' . $i);
                 }
             }
         }
@@ -191,7 +193,7 @@ class ReceptionsController extends Controller
         foreach ($db_photos as $index => $db_photo) {
             if (!in_array($db_photo, $photos_string)) {
                 Storage::delete(str_replace(env('SITE_URL') . '/public/storage/', 'public/', $db_photo));
-            }else {
+            } else {
                 $data['photos'][] = $db_photo;
             }
         }
@@ -232,26 +234,56 @@ class ReceptionsController extends Controller
     /**
      * Generate report
      */
-    public function generateReport(Request $request, string $id) {
-        $perm = ProfileController::getPermissionByName("MANAGE RECEPTIONS");
-        $user_auth = Auth::user();
-        $reception = false;
-        if ($perm == "All") $reception = Reception::findOrFail($id);
-        if ($perm == "Own") $reception = Reception::where('id', $id)
-                                            ->where('user_id', $user_auth->owner ?? $user_auth->id)
-                                            ->firstOrFail();
-        $client = Client::where('id', $reception['client_id'])->firstOrFail();
-        $pdf = Pdf::loadView('pdf.reception', ["reception" => $reception, "client" => $client, "pdf" => true]);
-        $name_file = 'reception_' . $id . '.pdf';
-        return $pdf->download($name_file);
+    public function generateReport(Request $request, string $id)
+    {
+        $token = $request->has('token') ? $request->token : null;
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
+            $perm = ProfileController::getPermissionByName("MANAGE RECEPTIONS");
+            $user_auth = Auth::user();
+            $reception = false;
+            if ($perm == "All") $reception = Reception::findOrFail($id);
+            if ($perm == "Own") $reception = Reception::where('id', $id)
+                ->where('user_id', $user_auth->owner ?? $user_auth->id)
+                ->firstOrFail();
+            $client = Client::where('id', $reception['client_id'])->firstOrFail();
+            $pdf = Pdf::loadView('pdf.reception', ["reception" => $reception, "client" => $client, "pdf" => true]);
+            $name_file = 'reception_' . $id . '.pdf';
+            return $pdf->download($name_file);
+        } catch (\Exception $e) {
+            if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
+                return response()->json(['error' => 'Token inválido'], 401);
+            } else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
+                return response()->json(['error' => 'Token inválido'], 401);
+            } else {
+                return response()->json(['error' => 'Token no encontrado'], 401);
+            }
+        }
     }
 
-    public function exportExcel(Request $request) 
+    public function exportExcel(Request $request)
     {
-        $start_date = $request->start_date ?? false;
-        $end_date = $request->end_date ?? false;
-        $client_id = $request->client_id ?? false;
-        $search = $request->search ?? false;
-        return Excel::download(new ReceptionsExport($start_date, $end_date, $client_id, $search), 'recepciones.xlsx');
+        $token = $request->has('token') ? $request->token : null;
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
+            $perm = ProfileController::getPermissionByName("MANAGE RECEPTIONS");
+            $user_auth = Auth::user();
+            $reception = false;
+
+            $start_date = $request->start_date ?? false;
+            $end_date = $request->end_date ?? false;
+            $client_id = $request->client_id ?? false;
+            $search = $request->search ?? false;
+            return Excel::download(new ReceptionsExport($start_date, $end_date, $client_id, $search, $user_auth->id), 'recepciones.xlsx');
+            // El token es válido y se ha autenticado al usuario
+        } catch (\Exception $e) {
+            if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
+                return response()->json(['error' => 'Token inválido'], 401);
+            } else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
+                return response()->json(['error' => 'Token inválido'], 401);
+            } else {
+                return response()->json(['error' => 'Token no encontrado'], 401);
+            }
+        }
     }
 }

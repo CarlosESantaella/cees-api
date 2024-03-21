@@ -1,17 +1,18 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ClientController;
-use App\Http\Controllers\ConfigurationsController;
-use App\Http\Controllers\ItemsController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\RatesController;
-use App\Http\Controllers\ReceptionsController;
 use GuzzleHttp\Client;
+use Illuminate\Http\Request;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ItemsController;
+use App\Http\Controllers\RatesController;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReceptionsController;
+use App\Http\Controllers\ConfigurationsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,8 @@ use Illuminate\Support\Facades\Artisan;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+
 
 // Routers public
 Route::post('auth', [AuthController::class, 'login']);
@@ -75,9 +78,5 @@ Route::middleware('jwt.verify')->group(function () {
         Route::apiResource('items', ItemsController::class);
     });
 
-    // Reports
-    Route::middleware('permission:MANAGE RECEPTIONS')->group(function () {
-        Route::get('/receptions/{id}/pdf', [ReceptionsController::class, 'generateReport']);
-    });
-    
+
 });
