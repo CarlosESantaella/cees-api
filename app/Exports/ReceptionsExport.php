@@ -44,19 +44,19 @@ class ReceptionsExport implements FromQuery, ShouldAutoSize, WithHeadings
     {
         $query = Reception::query();
         if ($this->start_date && $this->end_date) {
-            $query->whereBetween('created_at', [$this->start_date, $this->end_date]);
+            $query->whereBetween('receptions.created_at', [$this->start_date, $this->end_date]);
         }
         if ($this->client_id) {
-            $query->where('client_id', $this->client_id);
+            $query->where('receptions.client_id', $this->client_id);
         }
         if ($this->search) {
             $query->whereAny([
-                'custom_id',
-                'equipment_type',
-                'brand',
-                'model',
-                'serie',
-                'capability',
+                'receptions.custom_id',
+                'receptions.equipment_type',
+                'receptions.brand',
+                'receptions.model',
+                'receptions.serie',
+                'receptions.capability',
             ], 'LIKE', '%' . $this->search . '%');
         }
         $query->join('clients', 'receptions.client_id', '=', 'clients.id');
@@ -78,6 +78,7 @@ class ReceptionsExport implements FromQuery, ShouldAutoSize, WithHeadings
             DB::raw("DATE_FORMAT(receptions.created_at, '%d-%m-%Y') as created_at_formatted")
             // 'receptions.created_at'
         );
+
         return $query;
     }
 }
