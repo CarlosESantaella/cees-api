@@ -236,54 +236,33 @@ class ReceptionsController extends Controller
      */
     public function generateReport(Request $request, string $id)
     {
-        $token = $request->has('token') ? $request->token : null;
-        try {
-            $user = JWTAuth::parseToken()->authenticate();
-            $perm = ProfileController::getPermissionByName("MANAGE RECEPTIONS");
-            $user_auth = Auth::user();
-            $reception = false;
-            if ($perm == "All") $reception = Reception::findOrFail($id);
-            if ($perm == "Own") $reception = Reception::where('id', $id)
-                ->where('user_id', $user_auth->owner ?? $user_auth->id)
-                ->firstOrFail();
-            $client = Client::where('id', $reception['client_id'])->firstOrFail();
-            $pdf = Pdf::loadView('pdf.reception', ["reception" => $reception, "client" => $client, "pdf" => true]);
-            $name_file = 'reception_' . $id . '.pdf';
-            return $pdf->download($name_file);
-        } catch (\Exception $e) {
-            if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
-                return response()->json(['error' => 'Token inválido'], 401);
-            } else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
-                return response()->json(['error' => 'Token inválido'], 401);
-            } else {
-                return response()->json(['error' => 'Token no encontrado'], 401);
-            }
-        }
+
+        $perm = ProfileController::getPermissionByName("MANAGE RECEPTIONS");
+        $user_auth = Auth::user();
+        $reception = false;
+        if ($perm == "All") $reception = Reception::findOrFail($id);
+        if ($perm == "Own") $reception = Reception::where('id', $id)
+            ->where('user_id', $user_auth->owner ?? $user_auth->id)
+            ->firstOrFail();
+        $client = Client::where('id', $reception['client_id'])->firstOrFail();
+        $pdf = Pdf::loadView('pdf.reception', ["reception" => $reception, "client" => $client, "pdf" => true]);
+        $name_file = 'reception_' . $id . '.pdf';
+        return $pdf->download($name_file);
     }
 
     public function exportExcel(Request $request)
     {
-        $token = $request->has('token') ? $request->token : null;
-        try {
-            $user = JWTAuth::parseToken()->authenticate();
-            $perm = ProfileController::getPermissionByName("MANAGE RECEPTIONS");
-            $user_auth = Auth::user();
-            $reception = false;
 
-            $start_date = $request->start_date ?? false;
-            $end_date = $request->end_date ?? false;
-            $client_id = $request->client_id ?? false;
-            $search = $request->search ?? false;
-            return Excel::download(new ReceptionsExport($start_date, $end_date, $client_id, $search, $user_auth->id), 'recepciones.xlsx');
-            // El token es válido y se ha autenticado al usuario
-        } catch (\Exception $e) {
-            if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
-                return response()->json(['error' => 'Token inválido'], 401);
-            } else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
-                return response()->json(['error' => 'Token inválido'], 401);
-            } else {
-                return response()->json(['error' => 'Token no encontrado'], 401);
-            }
-        }
+
+        $user_auth = Auth::user();
+        $reception = false;
+
+        $start_date = $request->start_date ?? false;
+        $end_date = $request->end_date ?? false;
+        $client_id = $request->client_id ?? false;
+        $search = $request->search ?? false;
+        return Excel::download(new ReceptionsExport($start_date, $end_date, $client_id, $search, $user_auth->id), 'recepciones.xlsx');
+        // El token es válido y se ha autenticado al usuario
+
     }
 }
