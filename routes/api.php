@@ -79,7 +79,5 @@ Route::middleware('jwt.verify')->group(function () {
     Route::middleware('permission:MANAGE RECEPTIONS')->group(function () {
         Route::get('/receptions/{id}/pdf', [ReceptionsController::class, 'generateReport']);
     });
-    Route::get('/receptions/excel', [ReceptionsController::class, 'exportExcel']);
-
-
+    
 });
