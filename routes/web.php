@@ -18,6 +18,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return response()->json(["message" => "Hello World!"], 200);
 });
-Route::get('/receptions/excel', [ReceptionsController::class, 'exportExcel']);
 
-
+Route::middleware('jwt.verify')->group(function () {
+    Route::middleware('permission:MANAGE RECEPTIONS')->group(function () {
+        Route::get('/receptions/excel', [ReceptionsController::class, 'exportExcel']);
+        Route::get('/receptions/{id}/pdf', [ReceptionsController::class, 'generateReport']);
+    });
+});
