@@ -1,8 +1,9 @@
 <?php
 
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ReceptionsController;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return response()->json(["message" => "Hello World!"], 200);
 });
-Route::get('/receptions/excel', [ReceptionsController::class, 'exportExcel']);
-
-
+// Reports
+Route::middleware('permission:MANAGE RECEPTIONS')->group(function () {
+    Route::get('/receptions/{id}/pdf', [ReceptionsController::class, 'generateReport']);
+    Route::get('/receptions/excel', [ReceptionsController::class, 'exportExcel']);
+});

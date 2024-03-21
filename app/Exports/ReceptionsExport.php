@@ -15,7 +15,7 @@ class ReceptionsExport implements FromQuery, ShouldAutoSize, WithHeadings
      * @return \Illuminate\Support\Collection
      */
 
-    public function __construct(public $start_date, public $end_date, public $client_id, public $search)
+    public function __construct(public $start_date, public $end_date, public $client_id, public $search, public $user_id)
     {
     }
 
@@ -49,6 +49,7 @@ class ReceptionsExport implements FromQuery, ShouldAutoSize, WithHeadings
         if ($this->client_id) {
             $query->where('receptions.client_id', $this->client_id);
         }
+        $query->where('user_id', $this->user_id);
         if ($this->search) {
             $query->whereAny([
                 'receptions.custom_id',
