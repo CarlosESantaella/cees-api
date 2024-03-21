@@ -36,13 +36,17 @@ class ReceptionsController extends Controller
     {
         $perm = ProfileController::getPermissionByName("MANAGE RECEPTIONS");
         $user_auth = Auth::user();
+        $query = Reception::query();
+
+
+        if($request->has('client_id')){
+            $query->where('client_id', $request->client_id);
+        }
 
         if ($request->has('start_date') && $request->has('end_date')) {
             $startDate = Carbon::parse($request->start_date);
             $endDate = Carbon::parse($request->end_date)->endOfDay(); // Asegúrate de incluir la hora final del día
-            $query = Reception::query()->whereBetween('created_at', [$startDate, $endDate]);
-        } else {
-            $query = Reception::query();
+            $query->whereBetween('created_at', [$startDate, $endDate]);
         }
 
         if ($perm == "Own") {

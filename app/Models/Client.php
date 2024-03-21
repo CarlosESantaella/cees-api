@@ -23,4 +23,10 @@ class Client extends Model
         'comments'
     ];
 
+
+    public function receptions()
+    {
+        return $this->hasMany(Reception::class);
+    }
+
 }

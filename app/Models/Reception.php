@@ -25,7 +25,8 @@ class Reception extends Model
         'specific_location',
         'type_of_job',
         'equipment_owner',
-        'customer_inventory'
+        'customer_inventory',
+        'created_at'
     ];
 
 }
