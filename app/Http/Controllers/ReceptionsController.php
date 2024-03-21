@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ReceptionsPostRequest;
+use App\Exports\ReceptionsExport;
+use Carbon\Carbon;
 use App\Models\Client;
-use App\Models\Configuration;
 use App\Models\Reception;
 use Illuminate\Http\Request;
+use App\Models\Configuration;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
-use Carbon\Carbon;
-use Barryvdh\DomPDF\Facade\Pdf;
+use App\Http\Requests\ReceptionsPostRequest;
 
 class ReceptionsController extends Controller
 {
@@ -242,5 +244,14 @@ class ReceptionsController extends Controller
         $pdf = Pdf::loadView('pdf.reception', ["reception" => $reception, "client" => $client, "pdf" => true]);
         $name_file = 'reception_' . $id . '.pdf';
         return $pdf->download($name_file);
+    }
+
+    public function exportExcel(Request $request) 
+    {
+        $start_date = $request->start_date ?? false;
+        $end_date = $request->end_date ?? false;
+        $client_id = $request->client_id ?? false;
+        $search = $request->search ?? false;
+        return Excel::download(new ReceptionsExport($start_date, $end_date, $client_id, $search), 'recepciones.xlsx');
     }
 }
