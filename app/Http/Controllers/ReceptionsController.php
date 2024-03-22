@@ -255,14 +255,10 @@ class ReceptionsController extends Controller
 
         $perm = ProfileController::getPermissionByName("MANAGE RECEPTIONS");
         $user_auth = Auth::user();
-        $reception = false;
-
         $start_date = $request->start_date ?? false;
         $end_date = $request->end_date ?? false;
         $client_id = $request->client_id ?? false;
         $search = $request->search ?? false;
         return Excel::download(new ReceptionsExport($start_date, $end_date, $client_id, $search, $user_auth->id), 'recepciones.xlsx');
-        // El token es válido y se ha autenticado al usuario
-
     }
 }
