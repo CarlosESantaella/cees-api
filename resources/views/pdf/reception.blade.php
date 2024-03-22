@@ -39,6 +39,7 @@
             padding: 0 5px;
         }
         .general_data.images td {
+            display: inline-table;
             width: 33.33%;
             padding: 0 5px;
         }
@@ -76,9 +77,9 @@
             <tr>
                 <td>
                     @if(!$pdf) 
-                    <img src="{{asset('vero-internet.png')}}" width="150">
+                    <img src="{{asset('vero-internet.png')}}" width="120">
                     @else
-                    <img src="data:image/svg+xml;base64,<?php echo base64_encode(file_get_contents(base_path('public/vero-internet.png'))); ?>" width="150">
+                    <img src="data:image/svg+xml;base64,<?php echo base64_encode(file_get_contents(base_path('public/vero-internet.png'))); ?>" width="120">
                     @endif
                     <h1 style="font-size: 1rem; margin-bottom: 5px">Vero Internet Corporation LTDA</h1>
                     <p style="font-size: 0.9rem">São Sebastião do Caí – RS <br>Rua Coronel Paulino Teixeira, 915, sala 02 – Centro</p>
@@ -189,7 +190,7 @@
             </tr>
         </thead>
     </table>
-
+    <br>
     <table class="general_data images">
         <tbody>
             <?php 
