@@ -41,10 +41,14 @@
         .general_data.images td {
             display: inline-table;
             width: 33.33%;
+            text-align: center;
             padding: 0 5px;
         }
         .general_data.images img {
-            width: 100%;
+            max-width: 100%;
+            width: auto;
+            margin: 0 auto;
+            max-height: 200px;
         }
         .general_data b {
             display: inline-block;
