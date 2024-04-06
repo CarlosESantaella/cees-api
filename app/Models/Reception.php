@@ -29,4 +29,10 @@ class Reception extends Model
         'created_at'
     ];
 
+
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
+
 }

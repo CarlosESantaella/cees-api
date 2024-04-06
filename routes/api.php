@@ -50,7 +50,7 @@ Route::middleware('jwt.verify')->group(function () {
     // Configurations
     Route::middleware('permission:MANAGE CONFIGURATIONS')->group(function () {
         Route::get('configurations', [ConfigurationsController::class, 'index']);
-        Route::put('configurations', [ConfigurationsController::class, 'update']);
+        Route::post('configurations', [ConfigurationsController::class, 'update']);
     });
 
     // Clients
@@ -63,6 +63,7 @@ Route::middleware('jwt.verify')->group(function () {
         Route::post('receptions/update/{id}', [ReceptionsController::class, 'update']);
         Route::get('receptions/find', [ReceptionsController::class, 'find']);
         Route::apiResource('receptions', ReceptionsController::class);
+        Route::get('/receptions/{id}/send-mail', [ReceptionsController::class, 'sendMailReport']);
     });
 
     // Permissions

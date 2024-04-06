@@ -59,6 +59,9 @@
             width: 160px;
             border-bottom: 1px solid #606060;
         }
+        .observations-box{
+            min-height: 100px;
+        }
         .sign_data {
             font-size: 0.9rem;
             width: 100%;
@@ -66,12 +69,17 @@
         }
         .sign_data td {
             width: 50%;
-            padding: 0 5px;
+            padding: 0 5px 0 0;
         }
         .sign_data span {
-            display: inline-block;
+            display: block;
+            margin: 0 auto;
+            margin-bottom: -15px;
             border-bottom: 1px solid #606060;
-            min-width: 200px;
+            width: 200px;
+        }
+        .sign_data p{
+            text-align: center;
         }
     </style>
 </head>
@@ -83,7 +91,7 @@
                     @if(!$pdf) 
                     <img src="{{asset('vero-internet.png')}}" width="120">
                     @else
-                    <img src="data:image/svg+xml;base64,<?php echo base64_encode(file_get_contents(base_path('public/vero-internet.png'))); ?>" width="120">
+                    <img src="data:image/svg+xml;base64,<?php echo base64_encode(file_get_contents(base_path(str_replace(env('SITE_URL'), "/public", str_replace(['\\', ' '], '', trim($configurations->logo_path)))))); ?>" width="120">
                     @endif
                     <h1 style="font-size: 1rem; margin-bottom: 5px">Vero Internet Corporation LTDA</h1>
                     <p style="font-size: 0.9rem">São Sebastião do Caí – RS <br>Rua Coronel Paulino Teixeira, 915, sala 02 – Centro</p>
@@ -195,13 +203,53 @@
         </thead>
     </table>
     <br>
+    <table class="title table-content observations-box">
+        <thead>
+            <tr>
+                <td>
+                    <p style="font-size: 0.9rem; text-align: left;"><b>OBSERVACIONES:</b> {{$reception->comments}}</p>
+                </td>
+            </tr>
+        </thead>
+    </table>
+
+    <table class="sign_data">
+        <tbody>
+            <tr>
+                <td>
+                    <br>
+                    <br>
+                    <span class="data_table_sign">
+                    </span>
+                    <p><b>RECIBIDO POR:</b></p>
+                </td>
+                <td>
+                    <br>
+                    <br>
+                    <span class="data_table_sign">
+                    </span>
+                    <p ><b>ENTREGADO POR:</b></p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="title table-content">
+        <thead>
+            <tr>
+                <td>
+                    <p style="font-size: 0.9rem; text-align: center;">Todos los derechos reservados &copy;2024 - CEES </p>
+                </td>
+            </tr>
+        </thead>
+    </table>
     <table class="general_data images">
         <tbody>
-            <?php 
+            @php
                 $urlsArray = explode(",", $reception->photos);
 
                 $cleanUrlsArray = array_map(function($url) {
-                    return str_replace("https://ceesapi.devsprinters.com/", "/", str_replace(['\\', ' '], '', trim($url)));
+                    return str_replace(env('SITE_URL'), "/public", str_replace(['\\', ' '], '', trim($url)));
                 }, $urlsArray);
 
                 // Foreach, 3 td to tr line
@@ -221,51 +269,12 @@
                     $result .= "<td><img src='data:image/svg+xml;base64," . base64_encode(file_get_contents(base_path($url))) . " width='150'></td>";
                 }
                 echo $result;
-            ?>
+            @endphp
 
         </tbody>
     </table>
 
-    <table class="title table-content">
-        <thead>
-            <tr>
-                <td>
-                    <p style="font-size: 0.9rem; text-align: left;"><b>OBSERVACIONES:</b> {{$reception->comments}}</p>
-                </td>
-            </tr>
-        </thead>
-    </table>
 
-    <table class="sign_data">
-        <tbody>
-            <tr>
-                <td>
-                    <span class="data_table_sign">
-                        
-                    </span>
-                    <br>
-                    <p><b>RECIBIDO POR:</b></p>
-                </td>
-                <td>
-                    <span class="data_table_sign">
-                        
-                    </span>
-                    <br>
-                    <p><b>ENTREGADO POR:</b></p>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-    <table class="title table-content">
-        <thead>
-            <tr>
-                <td>
-                    <p style="font-size: 0.9rem; text-align: center;">Todos los derechos reservados &copy;2024 - CEES </p>
-                </td>
-            </tr>
-        </thead>
-    </table>
 
 </body>
 </html>

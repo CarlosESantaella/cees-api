@@ -21,9 +21,12 @@ class ConfigurationsController extends Controller
     /**
      * Get configuration by owner and permission
      */
-    function get_configuration_by_owner($user_auth) {
+    function get_configuration_by_owner($user_auth)
+    {
         $configuration = Configuration::where(
-            'user_id', $user_auth->owner ?? $user_auth->id)->first();
+            'user_id',
+            $user_auth->owner ?? $user_auth->id
+        )->first();
         return $configuration;
     }
 
@@ -32,32 +35,53 @@ class ConfigurationsController extends Controller
      */
     public function update(Request $request)
     {
-        $user_auth = Auth::user();
-        $configuration = $this->get_configuration_by_owner($user_auth);
+        try {
+            $user_auth = Auth::user();
+            $configuration = $this->get_configuration_by_owner($user_auth);
 
-        $data = $request->only([
-            'index_reception', 'currency'
-        ]);
-        $index_reception = 0;
-        $currency = "";
-        if ($configuration) {
-            $index_reception = $configuration->index_reception;
-            $currency = $configuration->currency;
+            $data = $request->only([
+                'index_reception', 'currency'
+            ]);
+            $index_reception = 0;
+            $currency = "";
+            if ($configuration) {
+                $index_reception = $configuration->index_reception;
+                $currency = $configuration->currency;
+            }
+            $data['index_reception_reference'] = $data['index_reception'] ?? $index_reception;
+            $data['currency'] = $data['currency'] ?? $currency;
+            // $data['user_id'] = Auth::user()->owner ?? Auth::user()->id;
+
+            if ($request->has('logo')) {
+                $logo = $request->file('logo');
+                //path validate
+                $dir_path = 'public/configurations/logos';
+                if (!Storage::exists($dir_path)) {
+                    Storage::makeDirectory($dir_path);
+                }
+                if($configuration->logo_path){
+                    Storage::delete('public/configurations/logos/'.$configuration->logo_path);
+                }
+                //save logo
+                $path_file = Storage::putFile($dir_path, $logo);
+                $path_file = str_replace('public/', env('SITE_URL') . '/storage/', $path_file);
+                $data['logo_path'] = $path_file;
+            }
+        } catch (\Exception $e) {
+            return response()->json(["errors" => ['database' => $e->getMessage() . '-' . $e->getLine()]], 500);
         }
-        $data['index_reception_reference'] = $data['index_reception'] ?? $index_reception;
-        $data['currency'] = $data['currency'] ?? $currency;
-        $data['user_id'] = Auth::user()->owner ?? Auth::user()->id;
 
         try {
+
             if ($configuration) {
                 $configuration->update($data);
             } else {
                 $configuration = Configuration::create($data);
             }
-            return response()->json($configuration, 200);
-        } catch (\Throwable $th) {
-            return response()->json(["errors" => ['database' => $th]], 500);
+
+            return response()->json($path_file, 200);
+        } catch (\Exception $e) {
+            return response()->json(["errors" => ['database' => $e->getMessage()]], 500);
         }
     }
-
 }

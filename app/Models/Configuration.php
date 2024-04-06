@@ -10,6 +10,7 @@ class Configuration extends Model
     use HasFactory;
 
     protected $fillable = [
+        'logo_path',
         'index_reception',
         'index_reception_reference',
         'currency',

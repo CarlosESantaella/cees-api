@@ -7,10 +7,15 @@ use App\Models\Client;
 use App\Models\Reception;
 use Illuminate\Http\Request;
 use App\Models\Configuration;
+use PHPMailer\PHPMailer\SMTP;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Exports\ReceptionsExport;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
@@ -82,7 +87,7 @@ class ReceptionsController extends Controller
                 foreach ($photos as $index => $photo) {
                     if ($photo->isValid()) {
                         $path_file = Storage::putFile('public/receptions/photos', $photo);
-                        $path_file = str_replace('public/', env('SITE_URL') . '/public/storage/', $path_file);
+                        $path_file = str_replace('public/', env('SITE_URL') . '/storage/', $path_file);
                         $data['photos'][] = $path_file;
                     }
                 }
@@ -100,7 +105,9 @@ class ReceptionsController extends Controller
             $configuration->update(['index_reception_reference' => $configuration['index_reception_reference']  + 1]);
 
             $reception = Reception::create($data);
+
             return response()->json($reception, 201);
+
         } catch (\Throwable $th) {
             return response()->json(["errors" => ['database' => $th->getMessage()]], 500);
         }
@@ -202,7 +209,7 @@ class ReceptionsController extends Controller
         foreach ($photos_file as $index => $photo) {
             if ($photo->isValid()) {
                 $path_file = Storage::putFile('public/receptions/photos', $photo);
-                $path_file = str_replace('public/', env('SITE_URL') . '/public/storage/', $path_file);
+                $path_file = str_replace('public/', env('SITE_URL') . '/storage/', $path_file);
                 $data['photos'][] = $path_file;
             }
         }
@@ -244,10 +251,62 @@ class ReceptionsController extends Controller
         if ($perm == "Own") $reception = Reception::where('id', $id)
             ->where('user_id', $user_auth->owner ?? $user_auth->id)
             ->firstOrFail();
+        $configuration = Configuration::where(
+                'user_id',
+                $user_auth->owner ?? $user_auth->id
+            )->first();
         $client = Client::where('id', $reception['client_id'])->firstOrFail();
-        $pdf = Pdf::loadView('pdf.reception', ["reception" => $reception, "client" => $client, "pdf" => true]);
+        $pdf = Pdf::loadView('pdf.reception', ["reception" => $reception, "client" => $client, "pdf" => true, 'configurations' => $configuration]);
         $name_file = 'reception_' . $id . '.pdf';
         return $pdf->download($name_file);
+    }
+
+    public function sendMailReport(Request $request, string $id)
+    {
+        try{
+            $perm = ProfileController::getPermissionByName("MANAGE RECEPTIONS");
+            $user_auth = Auth::user();
+            $reception = false;
+            if ($perm == "All") $reception = Reception::findOrFail($id);
+            if ($perm == "Own") $reception = Reception::where('id', $id)
+                ->where('user_id', $user_auth->owner ?? $user_auth->id)
+                ->firstOrFail();
+            $configuration = Configuration::where(
+                    'user_id',
+                    $user_auth->owner ?? $user_auth->id
+                )->first();
+            $client = Client::where('id', $reception['client_id'])->firstOrFail();
+            $pdf = Pdf::loadView('pdf.reception', ["reception" => $reception, "client" => $client, "pdf" => true, 'configurations' => $configuration]);
+            $file_to_attach = 'temp_file.pdf';
+            file_put_contents($file_to_attach, $pdf->output());
+            
+            
+            $mail = new PHPMailer(true);
+
+
+            // Configuración del servidor SMTP de Gmail
+            $mail->isSMTP();
+            // $mail->Host = 'smtp.titan.email';
+            $mail->CharSet = 'UTF-8';
+            $mail->Host = env('MAIL_HOST');
+            $mail->SMTPAuth = true;
+            $mail->Port = env('MAIL_PORT');
+            $mail->SMTPSecure = 'tls';
+            $mail->Username = env('MAIL_USERNAME');
+            $mail->Password = env('MAIL_PASSWORD');
+
+            $mail->addAttachment($file_to_attach, 'reporte.pdf');
+
+            $mail->setFrom(env('MAIL_USERNAME'), 'información');
+            $mail->addAddress($reception->client()->first()->email, 'información');
+            $mail->Subject = 'Información';
+            $mail->Body = " ";
+            $mail->send();
+
+            return response()->json('mensaje enviado con exito', 201);
+        } catch (\Exception $e) {
+            return response()->json(["errors" => ['email' => $e->getMessage()]], 500);
+        }
     }
 
     public function exportExcel(Request $request)

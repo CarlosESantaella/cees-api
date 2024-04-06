@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserStorePostRequest;
+use App\Models\Configuration;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -33,11 +34,17 @@ class UserController extends Controller
             $data['owner'] = ($is_super_admin) ? null : Auth::user()->owner ?? Auth::user()->id;
             $data['profile'] = ($is_super_admin) ? env('ID_PROFILE_ADMIN', 2) : $data['profile'];
             $perm = ProfileController::getPermissionByName("MANAGE USERS");
+            
             // If profile is Super Admin or Admin
             if (in_array($data['profile'], [env('ID_PROFILE_SUPER_ADMIN', 1), env('ID_PROFILE_ADMIN', 2)]) && $perm == "Own") {
                 return response()->json(["errors" => ['profile' => 'No tiene permisos para asignar este perfil']], 403);
             }
+
             $user = User::create($data);
+            if($data['profile'] == 2){
+                Configuration::create(['user_id' => $user->id]);
+            }
+            
             return response()->json($user, 201);
         } catch (\Throwable $th) {
             if (Str::contains($th->getMessage(), 'Duplicate entry') && Str::contains($th->getMessage(), 'users_username_unique')) {
