@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('failure_modes', function (Blueprint $table) {
             $table->id();
             $table->string('failure_mode');
+            $table->foreignId('user_id')->constrained()
+                        ->onUpdate('cascade')
+                        ->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -13,6 +13,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReceptionsController;
 use App\Http\Controllers\ConfigurationsController;
+use App\Http\Controllers\FailureModesController;
 
 /*
 |--------------------------------------------------------------------------
