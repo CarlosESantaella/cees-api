@@ -13,6 +13,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReceptionsController;
 use App\Http\Controllers\ConfigurationsController;
+use App\Http\Controllers\DiagnosesController;
 use App\Http\Controllers\FailureModesController;
 
 /*
@@ -82,6 +83,11 @@ Route::middleware('jwt.verify')->group(function () {
     // Failure Modes
     Route::middleware('permission:MANAGE FAILURE MODES')->group(function () {
         Route::apiResource('failure-modes', FailureModesController::class);
+    });
+
+    // Failure Diagnoses
+    Route::middleware('permission:MANAGE DIAGNOSES AND QUOTES')->group(function () {
+        Route::apiResource('diagnoses', DiagnosesController::class);
     });
 
 

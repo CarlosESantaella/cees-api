@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use \Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class FailureModeRequest extends FormRequest
+class DiagnosesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,16 +24,22 @@ class FailureModeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'failure_mode' => 'string|max:120|required',
+            'status' => 'required|boolean',
+            'description' => 'required|string',
+            'reception_id' => 'required|integer|exists:receptions,id'
         ];
     }
 
     public function messages(): array
     {
         return [
-            'failure_mode.required' => 'El campo modo de falla es obligatorio.',
-            'failure_mode.string' => 'El campo modo de falla debe ser una cadena de caracteres.',
-            'failure_mode.max' => 'El campo modo de falla no debe ser mayor a 120 caracteres.',
+            'status.required' => 'El campo estado es obligatorio.',
+            'status.boolean' => 'El campo estado debe ser un valor booleano.',
+            'description.required' => 'El campo descripción es obligatorio.',
+            'description.string' => 'El campo descripción debe ser una cadena de caracteres.',
+            'reception_id.required' => 'El campo recepción es obligatorio.',
+            'reception_id.integer' => 'El campo recepción debe ser un número entero.',
+            'reception_id.exists' => 'El campo recepción no existe en la base de datos.'
         ];
     }
 
