@@ -88,6 +88,7 @@ Route::middleware('jwt.verify')->group(function () {
     // Failure Diagnoses
     Route::middleware('permission:MANAGE DIAGNOSES AND QUOTES')->group(function () {
         Route::apiResource('diagnoses', DiagnosesController::class);
+        Route::patch('diagnoses/{id}/status/{status}', [DiagnosesController::class, 'updateStatus']);
     });
 
 

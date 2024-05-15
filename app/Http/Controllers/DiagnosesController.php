@@ -29,7 +29,7 @@ class DiagnosesController extends Controller
      */
     public function index()
     {
-        $perm = ProfileController::getPermissionByName("MANAGE FAILURE MODES");
+        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES AND QUOTES");
         $user_auth = Auth::user();
         if ($perm == "All") return Diagnoses::all();
         if ($perm == "Own") return Diagnoses::where('user_id', $user_auth->owner ?? $user_auth->id)->get();
@@ -55,7 +55,7 @@ class DiagnosesController extends Controller
      */
     public function show(string $id)
     {
-        $perm = ProfileController::getPermissionByName("MANAGE FAILURE MODES");
+        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES AND QUOTES");
         $user_auth = Auth::user();
         return $this->get_by_id_and_perms($id, $perm, $user_auth);
     }
@@ -65,7 +65,7 @@ class DiagnosesController extends Controller
      */
     public function update(DiagnosesRequest $request, string $id)
     {
-        $perm = ProfileController::getPermissionByName("MANAGE FAILURE MODES");
+        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES AND QUOTES");
         $user_auth = Auth::user();
         $diagnoses = $this->get_by_id_and_perms($id, $perm, $user_auth);
 
@@ -87,10 +87,23 @@ class DiagnosesController extends Controller
      */
     public function destroy(string $id)
     {
-        $perm = ProfileController::getPermissionByName("MANAGE FAILURE MODES");
+        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES AND QUOTES");
         $user_auth = Auth::user();
         $diagnoses = $this->get_by_id_and_perms($id, $perm, $user_auth);
         $diagnoses->delete();
+        return response()->json(null, 204);
+    }
+
+    /**
+     * Change status diagnoses.
+     */
+    public function updateStatus(string $id, bool $status)
+    {
+        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES AND QUOTES");
+        $user_auth = Auth::user();
+        $diagnoses = $this->get_by_id_and_perms($id, $perm, $user_auth);
+        $diagnoses->status = $status;
+        $diagnoses->save();
         return response()->json(null, 204);
     }
 }
