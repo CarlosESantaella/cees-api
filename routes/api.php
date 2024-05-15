@@ -78,5 +78,10 @@ Route::middleware('jwt.verify')->group(function () {
         Route::apiResource('items', ItemsController::class);
     });
 
+    // Failure Modes
+    Route::middleware('permission:MANAGE FAILURE MODES')->group(function () {
+        Route::apiResource('failure-modes', FailureModesController::class);
+    });
+
 
 });
