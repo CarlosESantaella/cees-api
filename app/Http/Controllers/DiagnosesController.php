@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DiagnosesFileRequest;
 use App\Http\Requests\DiagnosesRequest;
 use App\Models\Diagnoses;
+use App\Models\DiagnosesFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class DiagnosesController extends Controller
 {
@@ -106,4 +109,5 @@ class DiagnosesController extends Controller
         $diagnoses->save();
         return response()->json(null, 204);
     }
+
 }

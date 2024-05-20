@@ -16,4 +16,9 @@ class Diagnoses extends Model
         'user_id'
     ];
 
+    public function files()
+    {
+        return $this->hasMany(DiagnosesFile::class);
+    }
+ 
 }

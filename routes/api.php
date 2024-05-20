@@ -14,6 +14,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReceptionsController;
 use App\Http\Controllers\ConfigurationsController;
 use App\Http\Controllers\DiagnosesController;
+use App\Http\Controllers\DiagnosesFilesController;
 use App\Http\Controllers\FailureModesController;
 
 /*
@@ -85,11 +86,20 @@ Route::middleware('jwt.verify')->group(function () {
         Route::apiResource('failure-modes', FailureModesController::class);
     });
 
-    // Failure Diagnoses
+    // Diagnoses 
     Route::middleware('permission:MANAGE DIAGNOSES AND QUOTES')->group(function () {
         Route::apiResource('diagnoses', DiagnosesController::class);
         Route::patch('diagnoses/{id}/status/{status}', [DiagnosesController::class, 'updateStatus']);
     });
 
+    // Diagnoses Files
+    Route::middleware('permission:MANAGE DIAGNOSES AND QUOTES')->group(function () {
+        Route::get('diagnoses/{diagnoses_id}/files', [DiagnosesFilesController::class, 'index']);
+        Route::get('diagnoses/{diagnoses_id}/files/{file_id}', [DiagnosesFilesController::class, 'index']);
+        Route::post('diagnoses/{diagnoses_id}/upload-file', [DiagnosesFilesController::class, 'uploadFile']);
+        Route::delete('diagnoses/{diagnoses_id}/files/{file_id}', [DiagnosesFilesController::class, 'destroy']);
+    });
+
+    
 
 });
