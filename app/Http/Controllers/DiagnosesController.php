@@ -20,6 +20,7 @@ class DiagnosesController extends Controller
         if ($perm == "Own") {
             $diagnoses = Diagnoses::where('id', $id)
                             ->where('user_id', $user_auth->owner ?? $user_auth->id)
+                            ->with('files')->with('failure_modes')
                             ->firstOrFail();
         }else if ($perm == "All") {
             $diagnoses = Diagnoses::findOrFail($id);
@@ -34,8 +35,8 @@ class DiagnosesController extends Controller
     {
         $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES AND QUOTES");
         $user_auth = Auth::user();
-        if ($perm == "All") return Diagnoses::all();
-        if ($perm == "Own") return Diagnoses::where('user_id', $user_auth->owner ?? $user_auth->id)->get();
+        if ($perm == "All") return Diagnoses::with('files')->with('failure_modes')->all();
+        if ($perm == "Own") return Diagnoses::where('user_id', $user_auth->owner ?? $user_auth->id)->with('files')->with('failure_modes')->get();
     }
 
     /**

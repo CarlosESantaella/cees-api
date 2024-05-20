@@ -20,5 +20,10 @@ class Diagnoses extends Model
     {
         return $this->hasMany(DiagnosesFile::class);
     }
+
+    public function failure_modes()
+    {
+        return $this->hasMany(FailureModesDiagnoses::class);
+    }
  
 }

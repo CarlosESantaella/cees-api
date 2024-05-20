@@ -16,6 +16,7 @@ use App\Http\Controllers\ConfigurationsController;
 use App\Http\Controllers\DiagnosesController;
 use App\Http\Controllers\DiagnosesFilesController;
 use App\Http\Controllers\FailureModesController;
+use App\Http\Controllers\FailureModesDiagnosesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -92,6 +93,11 @@ Route::middleware('jwt.verify')->group(function () {
         Route::patch('diagnoses/{id}/status/{status}', [DiagnosesController::class, 'updateStatus']);
     });
 
+    // Failure Modes Diagnoses
+    Route::middleware('permission:MANAGE DIAGNOSES AND QUOTES')->group(function () {
+        Route::put('diagnoses/{diagnoses_id}/failure-modes', [FailureModesDiagnosesController::class, 'update']);
+    });
+
     // Diagnoses Files
     Route::middleware('permission:MANAGE DIAGNOSES AND QUOTES')->group(function () {
         Route::get('diagnoses/{diagnoses_id}/files', [DiagnosesFilesController::class, 'index']);
@@ -99,7 +105,5 @@ Route::middleware('jwt.verify')->group(function () {
         Route::post('diagnoses/{diagnoses_id}/upload-file', [DiagnosesFilesController::class, 'uploadFile']);
         Route::delete('diagnoses/{diagnoses_id}/files/{file_id}', [DiagnosesFilesController::class, 'destroy']);
     });
-
-    
 
 });
