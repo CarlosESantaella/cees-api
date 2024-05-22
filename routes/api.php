@@ -18,6 +18,7 @@ use App\Http\Controllers\DiagnosesFilesController;
 use App\Http\Controllers\DiagnosesItemsController;
 use App\Http\Controllers\FailureModesController;
 use App\Http\Controllers\FailureModesDiagnosesController;
+use App\Http\Controllers\PhotosItemsDiagnosesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -112,6 +113,14 @@ Route::middleware('jwt.verify')->group(function () {
         Route::post('diagnoses/{diagnoses_id}/items', [DiagnosesItemsController::class, 'store']);
         Route::put('diagnoses/{diagnoses_id}/items/{item_id}', [DiagnosesItemsController::class, 'update']);
         Route::delete('diagnoses/{diagnoses_id}/items/{item_id}', [DiagnosesItemsController::class, 'destroy']);
+    });
+
+    // Photos Items Diagnoses
+    Route::middleware('permission:MANAGE DIAGNOSES AND QUOTES')->group(function () {
+        Route::get('diagnoses/{diagnoses_id}/items/{item_id}/photos', [PhotosItemsDiagnosesController::class, 'index']);
+        Route::get('diagnoses/{diagnoses_id}/items/{item_id}/photos/{photo_id}', [PhotosItemsDiagnosesController::class, 'show']);
+        Route::post('diagnoses/{diagnoses_id}/items/{item_id}/photos', [PhotosItemsDiagnosesController::class, 'store']);
+        Route::delete('diagnoses/{diagnoses_id}/items/{item_id}/photos/{photo_id}', [PhotosItemsDiagnosesController::class, 'destroy']);
     });
 
 });
