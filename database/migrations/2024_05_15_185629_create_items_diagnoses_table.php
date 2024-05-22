@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('items_diagnoses', function (Blueprint $table) {
             $table->id();
+            $table->integer('quantity');
             $table->foreignId('diagnoses_id')
                     ->constrained()
                     ->onUpdate('cascade')
