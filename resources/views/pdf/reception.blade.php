@@ -23,6 +23,9 @@
             padding: 5px;
             width: 100%;
         }
+        .w-100{
+            width: 100%;
+        }
         .header td {
             text-align: center;
         }
@@ -84,17 +87,17 @@
     </style>
 </head>
 <body>
-    <table class="header table-content">
+    <table class="header w-100" style="margin-bottom: 15px;">
         <thead>
             <tr>
                 <td>
                     @if(!$pdf) 
                     <img src="{{asset('vero-internet.png')}}" width="120">
                     @else
-                    <img src="data:image/svg+xml;base64,<?php echo base64_encode(file_get_contents(base_path(str_replace(env('SITE_URL'), "/public", str_replace(['\\', ' '], '', trim($configurations->logo_path)))))); ?>" width="120">
+                    <img src="data:image/svg+xml;base64,<?php echo base64_encode(file_get_contents(base_path(str_replace(env('SITE_URL'), "/public", str_replace(['\\', ' '], '', trim($configurations->logo_path)))))); ?>" style="width: 770px; object-fit: cover; object-position: center;">
                     @endif
-                    <h1 style="font-size: 1rem; margin-bottom: 5px">Vero Internet Corporation LTDA</h1>
-                    <p style="font-size: 0.9rem">São Sebastião do Caí – RS <br>Rua Coronel Paulino Teixeira, 915, sala 02 – Centro</p>
+                    {{-- <h1 style="font-size: 1rem; margin-bottom: 5px">Vero Internet Corporation LTDA</h1>
+                    <p style="font-size: 0.9rem">São Sebastião do Caí – RS <br>Rua Coronel Paulino Teixeira, 915, sala 02 – Centro</p> --}}
                 </td>
             </tr>
         </thead>

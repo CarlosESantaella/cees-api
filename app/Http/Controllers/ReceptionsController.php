@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Client;
 use App\Models\Reception;
 use Illuminate\Http\Request;
@@ -14,8 +15,8 @@ use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
@@ -266,6 +267,7 @@ class ReceptionsController extends Controller
         try{
             $perm = ProfileController::getPermissionByName("MANAGE RECEPTIONS");
             $user_auth = Auth::user();
+            $owner = ($user_auth->owner != null)? User::where('id', $user_auth->id)->first()->owner_data()->first() : $user_auth;
             $reception = false;
             if ($perm == "All") $reception = Reception::findOrFail($id);
             if ($perm == "Own") $reception = Reception::where('id', $id)

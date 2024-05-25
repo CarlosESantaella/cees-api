@@ -60,7 +60,7 @@ class ConfigurationsController extends Controller
                     Storage::makeDirectory($dir_path);
                 }
                 if($configuration->logo_path){
-                    Storage::delete('public/configurations/logos/'.$configuration->logo_path);
+                    Storage::delete('public/configurations/logos/'.pathinfo($configuration->logo_path, PATHINFO_BASENAME));
                 }
                 //save logo
                 $path_file = Storage::putFile($dir_path, $logo);
@@ -79,7 +79,7 @@ class ConfigurationsController extends Controller
                 $configuration = Configuration::create($data);
             }
 
-            return response()->json($path_file, 200);
+            return response()->json($configuration, 200);
         } catch (\Exception $e) {
             return response()->json(["errors" => ['database' => $e->getMessage()]], 500);
         }
