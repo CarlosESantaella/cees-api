@@ -25,6 +25,7 @@ class ProfileController extends Controller
         "MANAGE RECEPTIONS" => "None",
         "MANAGE RATES" => "None",
         "MANAGE ITEMS" => "None",
+        "MANAGE FAILURE MODES" => "None",
     ];
 
     public $restricted_permissions = [
@@ -32,6 +33,7 @@ class ProfileController extends Controller
         'MANAGE REQUEST' => "None",
         "MANAGE SERVICES" => "None",
         "MANAGE DIAGNOSES AND QUOTES" => "None",
+        "MANAGE FAILURE MODES" => "None",
         "MANAGE INVENTORY" => "None",
         "MANAGE ORDERS" => "None",
         "MANAGE CONFIGURATIONS" => "None",
