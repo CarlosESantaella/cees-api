@@ -14,4 +14,9 @@ class FailureModesDiagnoses extends Model
         'failure_modes_id'
     ];
 
+
+    public function failureMode(){
+        return $this->belongsTo(FailureMode::class, 'failure_modes_id', 'id');
+    }
+
 }

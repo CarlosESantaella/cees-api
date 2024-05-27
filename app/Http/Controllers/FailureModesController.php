@@ -63,8 +63,9 @@ class FailureModesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(FailureModeRequest $request, string $id)
+    public function update(string $id, FailureModeRequest $request)
     {
+        return response()->json($request->all(), 200);
         $perm = ProfileController::getPermissionByName("MANAGE FAILURE MODES");
         $user_auth = Auth::user();
         $failure_mode = $this->get_by_id_and_perms($id, $perm, $user_auth);

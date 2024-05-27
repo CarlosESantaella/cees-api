@@ -24,8 +24,7 @@ class DiagnosesFileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'filename' => 'required|string',
-            'file' => 'required|file|mimes:xlsx,xls,pdf|max:10000',
+            'file' => 'file|mimes:xlsx,xls,pdf',
         ];
     }
 

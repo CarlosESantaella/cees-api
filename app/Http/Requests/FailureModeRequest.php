@@ -24,7 +24,7 @@ class FailureModeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'failure_mode' => 'string|max:120|required',
+            'failure_mode' => 'required',
         ];
     }
 
@@ -37,8 +37,4 @@ class FailureModeRequest extends FormRequest
         ];
     }
 
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json(['errors' => $validator->errors()], 422));
-    }
 }

@@ -23,7 +23,8 @@ class FailureModesDiagnosesController extends Controller
 
         $this->create_failure_modes_diagnoses($diagnoses->id, $request->failure_modes);
 
-        $failure_modes_diagnoses = FailureModesDiagnoses::where('diagnoses_id', $diagnoses->id)->get();
+        $failure_modes_diagnoses = FailureModesDiagnoses::where('diagnoses_id', $diagnoses->id)->with('failureMode')->get();
+        
 
         return response()->json($failure_modes_diagnoses, 200);
     }
