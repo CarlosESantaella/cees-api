@@ -15,4 +15,10 @@ class ItemsDiagnoses extends Model
         'quantity',
     ];
 
+
+    public function item()
+    {
+        $this->belongsTo(Item::class, 'item_id', 'id');
+    }
+
 }
