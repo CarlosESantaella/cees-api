@@ -117,10 +117,8 @@ Route::middleware('jwt.verify')->group(function () {
 
     // Photos Items Diagnoses
     Route::middleware('permission:MANAGE DIAGNOSES AND QUOTES')->group(function () {
-        Route::get('diagnoses/{diagnoses_id}/items/{item_id}/photos', [PhotosItemsDiagnosesController::class, 'index']);
-        Route::get('diagnoses/{diagnoses_id}/items/{item_id}/photos/{photo_id}', [PhotosItemsDiagnosesController::class, 'show']);
-        Route::post('diagnoses/{diagnoses_id}/items/{item_id}/photos', [PhotosItemsDiagnosesController::class, 'store']);
-        Route::delete('diagnoses/{diagnoses_id}/items/{item_id}/photos/{photo_id}', [PhotosItemsDiagnosesController::class, 'destroy']);
+        Route::get('diagnoses/{diagnoses_id}/items/photos', [PhotosItemsDiagnosesController::class, 'index']);
+        Route::post('diagnoses/{diagnoses_id}/items/photos', [PhotosItemsDiagnosesController::class, 'store']);
     });
 
 });

@@ -17,64 +17,50 @@ class PhotosItemsDiagnosesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(String $diagnoses_id, String $item_id)
+    public function index(String $diagnoses_id)
     {
         $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES AND QUOTES");
         $user_auth = Auth::user();
         $diagnoses_controller = new DiagnosesController;
         $diagnoses = $diagnoses_controller->get_by_id_and_perms($diagnoses_id, $perm, $user_auth);
-        $photos = PhotosItemsDiagnoses::where('diagnoses_id', $diagnoses->id)->where('item_id', $item_id)->get();
+        $photos = PhotosItemsDiagnoses::where('diagnoses_id', $diagnoses->id)->get();
         return response()->json($photos, 200);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $diagnoses_id, string $item_id, string $photo_id)
-    {
-        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES AND QUOTES");
-        $user_auth = Auth::user();
-        $diagnoses_controller = new DiagnosesController;
-        $diagnoses = $diagnoses_controller->get_by_id_and_perms($diagnoses_id, $perm, $user_auth);
-        $photo = PhotosItemsDiagnoses::where('diagnoses_id', $diagnoses->id)->where('id', $photo_id)->where('item_id', $item_id)->firstOrFail();
-        return response()->json($photo, 200);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(string $diagnoses_id, string $item_id, PhotoItemsDiagnosesRequest $request)
+    public function store(string $diagnoses_id, Request $request)
     {
         $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES AND QUOTES");
         $user_auth = Auth::user();
         $diagnoses_controller = new DiagnosesController;
         $diagnoses = $diagnoses_controller->get_by_id_and_perms($diagnoses_id, $perm, $user_auth);
-        $description = $request->description;
-        $file = $request->file('photo');
-        $path_file = Storage::putFile('public/diagnoses/items/photos', $file);
-        $path_file = str_replace('public/', env('SITE_URL') . '/public/storage/', $path_file);
-        $diagnoses_file = PhotosItemsDiagnoses::create([
-            'diagnoses_id' => $diagnoses->id,
-            'item_id' => $item_id,
-            'description' => $description,
-            'photo' => $path_file,
-        ]);
 
-        return response()->json($diagnoses_file, 201);
-    }
+        PhotosItemsDiagnoses::where('diagnoses_id', $diagnoses->id)->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $diagnoses_id, string $item_id, string $photo_id
-    ) {
-        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES AND QUOTES");
-        $user_auth = Auth::user();
-        $diagnoses_controller = new DiagnosesController;
-        $diagnoses = $diagnoses_controller->get_by_id_and_perms($diagnoses_id, $perm, $user_auth);
-        $photo = PhotosItemsDiagnoses::where('diagnoses_id', $diagnoses->id)->where('id', $photo_id)->where('item_id', $item_id)->firstOrFail();
-        $photo->delete();
-        return response()->json(null, 204);
+        // Files
+        $data = $request->only(['items']);
+        $items = $data['items'];
+
+        $photos = $request->file('photos');
+        if ($photos) {
+            foreach ($photos as $index => $photo) {
+                if ($photo->isValid()) {
+                    $path_file = Storage::putFile('public/diagnoses/items/photo', $photo);
+                    $path_file = str_replace('public/', env('SITE_URL') . '/public/storage/', $path_file);
+                    PhotosItemsDiagnoses::create([
+                        'diagnoses_id' => $diagnoses->id,
+                        'item_id' => $items[$index],
+                        'description' => '',
+                        'photo' => $path_file,
+                    ]);
+                }
+            }
+        }
+
+        $photos_items = PhotosItemsDiagnoses::where('diagnoses_id', $diagnoses->id)->get();
+        return response()->json($photos_items, 201);
     }
 
 }
