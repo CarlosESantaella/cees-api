@@ -14,10 +14,16 @@ use Illuminate\Support\Facades\Storage;
 class DiagnosesItemsController extends Controller
 {
 
+    public function index(string $diagnostic_id)
+    {
+        $diagnosticItems = ItemsDiagnoses::where('diagnoses_id', $diagnostic_id)->get();
+        return response()->json($diagnosticItems, 200);
+    }
+
     /**
      * Store the resource.
      */
-    public function store(String $diagnoses_id, Request $request)
+    public function store(string $diagnoses_id, Request $request)
     {
         $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES AND QUOTES");
         $user_auth = Auth::user();
