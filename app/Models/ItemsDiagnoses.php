@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Item;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ItemsDiagnoses extends Model
 {
@@ -18,7 +19,7 @@ class ItemsDiagnoses extends Model
 
     public function item()
     {
-        $this->belongsTo(Item::class, 'item_id', 'id');
+        return $this->belongsTo(Item::class, 'item_id', 'id');
     }
 
 }

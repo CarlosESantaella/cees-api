@@ -20,7 +20,10 @@ class DiagnosesItemsController extends Controller
         $diagnoses_controller = new DiagnosesController;
         $user_auth = Auth::user();
         $diagnoses = $diagnoses_controller->get_by_id_and_perms($diagnostic_id, $perm, $user_auth);
-        $diagnosticItems = ItemsDiagnoses::where('diagnoses_id', $diagnoses->id)->get();
+        $diagnosticItems = ItemsDiagnoses::where('diagnoses_id', $diagnoses->id)->with('item')->get();
+
+
+
         return response()->json($diagnosticItems, 200);
     }
 
