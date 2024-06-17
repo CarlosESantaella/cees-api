@@ -16,4 +16,9 @@ class PhotosItemsDiagnoses extends Model
         'description'
     ];
 
+    public function item()
+    {
+        return $this->belongsTo(Item::class, 'item_id', 'id');
+    }
+
 }

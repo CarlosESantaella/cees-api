@@ -13,7 +13,8 @@ class Diagnoses extends Model
         'status',
         'description',
         'reception_id',
-        'user_id'
+        'user_id',
+        'observations'
     ];
 
     public function files()

@@ -26,6 +26,7 @@ class DiagnosesRequest extends FormRequest
         return [
             'status' => 'required|boolean',
             'description' => 'required|string',
+            'observations' => 'nullable|string',
             'reception_id' => 'required|integer|exists:receptions,id'
         ];
     }
@@ -39,7 +40,8 @@ class DiagnosesRequest extends FormRequest
             'description.string' => 'El campo descripción debe ser una cadena de caracteres.',
             'reception_id.required' => 'El campo recepción es obligatorio.',
             'reception_id.integer' => 'El campo recepción debe ser un número entero.',
-            'reception_id.exists' => 'El campo recepción no existe en la base de datos.'
+            'reception_id.exists' => 'El campo recepción no existe en la base de datos.',
+            'observations.string' => 'El campo observaciones debe ser una cadena de caracteres.'
         ];
     }
 

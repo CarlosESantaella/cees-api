@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->boolean('status');
             $table->string('description');
+            $table->string('observations')->nullable();
             $table->foreignId('reception_id')
                     ->constrained()
                     ->onUpdate('cascade')

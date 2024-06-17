@@ -45,7 +45,7 @@ class DiagnosesController extends Controller
     public function store(DiagnosesRequest $request)
     {
         try {
-            $data = $request->only(['status', 'description', 'reception_id']);
+            $data = $request->only(['status', 'description', 'reception_id', 'observations']);
             $data['user_id'] = (Auth::user()->profile != 1) ? Auth::user()->owner ?? Auth::user()->id : null;
             $diagnoses = Diagnoses::create($data);
             return response()->json($diagnoses, 201);
@@ -73,7 +73,7 @@ class DiagnosesController extends Controller
         $user_auth = Auth::user();
         $diagnoses = $this->get_by_id_and_perms($id, $perm, $user_auth);
 
-        $data = $request->only(['status', 'description', 'reception_id']);
+        $data = $request->only(['status', 'description', 'reception_id', 'observations']);
 
         $data['user_id'] = (Auth::user()->profile != 1) ? Auth::user()->owner ?? Auth::user()->id : null;
 

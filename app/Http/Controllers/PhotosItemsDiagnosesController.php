@@ -21,10 +21,10 @@ class PhotosItemsDiagnosesController extends Controller
     public function index(String $diagnoses_id)
     {
         $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES AND QUOTES");
-        $user_auth = Auth::user();
+        $user_auth = Auth::user(); 
         $diagnoses_controller = new DiagnosesController;
         $diagnoses = $diagnoses_controller->get_by_id_and_perms($diagnoses_id, $perm, $user_auth);
-        $photos = PhotosItemsDiagnoses::where('diagnoses_id', $diagnoses->id)->get();
+        $photos = PhotosItemsDiagnoses::where('diagnoses_id', $diagnoses->id)->with('item')->get();
 
         return response()->json($photos, 200);
     }
