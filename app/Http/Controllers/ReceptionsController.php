@@ -21,6 +21,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\ReceptionsPostRequest;
+use App\Models\Diagnoses;
 
 class ReceptionsController extends Controller
 {
@@ -117,10 +118,12 @@ class ReceptionsController extends Controller
     {
         $perm = ProfileController::getPermissionByName("MANAGE RECEPTIONS");
         $user_auth = Auth::user();
-        if ($perm == "All") return Reception::findOrFail($id);
-        if ($perm == "Own") return Reception::where('id', $id)
+        if ($perm == "All") $reception = Reception::findOrFail($id); 
+        if ($perm == "Own") $reception = Reception::where('id', $id)
             ->where('user_id', $user_auth->owner ?? $user_auth->id)
             ->firstOrFail();
+        $reception['diagnoses'] = Diagnoses::all()->where('reception_id', $reception['id']);
+        return $reception;
     }
 
     /**
