@@ -145,6 +145,7 @@ class ReceptionsController extends Controller
                     $query->where('location', $location)
                         ->where('specific_location', $specific_location);
                 })
+                ->with('diagnosis')
                 ->first();
         }
         if ($perm == "Own") {
@@ -155,6 +156,7 @@ class ReceptionsController extends Controller
                         ->where('specific_location', $specific_location);
                 })
                 ->orWhere('customer_inventory', $customer_inventory)
+                ->with('diagnosis')
                 ->first();
         }
         $reception['exists'] = $reception ? true : false;

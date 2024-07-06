@@ -35,4 +35,9 @@ class Reception extends Model
         return $this->belongsTo(Client::class);
     }
 
+    public function diagnosis()
+    {
+        return $this->hasOne(Diagnoses::class, 'reception_id');
+    }
+
 }

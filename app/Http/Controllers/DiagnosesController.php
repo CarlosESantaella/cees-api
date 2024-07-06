@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\DiagnosesFileRequest;
-use App\Http\Requests\DiagnosesRequest;
+use Carbon\Carbon;
 use App\Models\Diagnoses;
-use App\Models\DiagnosesFile;
 use Illuminate\Http\Request;
+use App\Models\DiagnosesFile;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\DiagnosesRequest;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\DiagnosesFileRequest;
 
 class DiagnosesController extends Controller
 {
@@ -47,6 +49,7 @@ class DiagnosesController extends Controller
         try {
             $data = $request->only(['status', 'description', 'reception_id', 'observations']);
             $data['user_id'] = (Auth::user()->profile != 1) ? Auth::user()->owner ?? Auth::user()->id : null;
+            Diagnoses::where('reception_id', $data['reception_id'])->delete();
             $diagnoses = Diagnoses::create($data);
             return response()->json($diagnoses, 201);
         } catch (\Throwable $th) {
@@ -107,8 +110,9 @@ class DiagnosesController extends Controller
         $user_auth = Auth::user();
         $diagnoses = $this->get_by_id_and_perms($id, $perm, $user_auth);
         $diagnoses->status = $status;
+        $diagnoses->initial_date = Carbon::now();
         $diagnoses->save();
-        return response()->json(null, 204);
+        return response()->json($diagnoses->refresh(), Response::HTTP_OK);
     }
 
 }
