@@ -53,7 +53,7 @@ class UserController extends Controller
             if (Str::contains($th->getMessage(), 'Duplicate entry') && Str::contains($th->getMessage(), 'users_email_unique')) {
                 return response()->json(["errors" => ['email' => 'Correo electrónico duplicado']], 409);
             }
-            return response()->json(["errors" => ['database' => 'Error en la base de datos']], 500);
+            return response()->json(["errors" => ['database' => 'Error en la base de datos: '.$th->getMessage()]], 500);
         }
     }
 
