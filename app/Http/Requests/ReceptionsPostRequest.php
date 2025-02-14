@@ -24,19 +24,19 @@ class ReceptionsPostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'equipment_type' => 'string|max:120|required',
-            'brand' => 'string|max:120|required',
-            'model' => 'string|max:120|required',
-            'serie' => 'string|max:120|required',
-            'capability' => 'string|max:120|required',
-            'comments' => 'string|max:120',
+            'equipment_type' => 'string|max:120|nullable',
+            'brand' => 'string|max:120|nullable',
+            'model' => 'string|max:120|nullable',
+            'serie' => 'string|max:120|nullable',
+            'capability' => 'string|max:120|nullable',
+            'comments' => 'string|max:120|nullable',
             'state' => 'string|max:120',
             'client_id' => 'exists:clients,id|required',
-            'location' => 'string|max:120',
-            'specific_location' => 'string|max:120',
-            'type_of_job' => 'string|max:120|in:Garantia,Nuevo',
-            'equipment_owner' => 'string|max:120',
-            'customer_inventory' => 'string',
+            'location' => 'string|max:120|nullable',
+            'specific_location' => 'string|max:120|nullable',
+            'type_of_job' => 'string|max:120|in:Garantia,Nuevo|nullable',
+            'equipment_owner' => 'string|max:120|nullable',
+            'customer_inventory' => 'string|nullable',
         ];
     }
 

@@ -72,7 +72,6 @@ class ConfigurationsController extends Controller
         }
 
         try {
-
             if ($configuration) {
                 $configuration->update($data);
             } else {

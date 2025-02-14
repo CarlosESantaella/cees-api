@@ -40,4 +40,6 @@ class Reception extends Model
         return $this->hasOne(Diagnoses::class, 'reception_id');
     }
 
+
+
 }

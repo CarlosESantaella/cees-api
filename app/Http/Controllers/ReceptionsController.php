@@ -145,7 +145,7 @@ class ReceptionsController extends Controller
                     $query->where('location', $location)
                         ->where('specific_location', $specific_location);
                 })
-                ->with('diagnosis')
+                ->with('diagnosis.failure_modes.failureMode')
                 ->first();
         }
         if ($perm == "Own") {
@@ -156,7 +156,7 @@ class ReceptionsController extends Controller
                         ->where('specific_location', $specific_location);
                 })
                 ->orWhere('customer_inventory', $customer_inventory)
-                ->with('diagnosis')
+                ->with('diagnosis.failure_modes.failureMode')
                 ->first();
         }
         $reception['exists'] = $reception ? true : false;
@@ -273,13 +273,14 @@ class ReceptionsController extends Controller
             if ($perm == "All") $reception = Reception::findOrFail($id);
             if ($perm == "Own") $reception = Reception::where('id', $id)
                 ->where('user_id', $user_auth->owner ?? $user_auth->id)
-                ->firstOrFail();
+                ->first();
             $configuration = Configuration::where(
                     'user_id',
                     $user_auth->owner ?? $user_auth->id
                 )->first();
-            $client = Client::where('id', $reception['client_id'])->firstOrFail();
+            $client = Client::where('id', $reception['client_id'])->first();
             $pdf = Pdf::loadView('pdf.reception', ["reception" => $reception, "client" => $client, "pdf" => true, 'configurations' => $configuration]);
+    
             $file_to_attach = 'temp_file.pdf';
             file_put_contents($file_to_attach, $pdf->output());
             
