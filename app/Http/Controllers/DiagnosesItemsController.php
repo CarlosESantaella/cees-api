@@ -16,7 +16,7 @@ class DiagnosesItemsController extends Controller
 
     public function index(string $diagnostic_id)
     {
-        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES AND QUOTES");
+        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES");
         $diagnoses_controller = new DiagnosesController;
         $user_auth = Auth::user();
         $diagnoses = $diagnoses_controller->get_by_id_and_perms($diagnostic_id, $perm, $user_auth);
@@ -32,7 +32,7 @@ class DiagnosesItemsController extends Controller
      */
     public function update(String $diagnoses_id, Request $request)
     {
-        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES AND QUOTES");
+        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES");
         $user_auth = Auth::user();
         $diagnoses_controller = new DiagnosesController;
         $diagnoses = $diagnoses_controller->get_by_id_and_perms($diagnoses_id, $perm, $user_auth);
@@ -48,5 +48,4 @@ class DiagnosesItemsController extends Controller
         $items = ItemsDiagnoses::where('diagnoses_id', $diagnoses->id)->get();
         return response()->json($items, 200);
     }
-
 }

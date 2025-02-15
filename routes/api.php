@@ -91,18 +91,18 @@ Route::middleware('jwt.verify')->group(function () {
     });
 
     // Diagnoses 
-    Route::middleware('permission:MANAGE DIAGNOSES AND QUOTES')->group(function () {
+    Route::middleware('permission:MANAGE DIAGNOSES')->group(function () {
         Route::apiResource('diagnoses', DiagnosesController::class);
         Route::patch('diagnoses/{id}/status/{status}', [DiagnosesController::class, 'updateStatus']);
     });
 
     // Failure Modes Diagnoses
-    Route::middleware('permission:MANAGE DIAGNOSES AND QUOTES')->group(function () {
+    Route::middleware('permission:MANAGE DIAGNOSES')->group(function () {
         Route::put('diagnoses/{diagnoses_id}/failure-modes', [FailureModesDiagnosesController::class, 'update']);
     });
 
     // Diagnoses Files
-    Route::middleware('permission:MANAGE DIAGNOSES AND QUOTES')->group(function () {
+    Route::middleware('permission:MANAGE DIAGNOSES')->group(function () {
         Route::get('diagnoses/{diagnoses_id}/files', [DiagnosesFilesController::class, 'index']);
         Route::get('diagnoses/{diagnoses_id}/files/{file_id}', [DiagnosesFilesController::class, 'index']);
         Route::post('diagnoses/{diagnoses_id}/upload-file', [DiagnosesFilesController::class, 'uploadFile']);
@@ -110,13 +110,13 @@ Route::middleware('jwt.verify')->group(function () {
     });
 
     // Diagnoses Items
-    Route::middleware('permission:MANAGE DIAGNOSES AND QUOTES')->group(function () {
+    Route::middleware('permission:MANAGE DIAGNOSES')->group(function () {
         Route::get('diagnoses/{diagnoses_id}/items', [DiagnosesItemsController::class, 'index']);
         Route::put('diagnoses/{diagnoses_id}/items', [DiagnosesItemsController::class, 'update']);
     });
 
     // Photos Items Diagnoses
-    Route::middleware('permission:MANAGE DIAGNOSES AND QUOTES')->group(function () {
+    Route::middleware('permission:MANAGE DIAGNOSES')->group(function () {
         Route::get('diagnoses/{diagnoses_id}/items/photos', [PhotosItemsDiagnosesController::class, 'index']);
         Route::post('diagnoses/{diagnoses_id}/items/photos', [PhotosItemsDiagnosesController::class, 'store']);
     });

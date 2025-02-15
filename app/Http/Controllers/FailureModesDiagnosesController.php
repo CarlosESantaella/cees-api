@@ -14,17 +14,17 @@ class FailureModesDiagnosesController extends Controller
      */
     public function update(String $diagnoses_id, FailureModeDiagnosesRequest $request)
     {
-        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES AND QUOTES");
+        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES");
         $user_auth = Auth::user();
         $diagnoses_controller = new DiagnosesController;
         $diagnoses = $diagnoses_controller->get_by_id_and_perms($diagnoses_id, $perm, $user_auth);
-        
+
         FailureModesDiagnoses::where('diagnoses_id', $diagnoses->id)->delete();
 
         $this->create_failure_modes_diagnoses($diagnoses->id, $request->failure_modes);
 
         $failure_modes_diagnoses = FailureModesDiagnoses::where('diagnoses_id', $diagnoses->id)->with('failureMode')->get();
-        
+
 
         return response()->json($failure_modes_diagnoses, 200);
     }
@@ -38,5 +38,4 @@ class FailureModesDiagnosesController extends Controller
             ]);
         }
     }
-
 }

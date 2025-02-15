@@ -17,8 +17,8 @@ class UserController extends Controller
     {
         $perm = ProfileController::getPermissionByName("MANAGE USERS");
 
-        if ($perm == "All") return User::where('profile', env('ID_PROFILE_ADMIN', 2))->get();
-        if ($perm == "Own") return User::where('owner', Auth::user()->owner ?? Auth::user()->id)->get();
+        if (strtoupper($perm) == "ALL") return User::where('profile', env('ID_PROFILE_ADMIN', 2))->get();
+        if (strtoupper($perm) == "OWN") return User::where('owner', Auth::user()->owner ?? Auth::user()->id)->get();
     }
 
 
@@ -34,9 +34,6 @@ class UserController extends Controller
             $data['owner'] = ($is_super_admin) ? null : Auth::user()->owner ?? Auth::user()->id;
             $data['profile'] = ($is_super_admin) ? env('ID_PROFILE_ADMIN', 2) : $data['profile'];
             $perm = ProfileController::getPermissionByName("MANAGE USERS");
-            if (in_array($data['profile'], [env('ID_PROFILE_SUPER_ADMIN', 1), env('ID_PROFILE_ADMIN', 2)]) && $perm == "Own") {
-                return response()->json(["errors" => ['profile' => 'No tiene permisos para asignar este perfil']], 403);
-            }
             $user = User::create($data);
             if ($data['profile'] == 2) {
                 Configuration::create(['user_id' => $user->id]);
@@ -59,8 +56,8 @@ class UserController extends Controller
     public function show(string $id)
     {
         $perm = ProfileController::getPermissionByName("MANAGE USERS");
-        if ($perm == "All") return User::findOrFail($id);
-        if ($perm == "Own") return User::where('owner', Auth::user()->owner ?? Auth::user()->id)->where('id', $id)->firstOrFail();
+        if (strtoupper($perm) == "ALL") return User::findOrFail($id);
+        if (strtoupper($perm) == "OWN") return User::where('owner', Auth::user()->owner ?? Auth::user()->id)->where('id', $id)->firstOrFail();
     }
 
     /**
@@ -69,9 +66,9 @@ class UserController extends Controller
     public function update(UserStorePostRequest $request, string $id)
     {
         $perm = ProfileController::getPermissionByName("MANAGE USERS");
-        if ($perm == "Own") {
+        if (strtoupper($perm) == "OWN") {
             $user = User::where('owner', Auth::user()->owner ?? Auth::user()->id)->where('id', $id)->firstOrFail();
-        } else if ($perm == "All") {
+        } else if (strtoupper($perm) == "ALL") {
             $user = User::findOrFail($id);
         }
         $data = $request->only(['name', 'username', 'email', 'password', 'profile']);
@@ -80,7 +77,7 @@ class UserController extends Controller
         $data['owner'] = ($is_super_admin) ? null : Auth::user()->owner ?? Auth::user()->id;
         $data['profile'] = ($is_super_admin) ? env('ID_PROFILE_ADMIN', 2) : $data['profile'];
 
-        if (in_array($data['profile'], [env('ID_PROFILE_SUPER_ADMIN', 1), env('ID_PROFILE_ADMIN', 2)]) && $perm == "Own") {
+        if (in_array($data['profile'], [env('ID_PROFILE_SUPER_ADMIN', 1), env('ID_PROFILE_ADMIN', 2)]) && strtoupper($perm) == "OWN") {
             return response()->json(["errors" => ['profile' => 'No tiene permisos para asignar este perfil']], 403);
         }
         try {
@@ -100,9 +97,9 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         $perm = ProfileController::getPermissionByName("MANAGE USERS");
-        if ($perm == "Own") {
+        if (strtoupper($perm) == "OWN") {
             $user = User::where('owner', Auth::user()->owner ?? Auth::user()->id)->where('id', $id)->firstOrFail();
-        } else if ($perm == "All") {
+        } else if (strtoupper($perm) == "ALL") {
             $user = User::findOrFail($id);
         }
         $user->delete();

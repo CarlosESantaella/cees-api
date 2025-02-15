@@ -12,12 +12,13 @@ class ItemsController extends Controller
     /**
      * Get item by id and permission
      */
-    function get_item_by_id_and_perms($id, $perm, $user_auth) {
-        if ($perm == "Own") {
+    function get_item_by_id_and_perms($id, $perm, $user_auth)
+    {
+        if (strtoupper($perm) == "OWN") {
             $item = Item::where('id', $id)
-                            ->where('user_id', $user_auth->owner ?? $user_auth->id)
-                            ->firstOrFail();
-        }else if ($perm == "All") {
+                ->where('user_id', $user_auth->owner ?? $user_auth->id)
+                ->firstOrFail();
+        } else if (strtoupper($perm) == "ALL") {
             $item = Item::findOrFail($id);
         }
         return $item;
@@ -30,8 +31,8 @@ class ItemsController extends Controller
     {
         $perm = ProfileController::getPermissionByName("MANAGE ITEMS");
         $user_auth = Auth::user();
-        if ($perm == "All") return Item::all();
-        if ($perm == "Own") return Item::where('user_id', $user_auth->owner ?? $user_auth->id)->get();
+        if (strtoupper($perm) == "ALL") return Item::all();
+        if (strtoupper($perm) == "OWN") return Item::where('user_id', $user_auth->owner ?? $user_auth->id)->get();
     }
 
     /**
@@ -66,10 +67,10 @@ class ItemsController extends Controller
     {
         $perm = ProfileController::getPermissionByName("MANAGE ITEMS");
         $user_auth = Auth::user();
-        if ($perm == "All") return Item::findOrFail($id);
-        if ($perm == "Own") return Item::where('id', $id)
-                                            ->where('user_id', $user_auth->owner ?? $user_auth->id)
-                                            ->firstOrFail();
+        if (strtoupper($perm) == "ALL") return Item::findOrFail($id);
+        if (strtoupper($perm) == "OWN") return Item::where('id', $id)
+            ->where('user_id', $user_auth->owner ?? $user_auth->id)
+            ->firstOrFail();
     }
 
     /**

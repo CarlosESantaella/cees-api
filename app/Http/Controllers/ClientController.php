@@ -17,8 +17,8 @@ class ClientController extends Controller
     {
         $perm = ProfileController::getPermissionByName("MANAGE CLIENTS");
         $user_auth = Auth::user();
-        if ($perm == "All") return Client::all();
-        if ($perm == "Own") return Client::where('user_id', $user_auth->owner ?? $user_auth->id)->get();
+        if (strtoupper($perm) == "ALL") return Client::all();
+        if (strtoupper($perm) == "OWN") return Client::where('user_id', $user_auth->owner ?? $user_auth->id)->get();
     }
 
     /**
@@ -43,10 +43,10 @@ class ClientController extends Controller
     {
         $perm = ProfileController::getPermissionByName("MANAGE CLIENTS");
         $user_auth = Auth::user();
-        if ($perm == "All") return Client::findOrFail($id);
-        if ($perm == "Own") return Client::where('id', $id)
-                                            ->where('user_id', $user_auth->owner ?? $user_auth->id)
-                                            ->firstOrFail();
+        if (strtoupper($perm) == "ALL") return Client::findOrFail($id);
+        if (strtoupper($perm) == "OWN") return Client::where('id', $id)
+            ->where('user_id', $user_auth->owner ?? $user_auth->id)
+            ->firstOrFail();
     }
 
     /**
@@ -56,11 +56,11 @@ class ClientController extends Controller
     {
         $perm = ProfileController::getPermissionByName("MANAGE CLIENTS");
         $user_auth = Auth::user();
-        if ($perm == "Own") {
+        if (strtoupper($perm) == "OWN") {
             $client = Client::where('id', $id)
-                            ->where('user_id', $user_auth->owner ?? $user_auth->id)
-                            ->firstOrFail();
-        }else if ($perm == "All") {
+                ->where('user_id', $user_auth->owner ?? $user_auth->id)
+                ->firstOrFail();
+        } else if (strtoupper($perm) == "ALL") {
             $client = Client::findOrFail($id);
         }
         $data = $request->only(['full_name', 'address', 'nit', 'contact', 'cellphone', 'identification', 'city', 'cell', 'email', 'comments']);
@@ -80,11 +80,11 @@ class ClientController extends Controller
     {
         $perm = ProfileController::getPermissionByName("MANAGE USERS");
         $user_auth = Auth::user();
-        if ($perm == "Own") {
+        if (strtoupper($perm) == "OWN") {
             $client = Client::where('id', $id)
-                            ->where('user_id', $user_auth->owner ?? $user_auth->id )
-                            ->firstOrFail();
-        }else if ($perm == "All") {
+                ->where('user_id', $user_auth->owner ?? $user_auth->id)
+                ->firstOrFail();
+        } else if (strtoupper($perm) == "ALL") {
             $client = Client::findOrFail($id);
         }
         $client->delete();

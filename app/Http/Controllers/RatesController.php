@@ -16,12 +16,13 @@ class RatesController extends Controller
     /**
      * Get rate by id and permission
      */
-    function get_rate_by_id_and_perms($id, $perm, $user_auth) {
-        if ($perm == "Own") {
+    function get_rate_by_id_and_perms($id, $perm, $user_auth)
+    {
+        if (strtoupper($perm) == "OWN") {
             $rate = Rates::where('id', $id)
-                            ->where('user_id', $user_auth->owner ?? $user_auth->id)
-                            ->firstOrFail();
-        }else if ($perm == "All") {
+                ->where('user_id', $user_auth->owner ?? $user_auth->id)
+                ->firstOrFail();
+        } else if (strtoupper($perm) == "ALL") {
             $rate = Rates::findOrFail($id);
         }
         return $rate;
@@ -34,8 +35,8 @@ class RatesController extends Controller
     {
         $perm = ProfileController::getPermissionByName("MANAGE RATES");
         $user_auth = Auth::user();
-        if ($perm == "All") return Rates::all();
-        if ($perm == "Own") return Rates::where('user_id', $user_auth->owner ?? $user_auth->id)->get();
+        if (strtoupper($perm) == "ALL") return Rates::all();
+        if (strtoupper($perm) == "OWN") return Rates::where('user_id', $user_auth->owner ?? $user_auth->id)->get();
     }
 
     /**
@@ -80,10 +81,10 @@ class RatesController extends Controller
     {
         $perm = ProfileController::getPermissionByName("MANAGE RATES");
         $user_auth = Auth::user();
-        if ($perm == "All") return Rates::findOrFail($id);
-        if ($perm == "Own") return Rates::where('id', $id)
-                                            ->where('user_id', $user_auth->owner ?? $user_auth->id)
-                                            ->firstOrFail();
+        if (strtoupper($perm) == "ALL") return Rates::findOrFail($id);
+        if (strtoupper($perm) == "OWN") return Rates::where('id', $id)
+            ->where('user_id', $user_auth->owner ?? $user_auth->id)
+            ->firstOrFail();
     }
 
     /**

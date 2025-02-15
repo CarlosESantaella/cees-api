@@ -14,10 +14,10 @@ class PermissionController
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, $permission): Response
+    public function handle(Request $request, Closure $next, $perm): Response
     {
-        $perm = ProfileController::getPermissionByName($permission);
-        if ($perm != "None" && !is_null($perm)) {
+        $perm = ProfileController::getPermissionByName(strtoupper($perm));
+        if (strtoupper($perm) != "NONE" && !is_null(strtoupper($perm))) {
             return $next($request);
         }
         return response()->json(['message' => 'Acceso denegado'], 401);

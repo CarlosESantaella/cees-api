@@ -18,13 +18,14 @@ class DiagnosesController extends Controller
     /**
      * Get item by id and permission
      */
-    function get_by_id_and_perms($id, $perm, $user_auth) {
-        if ($perm == "Own") {
+    function get_by_id_and_perms($id, $perm, $user_auth)
+    {
+        if (strtoupper($perm) == "OWN") {
             $diagnoses = Diagnoses::where('id', $id)
-                            ->where('user_id', $user_auth->owner ?? $user_auth->id)
-                            ->with(['files', 'failure_modes'])
-                            ->firstOrFail();
-        }else if ($perm == "All") {
+                ->where('user_id', $user_auth->owner ?? $user_auth->id)
+                ->with(['files', 'failure_modes'])
+                ->firstOrFail();
+        } else if (strtoupper($perm) == "ALL") {
             $diagnoses = Diagnoses::findOrFail($id);
         }
         return $diagnoses;
@@ -35,10 +36,10 @@ class DiagnosesController extends Controller
      */
     public function index()
     {
-        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES AND QUOTES");
+        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES");
         $user_auth = Auth::user();
-        if ($perm == "All") return Diagnoses::with('files')->with('failure_modes.failureMode')->all();
-        if ($perm == "Own") return Diagnoses::where('user_id', $user_auth->owner ?? $user_auth->id)->with('files')->with('failure_modes.failureMode')->get();
+        if (strtoupper($perm) == "ALL") return Diagnoses::with('files')->with('failure_modes.failureMode')->all();
+        if (strtoupper($perm) == "OWN") return Diagnoses::where('user_id', $user_auth->owner ?? $user_auth->id)->with('files')->with('failure_modes.failureMode')->get();
     }
 
     /**
@@ -62,7 +63,7 @@ class DiagnosesController extends Controller
      */
     public function show(string $id)
     {
-        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES AND QUOTES");
+        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES");
         $user_auth = Auth::user();
         return $this->get_by_id_and_perms($id, $perm, $user_auth);
     }
@@ -72,7 +73,7 @@ class DiagnosesController extends Controller
      */
     public function update(DiagnosesRequest $request, string $id)
     {
-        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES AND QUOTES");
+        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES");
         $user_auth = Auth::user();
         $diagnoses = $this->get_by_id_and_perms($id, $perm, $user_auth);
 
@@ -94,7 +95,7 @@ class DiagnosesController extends Controller
      */
     public function destroy(string $id)
     {
-        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES AND QUOTES");
+        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES");
         $user_auth = Auth::user();
         $diagnoses = $this->get_by_id_and_perms($id, $perm, $user_auth);
         $diagnoses->delete();
@@ -106,7 +107,7 @@ class DiagnosesController extends Controller
      */
     public function updateStatus(string $id, bool $status)
     {
-        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES AND QUOTES");
+        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES");
         $user_auth = Auth::user();
         $diagnoses = $this->get_by_id_and_perms($id, $perm, $user_auth);
         $diagnoses->status = $status;
@@ -114,5 +115,4 @@ class DiagnosesController extends Controller
         $diagnoses->save();
         return response()->json($diagnoses->refresh(), Response::HTTP_OK);
     }
-
 }

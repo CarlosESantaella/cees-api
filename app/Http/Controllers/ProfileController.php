@@ -13,34 +13,19 @@ class ProfileController extends Controller
 {
 
     public $all_permissions = [
-        'MANAGE USERS' => "None",
-        'MANAGE PROFILES' => "None",
-        'MANAGE REQUEST' => "None",
-        "MANAGE SERVICES" => "None",
-        "MANAGE DIAGNOSES AND QUOTES" => "None",
-        "MANAGE INVENTORY" => "None",
-        "MANAGE ORDERS" => "None",
-        "MANAGE CONFIGURATIONS" => "None",
-        "MANAGE CLIENTS" => "None",
-        "MANAGE RECEPTIONS" => "None",
-        "MANAGE RATES" => "None",
-        "MANAGE ITEMS" => "None",
-        "MANAGE FAILURE MODES" => "None",
-    ];
-
-    public $restricted_permissions = [
-        'MANAGE PROFILES' => "None",
-        'MANAGE REQUEST' => "None",
-        "MANAGE SERVICES" => "None",
-        "MANAGE DIAGNOSES AND QUOTES" => "None",
-        "MANAGE FAILURE MODES" => "None",
-        "MANAGE INVENTORY" => "None",
-        "MANAGE ORDERS" => "None",
-        "MANAGE CONFIGURATIONS" => "None",
-        "MANAGE CLIENTS" => "None",
-        "MANAGE RECEPTIONS" => "None",
-        "MANAGE RATES" => "None",
-        "MANAGE ITEMS" => "None",
+        'MANAGE PROFILES' => "NONE", //página de roles
+        'MANAGE USERS' => "NONE", //página de usuarios (este permiso solo lo pide el super admin)
+        "MANAGE CLIENTS" => "NONE",  //página de clientes
+        "MANAGE RECEPTIONS" => "NONE", //página de recepciONEs
+        "MANAGE ITEMS" => "NONE", //página de items
+        "MANAGE RATES" => "NONE",  //página de tarifas
+        "MANAGE FAILURE MODES" => "NONE", //página de modos de falla
+        "MANAGE DIAGNOSES" => "NONE", //página de diagnósticos y cotizaciONEs
+        "MANAGE CONFIGURATIONS" => "NONE", //página de configuraciONEs
+        'MANAGE REQUEST' => "NONE", // no se usa de momento (si en próximos módulos despues del 5 no se usa, eliminarlo)
+        "MANAGE SERVICES" => "NONE", // no se usa de momento (si en próximos módulos despues del 5 no se usa, eliminarlo)
+        "MANAGE INVENTORY" => "NONE", // no se usa de momento (si en próximos módulos despues del 5 no se usa, eliminarlo)
+        "MANAGE ORDERS" => "NONE", // no se usa de momento (si en próximos módulos despues del 5 no se usa, eliminarlo)
     ];
 
     /**
@@ -60,7 +45,7 @@ class ProfileController extends Controller
     {
         try {
             $data = $request->only(['name', 'permissions']);
-            $data['permissions'] = json_decode($data['permissions']);
+            $data['permissions'] = json_decode($data['permissions']??"{}");
             $data['user_id'] = Auth::user()->owner ?? Auth::user()->id;
             $profile = Profile::create($data);
             return response()->json($profile, 201);
@@ -85,7 +70,12 @@ class ProfileController extends Controller
         try {
             $profile = Profile::where('user_id', Auth::user()->owner ?? Auth::user()->id)->findOrFail($id);
             $data = $request->only(['name', 'permissions']);
-            $data['permissions'] = json_decode($data['permissions']);
+            if($request->has('name')){
+                $data['name'] = $data['name'];
+            }
+            if($request->has('permissions')){
+                $data['permissions'] = json_decode($data['permissions']);
+            }
             $data['user_id'] = Auth::user()->owner ?? Auth::user()->id;
             $profile->update($data);
             return response()->json(null, 204);
@@ -112,10 +102,7 @@ class ProfileController extends Controller
      */
     public function getPermissions()
     {
-        $user = Auth::user();
-        $user_data = User::findOrfail($user->id)->with('profile_data')->first();
-        if ($user_data->profile_data->name == "Super Admin") return $this->all_permissions;
-        return $this->restricted_permissions;
+        return $this->all_permissions;
     }
 
     /**
@@ -126,9 +113,9 @@ class ProfileController extends Controller
         $user = Auth::user();
         try {
             $user_data = User::where('id', $user->id)->with('profile_data')->first();
-            return ucfirst(strtolower($user_data->profile_data->permissions[$name]));
+            return strtoupper($user_data->profile_data->permissions[$name]);
         } catch (\Throwable $th) {
-            "None";
+            "NONE";
         }
     }
 }

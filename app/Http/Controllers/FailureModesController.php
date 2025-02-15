@@ -13,12 +13,13 @@ class FailureModesController extends Controller
     /**
      * Get item by id and permission
      */
-    function get_by_id_and_perms($id, $perm, $user_auth) {
-        if ($perm == "Own") {
+    function get_by_id_and_perms($id, $perm, $user_auth)
+    {
+        if (strtoupper($perm) == "OWN") {
             $failure_mode = FailureMode::where('id', $id)
-                            ->where('user_id', $user_auth->owner ?? $user_auth->id)
-                            ->firstOrFail();
-        }else if ($perm == "All") {
+                ->where('user_id', $user_auth->owner ?? $user_auth->id)
+                ->firstOrFail();
+        } else if (strtoupper($perm) == "ALL") {
             $failure_mode = FailureMode::findOrFail($id);
         }
         return $failure_mode;
@@ -31,8 +32,8 @@ class FailureModesController extends Controller
     {
         $perm = ProfileController::getPermissionByName("MANAGE FAILURE MODES");
         $user_auth = Auth::user();
-        if ($perm == "All") return FailureMode::all();
-        if ($perm == "Own") return FailureMode::where('user_id', $user_auth->owner ?? $user_auth->id)->get();
+        if (strtoupper($perm) == "ALL") return FailureMode::all();
+        if (strtoupper($perm) == "OWN") return FailureMode::where('user_id', $user_auth->owner ?? $user_auth->id)->get();
     }
 
     /**

@@ -18,17 +18,17 @@ class DatabaseSeeder extends Seeder
         $super_admin = \App\Models\Profile::factory()->create([
             'name' => 'Super Admin',
             'permissions' => [
-                'MANAGE USERS' => "All",
-                'MANAGE CLIENTS' => "None",
-                'MANAGE PROFILES' => "All",
-                'MANAGE REQUEST' => "None",
-                "MANAGE SERVICES" => "None",
-                "MANAGE DIAGNOSES AND QUOTES" => "None",
-                "MANAGE FAILURE MODES" => "None",
-                "MANAGE INVENTORY" => "None",
-                "MANAGE ORDERS" => "None",
-                "MANAGE CONFIGURATIONS" => "None",
-                "MANAGE ITEMS" => "None",
+                'MANAGE USERS' => "ALL",
+                'MANAGE CLIENTS' => "NONE",
+                'MANAGE PROFILES' => "ALL",
+                'MANAGE REQUEST' => "NONE",
+                "MANAGE SERVICES" => "NONE",
+                "MANAGE DIAGNOSES" => "NONE",
+                "MANAGE FAILURE MODES" => "NONE",
+                "MANAGE INVENTORY" => "NONE",
+                "MANAGE ORDERS" => "NONE",
+                "MANAGE CONFIGURATIONS" => "NONE",
+                "MANAGE ITEMS" => "NONE",
             ]
         ]);
 
@@ -36,19 +36,19 @@ class DatabaseSeeder extends Seeder
         $admin = \App\Models\Profile::factory()->create([
             'name' => 'Admin',
             'permissions' => [
-                'MANAGE USERS' => "Own",
-                'MANAGE CLIENTS' => "Own",
-                'MANAGE PROFILES' => "Own",
-                'MANAGE REQUEST' => "Own",
-                "MANAGE SERVICES" => "Own",
-                "MANAGE DIAGNOSES AND QUOTES" => "Own",
-                "MANAGE FAILURE MODES" => "Own",
-                "MANAGE INVENTORY" => "Own",
-                "MANAGE ORDERS" => "Own",
-                "MANAGE CONFIGURATIONS" => "Own",
-                "MANAGE RECEPTIONS" => "Own",
-                "MANAGE RATES" => "Own",
-                "MANAGE ITEMS" => "Own",
+                'MANAGE USERS' => "OWN",
+                'MANAGE CLIENTS' => "OWN",
+                'MANAGE PROFILES' => "OWN",
+                'MANAGE REQUEST' => "OWN",
+                "MANAGE SERVICES" => "OWN",
+                "MANAGE DIAGNOSES" => "OWN",
+                "MANAGE FAILURE MODES" => "OWN",
+                "MANAGE INVENTORY" => "OWN",
+                "MANAGE ORDERS" => "OWN",
+                "MANAGE CONFIGURATIONS" => "OWN",
+                "MANAGE RECEPTIONS" => "OWN",
+                "MANAGE RATES" => "OWN",
+                "MANAGE ITEMS" => "OWN",
             ]
         ]);
 
@@ -68,6 +68,5 @@ class DatabaseSeeder extends Seeder
         Profile::find($admin->id)->update([
             'user_id' => $user->id
         ]);
-
     }
 }

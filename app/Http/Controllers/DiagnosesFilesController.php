@@ -18,7 +18,7 @@ class DiagnosesFilesController extends Controller
      */
     public function index(String $diagnoses_id)
     {
-        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES AND QUOTES");
+        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES");
         $user_auth = Auth::user();
         $diagnoses_controller = new DiagnosesController;
         $diagnoses = $diagnoses_controller->get_by_id_and_perms($diagnoses_id, $perm, $user_auth);
@@ -30,7 +30,7 @@ class DiagnosesFilesController extends Controller
      */
     public function show(string $diagnoses_id, string $file_id)
     {
-        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES AND QUOTES");
+        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES");
         $user_auth = Auth::user();
         $diagnoses_controller = new DiagnosesController;
         $diagnoses = $diagnoses_controller->get_by_id_and_perms($diagnoses_id, $perm, $user_auth);
@@ -43,24 +43,24 @@ class DiagnosesFilesController extends Controller
      */
     public function uploadFile(string $diagnoses_id, DiagnosesFileRequest $request)
     {
-        try{
+        try {
             $file = $request->file('file');
             $filename = $file->getClientOriginalName();
-            
+
             $type = $file->getMimeType();
             $path_file = Storage::putFile('public/diagnoses/files', $file);
             $path_file = str_replace('public/', env('SITE_URL') . '/storage/', $path_file);
-    
+
             $diagnoses_file = DiagnosesFile::create([
                 'filename' => $filename,
                 'file' => $path_file,
                 'type' => $type,
                 'diagnoses_id' => $diagnoses_id
             ]);
-    
+
             return response()->json($diagnoses_file, 201);
-        }catch(\Exception $e){
-            return response()->json($e->getMessage().' on '.$e->getLine(), 200);
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage() . ' on ' . $e->getLine(), 200);
         }
     }
 
@@ -69,30 +69,29 @@ class DiagnosesFilesController extends Controller
      */
     public function destroy(string $diagnoses_id, string $file_id)
     {
-        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES AND QUOTES");
+        $perm = ProfileController::getPermissionByName("MANAGE DIAGNOSES");
         $user_auth = Auth::user();
         $diagnoses_controller = new DiagnosesController;
         $diagnoses = $diagnoses_controller->get_by_id_and_perms($diagnoses_id, $perm, $user_auth);
-        
+
         $diagnoses_files = $diagnoses->files;
 
         $diagnoses_files_id = [];
 
-        foreach($diagnoses_files as $diagnoses_file){
+        foreach ($diagnoses_files as $diagnoses_file) {
             $diagnoses_files_id[] = $diagnoses_file->id;
         }
 
 
-        if(in_array($file_id, $diagnoses_files_id)){
+        if (in_array($file_id, $diagnoses_files_id)) {
 
             DiagnosesFile::where('id', $file_id)->delete();
             return response()->json(null, 204);
-        }else{
+        } else {
             return response()->json(null, 403);
         }
 
         // $diagnoses_file = $diagnoses->files()->get();
         // // $diagnoses_file->delete();
     }
-
 }

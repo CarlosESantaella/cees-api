@@ -336,8 +336,8 @@ CREATE TABLE `profiles` (
 --
 
 INSERT INTO `profiles` (`id`, `name`, `permissions`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, 'Super Admin', '{\"MANAGE ITEMS\": \"None\", \"MANAGE USERS\": \"All\", \"MANAGE ORDERS\": \"None\", \"MANAGE CLIENTS\": \"None\", \"MANAGE REQUEST\": \"None\", \"MANAGE PROFILES\": \"All\", \"MANAGE SERVICES\": \"None\", \"MANAGE INVENTORY\": \"None\", \"MANAGE FAILURE MODES\": \"None\", \"MANAGE CONFIGURATIONS\": \"None\", \"MANAGE DIAGNOSES AND QUOTES\": \"None\"}', 1, '2024-05-25 22:33:45', '2024-05-25 22:33:46'),
-(2, 'Admin', '{\"MANAGE ITEMS\": \"Own\", \"MANAGE RATES\": \"Own\", \"MANAGE USERS\": \"Own\", \"MANAGE ORDERS\": \"Own\", \"MANAGE CLIENTS\": \"Own\", \"MANAGE REQUEST\": \"Own\", \"MANAGE PROFILES\": \"Own\", \"MANAGE SERVICES\": \"Own\", \"MANAGE INVENTORY\": \"Own\", \"MANAGE RECEPTIONS\": \"Own\", \"MANAGE FAILURE MODES\": \"Own\", \"MANAGE CONFIGURATIONS\": \"Own\", \"MANAGE DIAGNOSES AND QUOTES\": \"Own\"}', 1, '2024-05-25 22:33:45', '2024-05-25 22:33:46');
+(1, 'Super Admin', '{\"MANAGE ITEMS\": \"None\", \"MANAGE USERS\": \"All\", \"MANAGE ORDERS\": \"None\", \"MANAGE CLIENTS\": \"None\", \"MANAGE REQUEST\": \"None\", \"MANAGE PROFILES\": \"All\", \"MANAGE SERVICES\": \"None\", \"MANAGE INVENTORY\": \"None\", \"MANAGE FAILURE MODES\": \"None\", \"MANAGE CONFIGURATIONS\": \"None\", \"MANAGE DIAGNOSES\": \"None\"}', 1, '2024-05-25 22:33:45', '2024-05-25 22:33:46'),
+(2, 'Admin', '{\"MANAGE ITEMS\": \"Own\", \"MANAGE RATES\": \"Own\", \"MANAGE USERS\": \"Own\", \"MANAGE ORDERS\": \"Own\", \"MANAGE CLIENTS\": \"Own\", \"MANAGE REQUEST\": \"Own\", \"MANAGE PROFILES\": \"Own\", \"MANAGE SERVICES\": \"Own\", \"MANAGE INVENTORY\": \"Own\", \"MANAGE RECEPTIONS\": \"Own\", \"MANAGE FAILURE MODES\": \"Own\", \"MANAGE CONFIGURATIONS\": \"Own\", \"MANAGE DIAGNOSES\": \"Own\"}', 1, '2024-05-25 22:33:45', '2024-05-25 22:33:46');
 
 -- --------------------------------------------------------
 

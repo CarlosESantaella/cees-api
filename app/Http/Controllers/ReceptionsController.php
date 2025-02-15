@@ -30,11 +30,11 @@ class ReceptionsController extends Controller
      */
     function get_reception_by_id_and_perms($id, $perm, $user_auth)
     {
-        if ($perm == "Own") {
+        if (strtoupper($perm) == "OWN") {
             $reception = Reception::where('id', $id)
                 ->where('user_id', $user_auth->owner ?? $user_auth->id)
                 ->firstOrFail();
-        } else if ($perm == "All") {
+        } else if (strtoupper($perm) == "ALL") {
             $reception = Reception::findOrFail($id);
         }
         return $reception;
@@ -60,7 +60,7 @@ class ReceptionsController extends Controller
             $query->whereBetween('created_at', [$startDate, $endDate]);
         }
 
-        if ($perm == "Own") {
+        if (strtoupper($perm) == "OWN") {
             $query->where('user_id', $user_auth->owner ?? $user_auth->id);
         }
 
@@ -105,7 +105,6 @@ class ReceptionsController extends Controller
             $reception = Reception::create($data);
 
             return response()->json($reception, 201);
-
         } catch (\Throwable $th) {
             return response()->json(["errors" => ['database' => $th->getMessage()]], 500);
         }
@@ -118,8 +117,8 @@ class ReceptionsController extends Controller
     {
         $perm = ProfileController::getPermissionByName("MANAGE RECEPTIONS");
         $user_auth = Auth::user();
-        if ($perm == "All") $reception = Reception::findOrFail($id); 
-        if ($perm == "Own") $reception = Reception::where('id', $id)
+        if (strtoupper($perm) == "ALL") $reception = Reception::findOrFail($id);
+        if (strtoupper($perm) == "OWN") $reception = Reception::where('id', $id)
             ->where('user_id', $user_auth->owner ?? $user_auth->id)
             ->firstOrFail();
         $reception['diagnoses'] = Diagnoses::all()->where('reception_id', $reception['id']);
@@ -139,7 +138,7 @@ class ReceptionsController extends Controller
         $perm = ProfileController::getPermissionByName("MANAGE RECEPTIONS");
         $user_auth = Auth::user();
         $reception = false;
-        if ($perm == "All") {
+        if (strtoupper($perm) == "ALL") {
             $reception = Reception::where('serie', $serial)
                 ->orWhere(function (Builder $query) use ($location, $specific_location) {
                     $query->where('location', $location)
@@ -148,7 +147,7 @@ class ReceptionsController extends Controller
                 ->with('diagnosis.failure_modes.failureMode')
                 ->first();
         }
-        if ($perm == "Own") {
+        if (strtoupper($perm) == "OWN") {
             $reception = Reception::where('serie', $serial)
                 ->where('user_id', $user_auth->owner ?? $user_auth->id)
                 ->orWhere(function (Builder $query) use ($location, $specific_location) {
@@ -173,9 +172,20 @@ class ReceptionsController extends Controller
         $reception = $this->get_reception_by_id_and_perms($id, $perm, $user_auth);
 
         $data = $request->only([
-            'equipment_type', 'brand', 'model', 'serie', 'capability', 'client_id',
-            'comments', 'location', 'specific_location', 'state', 'type_of_job', 'equipment_owner',
-            'customer_inventory', 'created_at'
+            'equipment_type',
+            'brand',
+            'model',
+            'serie',
+            'capability',
+            'client_id',
+            'comments',
+            'location',
+            'specific_location',
+            'state',
+            'type_of_job',
+            'equipment_owner',
+            'customer_inventory',
+            'created_at'
         ]);
 
         $data['user_id'] = (Auth::user()->profile != 1) ? Auth::user()->owner ?? Auth::user()->id : null;
@@ -249,14 +259,14 @@ class ReceptionsController extends Controller
         $perm = ProfileController::getPermissionByName("MANAGE RECEPTIONS");
         $user_auth = Auth::user();
         $reception = false;
-        if ($perm == "All") $reception = Reception::findOrFail($id);
-        if ($perm == "Own") $reception = Reception::where('id', $id)
+        if (strtoupper($perm) == "ALL") $reception = Reception::findOrFail($id);
+        if (strtoupper($perm) == "OWN") $reception = Reception::where('id', $id)
             ->where('user_id', $user_auth->owner ?? $user_auth->id)
             ->firstOrFail();
         $configuration = Configuration::where(
-                'user_id',
-                $user_auth->owner ?? $user_auth->id
-            )->first();
+            'user_id',
+            $user_auth->owner ?? $user_auth->id
+        )->first();
         $client = Client::where('id', $reception['client_id'])->firstOrFail();
         $pdf = Pdf::loadView('pdf.reception', ["reception" => $reception, "client" => $client, "pdf" => true, 'configurations' => $configuration]);
         $name_file = 'reception_' . $id . '.pdf';
@@ -265,26 +275,26 @@ class ReceptionsController extends Controller
 
     public function sendMailReport(Request $request, string $id)
     {
-        try{
+        try {
             $perm = ProfileController::getPermissionByName("MANAGE RECEPTIONS");
             $user_auth = Auth::user();
-            $owner = ($user_auth->owner != null)? User::where('id', $user_auth->id)->first()->owner_data()->first() : $user_auth;
+            $owner = ($user_auth->owner != null) ? User::where('id', $user_auth->id)->first()->owner_data()->first() : $user_auth;
             $reception = false;
-            if ($perm == "All") $reception = Reception::findOrFail($id);
-            if ($perm == "Own") $reception = Reception::where('id', $id)
+            if (strtoupper($perm) == "ALL") $reception = Reception::findOrFail($id);
+            if (strtoupper($perm) == "OWN") $reception = Reception::where('id', $id)
                 ->where('user_id', $user_auth->owner ?? $user_auth->id)
                 ->first();
             $configuration = Configuration::where(
-                    'user_id',
-                    $user_auth->owner ?? $user_auth->id
-                )->first();
+                'user_id',
+                $user_auth->owner ?? $user_auth->id
+            )->first();
             $client = Client::where('id', $reception['client_id'])->first();
             $pdf = Pdf::loadView('pdf.reception', ["reception" => $reception, "client" => $client, "pdf" => true, 'configurations' => $configuration]);
-    
+
             $file_to_attach = 'temp_file.pdf';
             file_put_contents($file_to_attach, $pdf->output());
-            
-            
+
+
             $mail = new PHPMailer(true);
 
 
