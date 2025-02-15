@@ -18,17 +18,7 @@ class DatabaseSeeder extends Seeder
         $super_admin = \App\Models\Profile::factory()->create([
             'name' => 'Super Admin',
             'permissions' => [
-                'MANAGE USERS' => "ALL",
-                'MANAGE CLIENTS' => "NONE",
-                'MANAGE PROFILES' => "ALL",
-                'MANAGE REQUEST' => "NONE",
-                "MANAGE SERVICES" => "NONE",
-                "MANAGE DIAGNOSES" => "NONE",
-                "MANAGE FAILURE MODES" => "NONE",
-                "MANAGE INVENTORY" => "NONE",
-                "MANAGE ORDERS" => "NONE",
-                "MANAGE CONFIGURATIONS" => "NONE",
-                "MANAGE ITEMS" => "NONE",
+                'MANAGE USERS' => "ALL"
             ]
         ]);
 
@@ -37,18 +27,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'permissions' => [
                 'MANAGE USERS' => "OWN",
-                'MANAGE CLIENTS' => "OWN",
-                'MANAGE PROFILES' => "OWN",
-                'MANAGE REQUEST' => "OWN",
-                "MANAGE SERVICES" => "OWN",
-                "MANAGE DIAGNOSES" => "OWN",
-                "MANAGE FAILURE MODES" => "OWN",
-                "MANAGE INVENTORY" => "OWN",
-                "MANAGE ORDERS" => "OWN",
-                "MANAGE CONFIGURATIONS" => "OWN",
-                "MANAGE RECEPTIONS" => "OWN",
-                "MANAGE RATES" => "OWN",
-                "MANAGE ITEMS" => "OWN",
+                'MANAGE PROFILES' => "OWN"
             ]
         ]);
 
@@ -57,7 +36,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'John Doe',
             'username' => 'superadmin',
             'email' => 'john.doe@gmail.com',
-            'password' => '123123',
+            'password' => '123456',
             'profile' => 1
         ]);
 

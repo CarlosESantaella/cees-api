@@ -14,7 +14,7 @@ class ProfileController extends Controller
 
     public $all_permissions = [
         'MANAGE PROFILES' => "NONE", //página de roles
-        'MANAGE USERS' => "NONE", //página de usuarios (este permiso solo lo pide el super admin)
+        'MANAGE USERS' => "NONE", //página de usuarios
         "MANAGE CLIENTS" => "NONE",  //página de clientes
         "MANAGE RECEPTIONS" => "NONE", //página de recepciONEs
         "MANAGE ITEMS" => "NONE", //página de items
