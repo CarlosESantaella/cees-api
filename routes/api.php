@@ -35,6 +35,9 @@ use App\Http\Controllers\PhotosItemsDiagnosesController;
 
 // Routers public
 Route::post('auth', [AuthController::class, 'login']);
+Route::post('auth/forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('auth/reset-password', [AuthController::class, 'resetPassword']);
+Route::post('auth/validate-reset-password-token', [AuthController::class, 'validateResetPasswordToken']);
 
 // Routers private
 Route::middleware('jwt.verify')->group(function () {
