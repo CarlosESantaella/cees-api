@@ -78,7 +78,7 @@ class ClientController extends Controller
      */
     public function destroy(string $id)
     {
-        $perm = ProfileController::getPermissionByName("MANAGE USERS");
+        $perm = ProfileController::getPermissionByName("MANAGE CLIENTS");
         $user_auth = Auth::user();
         if (strtoupper($perm) == "OWN") {
             $client = Client::where('id', $id)
