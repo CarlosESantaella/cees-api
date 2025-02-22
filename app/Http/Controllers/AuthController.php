@@ -49,7 +49,7 @@ class AuthController extends Controller
             $token = hash('sha256', $token);
             $user->token_reset_password = $token;
             $user->save();
-            $resetUrl = env('SITE_URL', 'http://localhost:4200').'/system/auth/reset-password?token=' . $token;
+            $resetUrl = env('APP_URL', 'http://localhost:4200').'/system/auth/reset-password?token=' . $token;
             Mail::send('emails.reset-password', ['resetUrl' => $resetUrl], function ($message) use ($user) {
                 $message->to($user->email)
                     ->subject("Reseteo de contraseña");
