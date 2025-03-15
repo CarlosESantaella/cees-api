@@ -24,8 +24,7 @@ class ProfileStorePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'string|max:60',
-            'permissions' => 'json'
+            'username' => 'string'
         ];
     }
 

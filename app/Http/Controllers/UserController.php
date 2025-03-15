@@ -32,8 +32,9 @@ class UserController extends Controller
             $user_data = User::where('id', Auth::user()->id)->with('profile_data')->first();
             $is_super_admin = $user_data->profile_data->name == "Super Admin";
             $data['owner'] = ($is_super_admin) ? null : Auth::user()->owner ?? Auth::user()->id;
-            $data['profile'] = ($is_super_admin) ? env('ID_PROFILE_ADMIN', 2) : $data['profile'];
             $perm = ProfileController::getPermissionByName("MANAGE USERS");
+            // $data['profile'] = ($is_super_admin) ? env('ID_PROFILE_ADMIN', 2) : $data['profile'];
+            $data['profile'] = ($is_super_admin) ? env('ID_PROFILE_ADMIN', 2) : null;
             $user = User::create($data);
             if ($data['profile'] == 2) {
                 Configuration::create(['user_id' => $user->id]);
@@ -75,7 +76,8 @@ class UserController extends Controller
         $user_data = User::where('id', Auth::user()->id)->with('profile_data')->first();
         $is_super_admin = $user_data->profile_data->name == "Super Admin";
         $data['owner'] = ($is_super_admin) ? null : Auth::user()->owner ?? Auth::user()->id;
-        $data['profile'] = ($is_super_admin) ? env('ID_PROFILE_ADMIN', 2) : $data['profile'];
+        // $data['profile'] = ($is_super_admin) ? env('ID_PROFILE_ADMIN', 2) : $data['profile'];
+        $data['profile'] = ($is_super_admin) ? env('ID_PROFILE_ADMIN', 2) : null;
 
         if (in_array($data['profile'], [env('ID_PROFILE_SUPER_ADMIN', 1), env('ID_PROFILE_ADMIN', 2)]) && strtoupper($perm) == "OWN") {
             return response()->json(["errors" => ['profile' => 'No tiene permisos para asignar este perfil']], 403);
@@ -89,6 +91,11 @@ class UserController extends Controller
             }
             return response()->json(["errors" => ['database' => 'Error en la base de datos']], 500);
         }
+    }
+
+    public function withoutProfile()
+    {
+        return User::where('owner', Auth::user()->owner ?? Auth::user()->id)->where('profile', null)->get();
     }
 
     /**

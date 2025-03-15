@@ -18,4 +18,9 @@ class Profile extends Model
     protected $casts = [
         'permissions' => 'json',
     ];
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'profile', 'id');
+    }
 }

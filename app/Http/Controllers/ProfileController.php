@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileStorePostRequest;
-use App\Models\Profile;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Profile;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\ProfileStorePostRequest;
 
 class ProfileController extends Controller
 {
@@ -34,7 +35,14 @@ class ProfileController extends Controller
     public function index()
     {
         $user_auth = Auth::user();
-        return Profile::where('user_id', $user_auth->owner ?? $user_auth->id)->get();
+        $profiles = Profile::where('user_id', $user_auth->owner ?? $user_auth->id)->with('user')->get();
+
+        $profiles = $profiles->map(function ($profile) {
+            $profile->user_username = $profile->user?->username ?? '';
+            return $profile;
+        });
+
+        return $profiles;
     }
 
 
@@ -44,11 +52,30 @@ class ProfileController extends Controller
     public function store(ProfileStorePostRequest $request)
     {
         try {
-            $data = $request->only(['name', 'permissions']);
-            $data['permissions'] = json_decode($data['permissions']??"{}");
-            $data['user_id'] = Auth::user()->owner ?? Auth::user()->id;
-            $profile = Profile::create($data);
-            return response()->json($profile, 201);
+            // $data = $request->only(['name', 'permissions']);
+            // $data['permissions'] = json_decode($data['permissions']??"{}");
+            // $data['user_id'] = Auth::user()->owner ?? Auth::user()->id;
+            // $profile = Profile::create($data);
+
+            try {
+                DB::beginTransaction();
+                $username = $request->only(['username']);
+                $data = [];
+                $data['permissions'] = "{}";
+                $data['user_id'] = Auth::user()->owner ?? Auth::user()->id;
+                $profile = Profile::create($data);
+                $user = User::where('username', $username)->first();
+                $user->profile = $profile->id;
+                $user->save();
+                $profile = $profile->fresh();
+                $profile->setAttribute('user_username', $user->username);
+                $profile->load('user');
+                DB::commit();
+                return response()->json($profile, 201);
+            } catch (\Throwable $th) {
+                DB::rollBack();
+                return response()->json(["errors" => ['database' => $th->getMessage()]], 500);
+            }
         } catch (\Throwable $th) {
             return response()->json(["errors" => ['database' => $th->getMessage()]], 500);
         }
@@ -70,10 +97,10 @@ class ProfileController extends Controller
         try {
             $profile = Profile::where('user_id', Auth::user()->owner ?? Auth::user()->id)->findOrFail($id);
             $data = $request->only(['name', 'permissions']);
-            if($request->has('name')){
+            if ($request->has('name')) {
                 $data['name'] = $data['name'];
             }
-            if($request->has('permissions')){
+            if ($request->has('permissions')) {
                 $data['permissions'] = json_decode($data['permissions']);
             }
             $data['user_id'] = Auth::user()->owner ?? Auth::user()->id;

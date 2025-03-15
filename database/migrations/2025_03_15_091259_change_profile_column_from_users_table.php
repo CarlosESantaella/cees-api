@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('configurations', function (Blueprint $table) {
-            $table->string('logo_path')->default(env('SITE_URL'))->change();
+        Schema::table('users', function (Blueprint $table) {
+            $table->unsignedBigInteger('profile')->nullable()->change();
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('configurations', function (Blueprint $table) {
-            //
+        Schema::table('users', function (Blueprint $table) {
+            $table->unsignedBigInteger('profile')->change();
         });
     }
 };

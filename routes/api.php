@@ -47,6 +47,7 @@ Route::middleware('jwt.verify')->group(function () {
 
     // Users
     Route::middleware('permission:MANAGE USERS')->group(function () {
+        Route::get('users/without-profile', [UserController::class, 'withoutProfile']);
         Route::apiResource('users', UserController::class);
     });
 
@@ -93,7 +94,7 @@ Route::middleware('jwt.verify')->group(function () {
         Route::apiResource('failure-modes', FailureModesController::class);
     });
 
-    // Diagnoses 
+    // Diagnoses
     Route::middleware('permission:MANAGE DIAGNOSES')->group(function () {
         Route::apiResource('diagnoses', DiagnosesController::class);
         Route::patch('diagnoses/{id}/status/{status}', [DiagnosesController::class, 'updateStatus']);
