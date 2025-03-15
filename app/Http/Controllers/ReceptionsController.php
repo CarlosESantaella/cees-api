@@ -305,7 +305,7 @@ class ReceptionsController extends Controller
             $mail->Host = env('MAIL_HOST');
             $mail->SMTPAuth = true;
             $mail->Port = env('MAIL_PORT');
-            $mail->SMTPSecure = 'tls';
+            $mail->SMTPSecure = env('MAIL_ENCRYPTION');
             $mail->Username = env('MAIL_USERNAME');
             $mail->Password = env('MAIL_PASSWORD');
 
