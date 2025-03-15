@@ -11,14 +11,15 @@ use App\Http\Controllers\ItemsController;
 use App\Http\Controllers\RatesController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ReceptionsController;
-use App\Http\Controllers\ConfigurationsController;
 use App\Http\Controllers\DiagnosesController;
+use App\Http\Controllers\RatesItemsController;
+use App\Http\Controllers\ReceptionsController;
+use App\Http\Controllers\FailureModesController;
+use App\Http\Controllers\ConfigurationsController;
 use App\Http\Controllers\DiagnosesFilesController;
 use App\Http\Controllers\DiagnosesItemsController;
-use App\Http\Controllers\FailureModesController;
-use App\Http\Controllers\FailureModesDiagnosesController;
 use App\Http\Controllers\PhotosItemsDiagnosesController;
+use App\Http\Controllers\FailureModesDiagnosesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -84,6 +85,12 @@ Route::middleware('jwt.verify')->group(function () {
         Route::apiResource('rates', RatesController::class);
     });
 
+    // Rates Items
+    Route::middleware('permission:MANAGE RATES')->group(function () {
+        Route::get('rates/{rate_id}/items', [RatesItemsController::class, 'index']);
+        Route::put('rates/{rate_id}/items', [RatesItemsController::class, 'update']);
+    });
+
     // Items
     Route::middleware('permission:MANAGE ITEMS')->group(function () {
         Route::apiResource('items', ItemsController::class);
@@ -124,5 +131,4 @@ Route::middleware('jwt.verify')->group(function () {
         Route::get('diagnoses/{diagnoses_id}/items/photos', [PhotosItemsDiagnosesController::class, 'index']);
         Route::post('diagnoses/{diagnoses_id}/items/photos', [PhotosItemsDiagnosesController::class, 'store']);
     });
-
 });

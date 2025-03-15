@@ -2,16 +2,15 @@
 
 namespace App\Models;
 
-use App\Models\Item;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class ItemsDiagnoses extends Model
+class ItemsRates extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'diagnoses_id',
+        'rate_id',
         'item_id',
         'quantity',
     ];
