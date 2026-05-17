@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 22-02-2025 a las 22:05:50
--- Versión del servidor: 10.11.11-MariaDB
+-- Tiempo de generación: 28-03-2025 a las 16:12:55
+-- Versión del servidor: 10.11.10-MariaDB-log
 -- Versión de PHP: 7.2.34
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `u997039293_cees`
+-- Base de datos: `u428738654_agile_report`
 --
 
 -- --------------------------------------------------------
@@ -49,10 +49,9 @@ CREATE TABLE `clients` (
 --
 
 INSERT INTO `clients` (`id`, `full_name`, `cellphone`, `address`, `nit`, `contact`, `identification`, `cell`, `city`, `email`, `comments`, `user_id`, `created_at`, `updated_at`) VALUES
-(2, 'nuevo cliente', '12341234', 'puerto ordaz', NULL, 'contacto', '12341234', '12341234', 'asdfasdf', 'asdfasdf@gmail.com', 'asdfasdfasdf asd fas', 3, '2024-07-06 08:59:38', '2024-07-06 08:59:38'),
-(3, 'cliente segundo', '1234123', 'esto es una dirección de prueba', NULL, 'asasdf', '1234123', '1234123', 'asdfasdf', 'cliente2@gmail.com', 'as dfas dfasd fasd f', 3, '2025-02-16 20:38:45', '2025-02-16 20:38:45'),
-(4, 'cliente tercero prueba2', '12341234', 'asdfasdf', NULL, 'asdfasd', '12341234', 'fasdfas', 'asdfasdf', 'holahola@gmail.com', 'qwerqwerqwer', 3, '2025-02-22 19:40:14', '2025-02-22 19:40:22'),
-(5, 'cuarto cliente de pruebas', '123412', '12341234', NULL, 'asdfsadf', '12341234', '12341234', 'qwerqwer', 'qwerq@gmail.com', 'asdfqwerqwer', 3, '2025-02-22 22:05:33', '2025-02-22 22:05:33');
+(2, 'nuevo cliente', '12341234', 'puerto ordaz', NULL, 'contacto', '12341234', '12341234', 'asdfasdf', 'carlos.santaella.cesg@gmail.com', 'asdfasdfasdf asd fas', 3, '2024-07-06 08:59:38', '2024-07-06 08:59:38'),
+(3, '12341234777777', '1234123', '41234', NULL, '1234123', '1234', '4123412341', '234123', '41234', '1234123412', 3, '2025-02-02 04:10:51', '2025-02-02 04:11:22'),
+(4, 'prueba de creación de cliente', '1234', '1234123', NULL, 'safsad', '1234123', 'fasdf', 'asdf', 'hola@gmail.com', 'as dfasdf asdfasdfasd fas', 3, '2025-02-23 00:24:42', '2025-02-23 00:24:42');
 
 -- --------------------------------------------------------
 
@@ -64,8 +63,8 @@ CREATE TABLE `configurations` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `index_reception` int(11) DEFAULT NULL,
   `index_reception_reference` int(11) DEFAULT NULL,
-  `currency` varchar(255) DEFAULT '$',
-  `logo_path` varchar(255) DEFAULT 'https://mintcream-pony-205152.hostingersite.com/storage/configurations/logos/banner-placeholder.jpg',
+  `currency` varchar(255) NOT NULL DEFAULT '$',
+  `logo_path` varchar(255) DEFAULT 'https://api-agile-report.devsprinters.site/storage/configurations/logos/EtZtQrstce31VANVf42xt31uKZvQSLRpvC7pJTSW.webp',
   `user_id` bigint(20) UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -76,8 +75,8 @@ CREATE TABLE `configurations` (
 --
 
 INSERT INTO `configurations` (`id`, `index_reception`, `index_reception_reference`, `currency`, `logo_path`, `user_id`, `created_at`, `updated_at`) VALUES
-(2, 100, 101, '$', 'https://mintcream-pony-205152.hostingersite.com/storage/configurations/logos/colQmcduh23WI1mqWlo0cVfddN8blkBHyYtXixLr.webp', 3, '2024-06-28 05:57:37', '2025-02-16 21:29:29'),
-(4, NULL, NULL, NULL, NULL, 8, '2025-02-11 23:41:48', '2025-02-11 23:41:48');
+(2, 123, 124, '$', 'https://api-agile-report.devsprinters.site/storage/configurations/logos/EtZtQrstce31VANVf42xt31uKZvQSLRpvC7pJTSW.webp', 3, '2024-06-28 05:57:37', '2025-03-15 21:31:48'),
+(9, NULL, NULL, '$', 'https://api-agile-report.devsprinters.site/storage/configurations/logos/EtZtQrstce31VANVf42xt31uKZvQSLRpvC7pJTSW.webp', 27, '2025-03-23 00:25:28', '2025-03-23 00:25:28');
 
 -- --------------------------------------------------------
 
@@ -96,15 +95,6 @@ CREATE TABLE `diagnoses` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `diagnoses`
---
-
-INSERT INTO `diagnoses` (`id`, `status`, `description`, `observations`, `initial_date`, `reception_id`, `user_id`, `created_at`, `updated_at`) VALUES
-(16, 1, 'asdf', 'asdfasdfasdf', '2024-07-06 07:47:54', 3, 3, '2024-07-06 11:39:23', '2024-07-06 12:47:54'),
-(17, 1, 'dfg', 'asdfsadf', '2024-07-27 19:07:17', 4, 3, '2024-07-27 23:57:31', '2024-07-28 00:07:17'),
-(18, 0, '2134', 'sdafsdf', '2024-07-27 19:09:39', 5, 3, '2024-07-28 00:09:29', '2024-07-28 00:09:39');
 
 -- --------------------------------------------------------
 
@@ -157,7 +147,8 @@ CREATE TABLE `failure_modes` (
 --
 
 INSERT INTO `failure_modes` (`id`, `failure_mode`, `user_id`, `created_at`, `updated_at`) VALUES
-(9, 'esto es otra falla', 3, '2025-02-16 21:04:00', '2025-02-16 21:04:00');
+(8, 'esto es una falla nueva', 3, '2024-07-06 06:17:21', '2024-07-06 06:17:21'),
+(9, 'ewrtwert', 3, '2025-02-01 01:12:28', '2025-02-01 01:12:28');
 
 -- --------------------------------------------------------
 
@@ -172,13 +163,6 @@ CREATE TABLE `failure_modes_diagnoses` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `failure_modes_diagnoses`
---
-
-INSERT INTO `failure_modes_diagnoses` (`id`, `diagnoses_id`, `failure_modes_id`, `created_at`, `updated_at`) VALUES
-(29, 16, 9, '2025-02-16 21:04:33', '2025-02-16 21:04:33');
 
 -- --------------------------------------------------------
 
@@ -207,10 +191,10 @@ CREATE TABLE `items` (
 --
 
 INSERT INTO `items` (`id`, `description`, `unit_of_measurement`, `gross_cost`, `indirect_cost`, `utility`, `total_cost`, `initial_description`, `final_description`, `user_id`, `rate_id`, `created_at`, `updated_at`) VALUES
-(5, 'tornillo', 'mm', '12', '12', '12', '36', 'di tornillo', 'df tornillo', 3, 2, '2024-07-06 12:49:18', '2024-07-06 12:49:18'),
+(5, 'tornillo2', 'mm', '12', '12', '12', '36', 'di tornillo', 'df tornillo', 3, 2, '2024-07-06 12:49:18', '2025-03-15 21:24:23'),
 (6, 'destornillador', 'cm', '12', '32', '23', '67', 'di destornillador', 'df destornillador', 3, 2, '2024-07-06 12:49:48', '2024-07-06 12:49:48'),
 (7, 'martillo', 'cm', '32', '23', '43', '98', 'di martillo', 'df martillo', 3, 2, '2024-07-06 12:50:13', '2024-07-06 12:50:13'),
-(8, 'qwer', 'qwer', '1234123', '12341', '1234123', '2480587', 'sadfas', 'dfasdf', 3, 2, '2025-02-16 20:37:16', '2025-02-16 20:37:16');
+(8, 'Llave ale2', 'mm', NULL, NULL, NULL, NULL, 'es una llave ale', 'es una llave ale', 3, 2, '2025-03-15 21:25:42', '2025-03-15 21:25:51');
 
 -- --------------------------------------------------------
 
@@ -227,13 +211,28 @@ CREATE TABLE `items_diagnoses` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
 --
--- Volcado de datos para la tabla `items_diagnoses`
+-- Estructura de tabla para la tabla `items_rates`
 --
 
-INSERT INTO `items_diagnoses` (`id`, `quantity`, `diagnoses_id`, `item_id`, `created_at`, `updated_at`) VALUES
-(24, 2, 16, 5, '2024-07-07 02:32:52', '2024-07-07 02:32:52'),
-(25, 1, 16, 6, '2024-07-07 02:32:52', '2024-07-07 02:32:52');
+CREATE TABLE `items_rates` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `quantity` int(11) NOT NULL DEFAULT 0,
+  `rate_id` bigint(20) UNSIGNED NOT NULL,
+  `item_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `items_rates`
+--
+
+INSERT INTO `items_rates` (`id`, `quantity`, `rate_id`, `item_id`, `created_at`, `updated_at`) VALUES
+(5, 7, 2, 6, '2025-03-16 00:39:03', '2025-03-16 00:39:03'),
+(6, 2, 2, 8, '2025-03-16 00:39:03', '2025-03-16 00:39:03');
 
 -- --------------------------------------------------------
 
@@ -271,7 +270,17 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (17, '2024_05_15_185629_create_items_diagnoses_table', 1),
 (18, '2024_05_15_185901_create_photos_items_diagnoses_table', 1),
 (20, '2024_07_06_063257_add_column_observations_to_diagnoses', 2),
-(22, '2024_07_06_064308_add_column_initial_date_to_diagnoses_table', 3);
+(22, '2024_07_06_064308_add_column_initial_date_to_diagnoses_table', 3),
+(24, '2025_01_30_212921_change_name_column_from_users_table', 4),
+(26, '2025_02_16_081702_add_token_reset_password_column_to_users_table', 5),
+(28, '2025_02_22_194740_change_currency_column_from_configurations_table', 6),
+(29, '2025_03_15_091259_change_profile_column_from_users_table', 7),
+(31, '2025_03_15_134449_change_name_column_from_profiles_table', 8),
+(33, '2025_03_15_160347_add_gross_cost_column_to_rates_table', 9),
+(35, '2025_03_15_160557_add_indirect_cost_column_to_rates_table', 10),
+(37, '2025_03_15_160701_add_utility_column_to_rates_table', 11),
+(39, '2025_03_15_160829_add_total_cost_column_to_rates_table', 12),
+(43, '2025_03_15_184432_create_items_rates_table', 13);
 
 -- --------------------------------------------------------
 
@@ -320,13 +329,6 @@ CREATE TABLE `photos_items_diagnoses` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Volcado de datos para la tabla `photos_items_diagnoses`
---
-
-INSERT INTO `photos_items_diagnoses` (`id`, `photo`, `description`, `diagnoses_id`, `item_id`, `created_at`, `updated_at`) VALUES
-(52, 'http://localhost:8000/storage/diagnoses/items/photo/NfgVi8rKerMHVRuMD9iKVgWexDYyMFySoFbwDx2m.png', '', 16, 5, '2024-07-07 02:33:12', '2024-07-07 02:33:12');
-
 -- --------------------------------------------------------
 
 --
@@ -335,7 +337,7 @@ INSERT INTO `photos_items_diagnoses` (`id`, `photo`, `description`, `diagnoses_i
 
 CREATE TABLE `profiles` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
   `permissions` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`permissions`)),
   `user_id` bigint(20) UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -348,8 +350,10 @@ CREATE TABLE `profiles` (
 
 INSERT INTO `profiles` (`id`, `name`, `permissions`, `user_id`, `created_at`, `updated_at`) VALUES
 (1, 'Super Admin', '{\"MANAGE USERS\": \"All\"}', 1, '2024-05-25 22:33:45', '2024-05-25 22:33:46'),
-(2, 'Admin', '{\n    \"MANAGE USERS\": \"Own\",\n    \"MANAGE PROFILES\": \"Own\"\n}', 1, '2024-05-25 22:33:45', '2024-05-25 22:33:46'),
-(5, 'supervisor 2', '{\"MANAGE CLIENTS\":\"OWN\",\"MANAGE RATES\":\"OWN\",\"MANAGE ITEMS\":\"OWN\",\"MANAGE RECEPTIONS\":\"OWN\",\"MANAGE DIAGNOSES\":\"OWN\",\"MANAGE FAILURE MODES\":\"OWN\",\"MANAGE CONFIGURATIONS\":\"OWN\"}', 3, '2025-01-06 21:06:30', '2025-02-16 21:02:02');
+(2, 'Admin', '{\"MANAGE USERS\": \"Own\", \"MANAGE PROFILES\": \"Own\"}', 1, '2024-05-25 22:33:45', '2024-05-25 22:33:46'),
+(17, NULL, '{\"MANAGE ITEMS\": \"OWN\", \"MANAGE RATES\": \"OWN\", \"MANAGE CLIENTS\": \"OWN\", \"MANAGE RECEPTIONS\": \"OWN\"}', 3, '2025-03-15 18:58:37', '2025-03-15 19:07:00'),
+(18, NULL, '{\"MANAGE ITEMS\": \"OWN\", \"MANAGE RATES\": \"OWN\", \"MANAGE CLIENTS\": \"OWN\", \"MANAGE DIAGNOSES\": \"OWN\", \"MANAGE RECEPTIONS\": \"OWN\", \"MANAGE FAILURE MODES\": \"OWN\", \"MANAGE CONFIGURATIONS\": \"OWN\"}', 3, '2025-03-15 21:16:16', '2025-03-15 21:16:29'),
+(19, NULL, '{\"MANAGE CLIENTS\":\"OWN\",\"MANAGE RATES\":\"OWN\",\"MANAGE ITEMS\":\"OWN\"}', 27, '2025-03-23 00:30:26', '2025-03-23 00:30:36');
 
 -- --------------------------------------------------------
 
@@ -359,6 +363,10 @@ INSERT INTO `profiles` (`id`, `name`, `permissions`, `user_id`, `created_at`, `u
 
 CREATE TABLE `rates` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `total_cost` varchar(255) DEFAULT NULL,
+  `utility` varchar(255) DEFAULT NULL,
+  `indirect_cost` varchar(255) DEFAULT NULL,
+  `gross_cost` varchar(255) DEFAULT NULL,
   `user_id` bigint(20) UNSIGNED DEFAULT NULL,
   `clients` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -369,9 +377,10 @@ CREATE TABLE `rates` (
 -- Volcado de datos para la tabla `rates`
 --
 
-INSERT INTO `rates` (`id`, `user_id`, `clients`, `created_at`, `updated_at`) VALUES
-(2, 3, '[2]', '2024-07-06 12:48:39', '2024-07-06 12:48:39'),
-(3, 3, '[3]', '2025-02-16 20:40:12', '2025-02-16 20:40:12');
+INSERT INTO `rates` (`id`, `total_cost`, `utility`, `indirect_cost`, `gross_cost`, `user_id`, `clients`, `created_at`, `updated_at`) VALUES
+(2, '69', '23', '23', '23', 3, '[3]', '2024-07-06 12:48:39', '2025-03-15 23:17:45'),
+(3, '123', '111', '1', '11', 3, '[3]', '2025-03-02 00:12:44', '2025-03-15 23:17:57'),
+(4, NULL, NULL, NULL, NULL, 3, '[4]', '2025-03-02 00:15:45', '2025-03-02 00:15:45');
 
 -- --------------------------------------------------------
 
@@ -406,12 +415,7 @@ CREATE TABLE `receptions` (
 --
 
 INSERT INTO `receptions` (`id`, `custom_id`, `equipment_type`, `brand`, `model`, `serie`, `capability`, `state`, `comments`, `photos`, `location`, `specific_location`, `type_of_job`, `equipment_owner`, `customer_inventory`, `client_id`, `user_id`, `created_at`, `updated_at`) VALUES
-(3, 12, 's dfsa df', 'df sa', 'dfs a dfsa', 'serie123', 'as dfs adf sa', 'Recibido', 'as dfs adf', 'http://localhost:8000/storage/receptions/photos/3cr8o9mHh9AqlDXsOS2l7IjplyakiPMJZJf1ytET.png', 'fsa dfsa', 'dfsa dfsa df', 'Nuevo', 'asdf', 'asdfas df', 2, 3, '2024-07-06 08:59:57', '2024-07-06 08:59:57'),
-(4, 1, '1234', '1234', '1234', 'serie321', '1234', 'Recibido', '12341234', 'http://localhost:8000/storage/receptions/photos/8UDIrsCezP53Zexy36ffDq2kESEruVWahtRaKa5M.jpg', '2134', '1234', 'Nuevo', '1234', '1234', 2, 3, '2024-07-27 23:43:35', '2024-07-27 23:43:35'),
-(5, 100, '777', '777', '777', 'serie777', '777', 'Recibido', '777', 'http://localhost:8000/storage/receptions/photos/k1NPiVTgfDv5KIYBucxLWxAfU5oa066HwYuAT8Je.jpg', '777', '777', 'Nuevo', '777', '777', 2, 3, '2024-07-28 00:08:49', '2024-07-28 00:08:49'),
-(6, 100, 'asdfasdf', 'sdfas', 'dfasdf', '1234123421', 'asdfa', 'Recibido', 'fasdfasdfasdfasdf', 'https://mintcream-pony-205152.hostingersite.com/storage/receptions/photos/KzYHp3olUgXitsCzsQQeuT6cs3FRgDdsvpEwackW.png', '3asdfasdf', 'asdfasdfasdf', 'Nuevo', 'asdfasdf', 'asdfasdfasd', 2, 3, '2025-02-16 20:52:10', '2025-02-16 20:52:10'),
-(7, 101, 's dfsa df', 'df sa', 'dfs a dfsa', 'serie123', 'as dfs adf sa', 'Recibido', 'as dfs adf', 'https://mintcream-pony-205152.hostingersite.com/storage/receptions/photos/inx8GEgnuPs3AakQ1hkxrQjYCKZDvWA25c3DEptt.png', 'fsa dfsa', 'dfsa dfsa df', 'Nuevo', 'asdf', 'asdfas df', 2, 3, '2025-02-16 21:00:04', '2025-02-16 21:00:04'),
-(8, 100, 'asdf', 'dfasdf', 'asdfa', '12341234', 'asdfas', 'Recibido', 'asdfasdfas', 'https://mintcream-pony-205152.hostingersite.com/storage/receptions/photos/yMmPx8AOCD4QXPHnbEMbwddP9ArfhC2M9cGhkQ3E.png', 'asdfas', 'dfasdf', 'Nuevo', 'asdfasd', 'fasdfasdf', 3, 3, '2025-02-16 21:29:29', '2025-02-16 21:29:29');
+(10, 123, 'qwer', 'qwer', 'qwe rqw', 'e rqwe', 'qwewqr er', 'Recibido', 'qwerqwerqwe', 'https://api-agile-report.devsprinters.site/storage/receptions/photos/CN7YzaXuvFiBHZMDsE1oS3Xj3Rb53QjxoTXD2JGN.jpg', 'rwqerqw', 'erqwer', 'Nuevo', 'wqerqwe', 'rqwer', 2, 3, '2025-03-15 21:31:48', '2025-03-15 21:31:48');
 
 -- --------------------------------------------------------
 
@@ -422,7 +426,7 @@ INSERT INTO `receptions` (`id`, `custom_id`, `equipment_type`, `brand`, `model`,
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) DEFAULT NULL,
-  `username` varchar(255) DEFAULT NULL,
+  `username` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) NOT NULL,
@@ -431,7 +435,7 @@ CREATE TABLE `users` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `owner` bigint(20) UNSIGNED DEFAULT NULL,
-  `profile` bigint(20) UNSIGNED NOT NULL
+  `profile` bigint(20) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -439,10 +443,14 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `username`, `email`, `email_verified_at`, `password`, `token_reset_password`, `remember_token`, `created_at`, `updated_at`, `owner`, `profile`) VALUES
-(1, 'John Doe', 'superadmin', 'john.doe@gmail.com', '2024-05-25 22:33:45', '$2y$12$xgpmhT4tzcxf5VgHnlvtBOsTieIxBYnZfcRxN5cj6GmjN4s12HppW', NULL, 'rNqrBJvgWl', '2024-05-25 22:33:46', '2024-05-25 22:33:46', NULL, 1),
-(3, 'Admin Hildegar', 'admin', 'carlos.santaella.cesg@gmail.com', NULL, '$2y$12$Hu.b5cetZ1WLKScnYu24G.aXyxnhWPvYzJmnfzYuqvg3R31AP3X6q', NULL, NULL, '2024-06-28 05:57:37', '2025-02-16 20:30:53', NULL, 2),
-(7, 'supervisor', 'supervisor', 'supervisor@gmail.com', NULL, '$2y$12$1MqT1wYc9Le2spgRoOLfieVHAwVeyjUmcmwasD.N2AhQ9M/hd2Cgq', NULL, NULL, '2025-01-06 21:19:54', '2025-01-06 21:19:54', 3, 5),
-(8, 'RAMON ARIZA', 'LEOTECNICAS', 'gestiondocumental@leotecnicas.com', NULL, '$2y$12$A3xCQoq0vYXVw7Igh1LoxuidnQmVKB9fLN4xmfYEpDGFdLOV1meQW', NULL, NULL, '2025-02-11 23:41:48', '2025-02-11 23:41:48', NULL, 2);
+(1, 'John Doe', 'superadmin', 'john.doe@gmail.com', '2024-05-25 22:33:45', '$2y$12$E2Mk1wkOwUiEovbGYNUP.eARoJwaYpKGI8o.FgJ1M69VCHJwk3JTy', NULL, 'rNqrBJvgWl', '2024-05-25 22:33:46', '2024-05-25 22:33:46', NULL, 1),
+(3, 'Admin Carlos', 'admin', 'carlos.santaella.cesg@gmail.com', NULL, '$2y$12$sg.zbqAVAQ9KYuNnlaDXtumCBSgAeTavm.8WOaN4ryg8j1z1I2T7C', '2670f59bb0acf17cd2be371db9dc18a9e1cd6688b57eb761b3e6ea5fb09fbf73', NULL, '2024-06-28 05:57:37', '2025-02-16 17:14:51', NULL, 2),
+(7, NULL, 'adminqwer', 'hola@gmail.com', NULL, '$2y$12$z5jT8trcKBQ5YutNGj3ududzvlJ6Qao3VbHkSYj25WUKQ1mdjeZgq', NULL, NULL, '2025-01-31 02:31:13', '2025-01-31 02:31:13', 3, NULL),
+(9, NULL, 'PEPEPE', 'PEPE@GMAIL.COM', NULL, '$2y$12$z7oqczQPj3jTih5XTokHx.CdwGhhiH.Emkquk9UoQaTCpCHOCe5dO', NULL, NULL, '2025-02-15 14:37:39', '2025-03-15 21:16:16', 3, 18),
+(10, NULL, 'supervisorPrueba22', 'sp@gmail.com', NULL, '$2y$12$hfNG9PgEb64nJhXNhlkSP.PaFvG5JTrOsHDu.0fSl5eiEbQcMZ0l.', NULL, NULL, '2025-02-16 02:08:24', '2025-02-23 00:36:41', 3, NULL),
+(16, NULL, 'userprueba', 'userprueba@gmail.com', NULL, '$2y$12$/aavMbLe6v6oI1amghJIzO3Sep92yp8ri6rDuZ/guySAdxGnLJshC', NULL, NULL, '2025-03-15 18:50:32', '2025-03-15 18:58:37', 3, 17),
+(27, NULL, 'leotecnicas', 'gestiondocumental@leotecnicas.com', NULL, '$2y$12$/vjAkMIQ8vxsdGEuP7EiSuCddVpRbAaURnDOqPmIz2t8rNMhjfUaa', NULL, NULL, '2025-03-23 00:25:28', '2025-03-23 00:29:02', NULL, 2),
+(28, NULL, 'ramon123', 'ramn_33@hotmail.com', NULL, '$2y$12$UpaON/cSm6aSBrgc8PlPxuD7Y.P53IoemcHKHu57.WUcMD.6CERby', NULL, NULL, '2025-03-23 00:30:08', '2025-03-23 00:33:28', 27, 19);
 
 --
 -- Índices para tablas volcadas
@@ -514,6 +522,14 @@ ALTER TABLE `items_diagnoses`
   ADD PRIMARY KEY (`id`),
   ADD KEY `items_diagnoses_diagnoses_id_foreign` (`diagnoses_id`),
   ADD KEY `items_diagnoses_item_id_foreign` (`item_id`);
+
+--
+-- Indices de la tabla `items_rates`
+--
+ALTER TABLE `items_rates`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `items_rates_rate_id_foreign` (`rate_id`),
+  ADD KEY `items_rates_item_id_foreign` (`item_id`);
 
 --
 -- Indices de la tabla `migrations`
@@ -589,19 +605,19 @@ ALTER TABLE `clients`
 -- AUTO_INCREMENT de la tabla `configurations`
 --
 ALTER TABLE `configurations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `diagnoses`
 --
 ALTER TABLE `diagnoses`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `diagnoses_files`
 --
 ALTER TABLE `diagnoses_files`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT de la tabla `failed_jobs`
@@ -619,25 +635,31 @@ ALTER TABLE `failure_modes`
 -- AUTO_INCREMENT de la tabla `failure_modes_diagnoses`
 --
 ALTER TABLE `failure_modes_diagnoses`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT de la tabla `items`
 --
 ALTER TABLE `items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `items_diagnoses`
 --
 ALTER TABLE `items_diagnoses`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+
+--
+-- AUTO_INCREMENT de la tabla `items_rates`
+--
+ALTER TABLE `items_rates`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT de la tabla `personal_access_tokens`
@@ -649,31 +671,31 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT de la tabla `photos_items_diagnoses`
 --
 ALTER TABLE `photos_items_diagnoses`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT de la tabla `profiles`
 --
 ALTER TABLE `profiles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `rates`
 --
 ALTER TABLE `rates`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `receptions`
 --
 ALTER TABLE `receptions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- Restricciones para tablas volcadas
@@ -732,6 +754,13 @@ ALTER TABLE `items_diagnoses`
   ADD CONSTRAINT `items_diagnoses_item_id_foreign` FOREIGN KEY (`item_id`) REFERENCES `items` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Filtros para la tabla `items_rates`
+--
+ALTER TABLE `items_rates`
+  ADD CONSTRAINT `items_rates_item_id_foreign` FOREIGN KEY (`item_id`) REFERENCES `items` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `items_rates_rate_id_foreign` FOREIGN KEY (`rate_id`) REFERENCES `rates` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `photos_items_diagnoses`
 --
 ALTER TABLE `photos_items_diagnoses`
@@ -742,7 +771,7 @@ ALTER TABLE `photos_items_diagnoses`
 -- Filtros para la tabla `profiles`
 --
 ALTER TABLE `profiles`
-  ADD CONSTRAINT `profiles_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `profiles_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
 
 --
 -- Filtros para la tabla `rates`
@@ -762,7 +791,7 @@ ALTER TABLE `receptions`
 --
 ALTER TABLE `users`
   ADD CONSTRAINT `users_owner_foreign` FOREIGN KEY (`owner`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `users_profile_foreign` FOREIGN KEY (`profile`) REFERENCES `profiles` (`id`);
+  ADD CONSTRAINT `users_profile_foreign` FOREIGN KEY (`profile`) REFERENCES `profiles` (`id`) ON DELETE SET NULL;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

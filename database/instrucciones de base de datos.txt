@@ -1,0 +1,7 @@
+- email de pasaporte hora Español
+- en gráfica pagina mejorar consultas
+- en planning que guarde el scroll
+- web-kprzp35j bono ingresado (mal)
+- agregar descuento en registros entre precio e importe y aplicarlo en el total
+- al imprimir ticket no aparecen métodos de pago 
+- cambiar encuentros por recogidas en planning
